@@ -1,0 +1,17 @@
+{
+  "name": "redux-bookworm",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/gpbaculio/redux-saga.git",
+  "author": "Glendon Philipp Baculio <gpbaculio@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "concurrently": "^4.0.1"
+  },
+  "scripts": {
+    "start": "concurrently -- kill-others \"npm run backend\" \"npm run frontend\"",
+    "backend": "cd backend && npm start",
+    "frontend": "cd frontend && npm start",
+    "build": "cd frontend && npm run build"
+  }
+}

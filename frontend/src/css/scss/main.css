@@ -1,0 +1,64 @@
+/*
+* Orson http://en.orson.io , autreplanete http://www.autreplanete.com/
+*
+**/
+body {
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif !important; }
+
+* {
+  box-sizing: border-box; }
+
+.loader-hidden {
+  display: none; }
+
+.loader-active {
+  display: block; }
+
+body {
+  color: inherit;
+  background-color: #F8F8F8; }
+
+hr {
+  border-color: #D7D8DD; }
+
+img {
+  height: auto;
+  max-width: 100%; }
+
+/* Colors */
+.text-purple {
+  color: var(--purple); }
+
+.text-indigo {
+  color: var(--indigo); }
+
+.text-blue {
+  color: var(--blue); }
+
+.text-pink {
+  color: var(--pink); }
+
+.text-red {
+  color: var(--red); }
+
+.text-orange {
+  color: var(--orange); }
+
+.text-yellow {
+  color: var(--yellow); }
+
+.text-green {
+  color: var(--green); }
+
+.text-teal {
+  color: var(--teal); }
+
+.text-cyan {
+  color: var(--cyan); }
+
+/* media query */
+strong {
+  font-weight: 600; }
+
+.form-group .form-label {
+  width: 100%; }

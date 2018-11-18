@@ -1,0 +1,122 @@
+@import "bootstrap/functions";
+@import "bootstrap/variables";
+@import "bootstrap/mixins";
+@import "custom-variables";
+@import "variables";
+body {
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif!important;
+}
+* {
+  box-sizing: border-box;
+}
+.loader-hidden {
+  display: none;
+}
+.loader-active {
+  display: block;
+}
+body {
+  color: inherit;
+  background-color: #F8F8F8;
+}
+hr {
+  border-color: #D7D8DD;
+}
+img {
+  height: auto;
+  max-width: 100%;
+}
+/* Colors */
+.text-purple {
+  color: var(--purple);
+}
+.text-indigo {
+  color: var(--indigo);
+}
+.text-blue {
+  color: var(--blue);
+}
+.text-pink {
+  color: var(--pink);
+}
+.text-red {
+  color: var(--red);
+}
+.text-orange {
+  color: var(--orange);
+}
+.text-yellow {
+  color: var(--yellow);
+}
+.text-green {
+  color: var(--green);
+}
+.text-teal {
+  color: var(--teal);
+}
+.text-cyan {
+  color: var(--cyan);
+}
+/* media query */
+strong {
+  font-weight: 600;
+}
+@mixin mediaQuery($arg) {
+  @media screen and (max-width: $arg) {
+    @content;
+  }
+}
+.form-group {
+  .form-label {
+    width: 100%;
+  }
+}
+// .feature-container {
+//   text-align: center;
+// 	height: auto;
+// 	width: 532px;
+// 	border-radius: 5px;
+//   background-color: #FFFFFF;
+//   margin-right: auto;
+//   margin-left: auto;
+//   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.05), 0 6px 17px 0 rgba(0,0,0,0.05);
+//   padding: 49px 51px 58px 51px;
+//   @include mediaQuery(1120px) {
+//     height: auto;
+//     width: 98%;
+//     padding: 2%;
+//   }
+//   @include mediaQuery(992px) {
+//     margin-left: auto;
+//     margin-right: auto;
+//     height: auto;
+//     width: 532px;
+//   }
+//   @include mediaQuery(576px) {
+//     width: 98%;
+//     padding: 2%;
+//   }
+//   .feature-img {
+//     width: 48px;
+//     height: 48px;
+//     margin-bottom: 24px;
+//   }
+//   .notifs-img, .security-img {
+//     height: 48px;
+//     margin-bottom: 24px;
+//   }
+//   .notifs-img {
+//     width: 42px;
+//   }
+//   .security-img {
+//     width: 37px;
+//   }
+//   .feature-header {
+//     margin-bottom: 14px;
+//     color: #3E3E3E;
+//     font-size: 16px;
+//     font-weight: 600;
+//     line-height: 20px;
+//     text-align: center;
+//   }
+// }
