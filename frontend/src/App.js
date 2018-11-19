@@ -23,8 +23,7 @@ class App extends React.Component {
         <Header />
         <UserRoute
           location={location}
-          path="/home"
-          exact
+          path="/(home)"
           component={Homepage}
         />
         <GuestRoute
