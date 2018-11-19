@@ -49,7 +49,18 @@ class Header extends React.Component {
                             <Nav className="ml-auto" navbar>
                                 {authorized ? (
                                     <NavItem>
-                                        <button type="button" style={{ backgroundColor: '#F8F9FA', border: 'none', cursor: 'pointer' }} className="nav-link" onClick={this.logOut}>Logout</button>
+                                        <button
+                                            type="button"
+                                            style={{
+                                                backgroundColor: '#F8F9FA',
+                                                border: 'none',
+                                                cursor: 'pointer'
+                                            }}
+                                            className="nav-link"
+                                            onClick={this.logOut}
+                                        >
+                                            Logout
+                                        </button>
                                     </NavItem>) : (
                                         <React.Fragment>
                                             <NavItem>

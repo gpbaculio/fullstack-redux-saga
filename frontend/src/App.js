@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux';
-import { Route } from 'react-router-dom';
 
 import { SignUpPage, LoginPage, Homepage } from './components/pages'
-import { GuestRoute } from './components/routes'
+import { GuestRoute, UserRoute } from './components/routes'
 import { Header } from './components/navigation'
 import { fetchCurrentUserRequest } from './actions/user';
 
@@ -22,7 +21,7 @@ class App extends React.Component {
     return (
       <React.Fragment>
         <Header />
-        <Route
+        <UserRoute
           location={location}
           path="/home"
           exact
