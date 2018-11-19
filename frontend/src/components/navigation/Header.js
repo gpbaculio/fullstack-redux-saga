@@ -7,17 +7,27 @@ import {
     Nav,
     NavItem,
 } from 'reactstrap';
+import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux';
+import { userLoggedOut } from '../../actions/auth'
 
-export default class Example extends React.Component {
+class Header extends React.Component {
+
     constructor(props) {
         super(props);
-
         this.toggle = this.toggle.bind(this);
         this.state = {
             isOpen: false
         };
     }
+
+    logOut = async (e) => {
+        e.preventDefault();
+        localStorage.removeItem('bookWormJWT')
+        const { userLoggedOut: userLoggedOutAction } = this.props
+        userLoggedOutAction()
+    };
 
     toggle() {
         const { isOpen } = this.state
@@ -28,6 +38,7 @@ export default class Example extends React.Component {
 
     render() {
         const { isOpen } = this.state
+        const { authorized } = this.props
         return (
             <div>
                 <Navbar color="light" light expand="md">
@@ -36,16 +47,23 @@ export default class Example extends React.Component {
                         <NavbarToggler onClick={this.toggle} />
                         <Collapse isOpen={isOpen} navbar>
                             <Nav className="ml-auto" navbar>
-                                <NavItem>
-                                    <Link className="nav-link text-center" to="/login">
-                                        Login
-                                    </Link>
-                                </NavItem>
-                                <NavItem>
-                                    <Link className="nav-link text-center" to="/signup">
-                                        Signup
-                                    </Link>
-                                </NavItem>
+                                {authorized ? (
+                                    <NavItem>
+                                        <button type="button" style={{ backgroundColor: '#F8F9FA', border: 'none', cursor: 'pointer' }} className="nav-link" onClick={this.logOut}>Logout</button>
+                                    </NavItem>) : (
+                                        <React.Fragment>
+                                            <NavItem>
+                                                <Link className="nav-link" to="/login">
+                                                    Login
+                                                </Link>
+                                            </NavItem>
+                                            <NavItem>
+                                                <Link className="nav-link" to="/signup">
+                                                    Signup
+                                                </Link>
+                                            </NavItem>
+                                        </React.Fragment>
+                                    )}
                             </Nav>
                         </Collapse>
                     </div>
@@ -54,3 +72,13 @@ export default class Example extends React.Component {
         );
     }
 }
+
+Header.propTypes = {
+    authorized: PropTypes.bool.isRequired,
+}
+
+const mapStateToProps = state => ({
+    authorized: !!state.user.email
+})
+
+export default connect(mapStateToProps, { userLoggedOut })(Header)

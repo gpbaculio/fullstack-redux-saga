@@ -20,8 +20,8 @@ const schema = new mongoose.Schema({
         default: false
     }
 }, {
-    timestamps: true
-})
+        timestamps: true
+    })
 
 schema.methods.isValidPassword = function isValidPassword(password) {
     return bcrypt.compareSync(password, this.password)
@@ -32,9 +32,11 @@ schema.methods.setPassword = function setPassword(password) {
 }
 
 schema.methods.generateJWT = function generateJWT() {
-    return jwt.sign({
-        email: this.email
-    }, process.env.JWT_SECRET)
+    return jwt.sign(
+        { email: this.email },
+        process.env.JWT_SECRET,
+        { expiresIn: "1h" }
+    )
 }
 
 schema.methods.toAuthJSON = function toAuthJSON() {

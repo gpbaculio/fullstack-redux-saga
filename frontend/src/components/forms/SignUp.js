@@ -26,7 +26,7 @@ class SignUpForm extends React.Component {
 
   componentWillUnmount() {
     const { reset } = this.props
-    reset()
+    reset({ signUp: {} })
   }
 
   onChange = e => {
@@ -50,16 +50,14 @@ class SignUpForm extends React.Component {
 
   validate = data => {
     const errors = {};
-
     if (!isEmail(data.email)) errors.email = "Invalid email";
     if (!data.password) errors.password = "Can't be blank";
-
     return errors;
   };
 
   render() {
     const { data, errors } = this.state;
-    const { loaded } = this.props
+    const { loading } = this.props
     return (
       <form onSubmit={this.onSubmit}>
         <div className="form-group">
@@ -96,7 +94,7 @@ class SignUpForm extends React.Component {
           <div className="invalid-feedback">{errors.password}</div>
         </div>
 
-        <Button disabled={loaded} type="submit" color="primary" className="btn-block">
+        <Button disabled={loading} type="submit" color="primary" className="btn-block">
           Sign Up
         </Button>
 
@@ -109,14 +107,14 @@ class SignUpForm extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  loaded: state.formErrors.loaded,
+  loading: state.formErrors.loading,
   serverErrors: state.formErrors.signUp
 })
 
 SignUpForm.propTypes = {
   submit: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
-  loaded: PropTypes.bool.isRequired,
+  loading: PropTypes.bool.isRequired,
 }
 
 export default connect(mapStateToProps, {

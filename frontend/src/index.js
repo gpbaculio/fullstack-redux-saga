@@ -5,21 +5,35 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import createSagaMiddleware from "redux-saga";
 import { Router, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
+
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import sagas from './sagas'
 import history from "./history";
 import reducers from './reducers'
+import setAuthorizedHeader from './utils/setAuthorizedHeader'
+import { fetchCurrentUserRequest, fetchCurrentUserSuccess } from './actions/user';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/index.css'
 
 const sagaMiddleware = createSagaMiddleware();
+
 const store = createStore(
   reducers,
   composeWithDevTools(applyMiddleware(sagaMiddleware))
 );
+
 sagaMiddleware.run(sagas)
+
+const token = localStorage.getItem('bookWormJWT')
+
+if (token) {
+  setAuthorizedHeader(token)
+  store.dispatch(fetchCurrentUserRequest())
+} else {
+  store.dispatch(fetchCurrentUserSuccess({}))
+}
 
 ReactDOM.render(
   <Router history={history}>

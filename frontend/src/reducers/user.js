@@ -1,11 +1,19 @@
 import {
   USER_LOGGED_IN,
+  FETCH_CURRENT_USER_SUCCESS,
+  USER_LOGGED_OUT,
 } from "../types";
 
-export default function user(state = { loaded: false }, action = {}) {
+const initialState = {}
+
+export default function user(state = initialState, action = {}) {
   switch (action.type) {
     case USER_LOGGED_IN:
-      return { ...action.user, loaded: true };
+      return { ...action.user };
+    case FETCH_CURRENT_USER_SUCCESS:
+      return { ...state, ...action.user }
+    case USER_LOGGED_OUT:
+      return { ...initialState }
     default:
       return state;
   }

@@ -1,8 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Validator from "validator";
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { Button } from 'reactstrap'
+import { logInUserRequest, resetFormState } from '../../actions/user'
 
 class LoginForm extends React.Component {
+
   state = {
     data: {
       email: "",
@@ -10,6 +15,20 @@ class LoginForm extends React.Component {
     },
     errors: {}
   };
+
+  static getDerivedStateFromProps(nextProps) {
+    if (nextProps.serverErrors) {
+      return {
+        errors: nextProps.serverErrors
+      }
+    }
+    return null;
+  }
+
+  componentWillUnmount() {
+    const { reset } = this.props
+    reset({ signUp: {} })
+  }
 
   onChange = e => {
     const { data } = this.state
@@ -19,18 +38,15 @@ class LoginForm extends React.Component {
     });
   }
 
-  onSubmit = e => {
+  onSubmit = async (e) => {
     e.preventDefault();
-    // const errors = this.validate(this.state.data);
-    // this.setState({ errors });
-    // if (Object.keys(errors).length === 0) {
-    //   this.setState({ loading: true });
-    //   this.props
-    //     .submit(this.state.data)
-    //     .catch(err =>
-    //       this.setState({ errors: err.response.data.errors, loading: false })
-    //     );
-    // }
+    const { data } = this.state
+    const { submit } = this.props
+    const errors = this.validate(data);
+    this.setState({ errors });
+    if (Object.keys(errors).length === 0) {
+      await submit(data);
+    }
   };
 
   validate = data => {
@@ -42,7 +58,7 @@ class LoginForm extends React.Component {
 
   render() {
     const { data, errors } = this.state;
-
+    const { loading } = this.props
     return (
       <form onSubmit={this.onSubmit}>
         {errors.global && (
@@ -81,9 +97,9 @@ class LoginForm extends React.Component {
           <div className="invalid-feedback">{errors.password}</div>
         </div>
 
-        <button type="submit" className="btn btn-primary btn-block">
+        <Button disabled={loading} type="submit" color="primary" className="btn-block">
           Login
-        </button>
+        </Button>
 
         <small className="form-text text-center">
           <Link to="/signup">Sign up</Link> if you do not have an account<br />
@@ -94,8 +110,18 @@ class LoginForm extends React.Component {
   }
 }
 
-// LoginForm.propTypes = {
-//   submit: PropTypes.func.isRequired
-// };
+const mapStateToProps = (state) => ({
+  loading: state.formErrors.loading,
+  serverErrors: state.formErrors.signUp
+})
 
-export default LoginForm;
+LoginForm.propTypes = {
+  submit: PropTypes.func.isRequired,
+  reset: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
+}
+
+export default connect(mapStateToProps, {
+  submit: logInUserRequest,
+  reset: resetFormState
+})(LoginForm)

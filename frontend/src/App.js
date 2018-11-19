@@ -1,32 +1,64 @@
 import React from 'react';
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux';
+import { Route } from 'react-router-dom';
 
-import { SignUpPage, LoginPage } from './components/pages'
+import { SignUpPage, LoginPage, Homepage } from './components/pages'
 import { GuestRoute } from './components/routes'
 import { Header } from './components/navigation'
+import { fetchCurrentUserRequest } from './actions/user';
 
-const App = ({ location }) => (
-  <React.Fragment>
-    <Header />
-    <GuestRoute
-      location={location}
-      path="/signup"
-      exact
-      component={SignUpPage}
-    />
-    <GuestRoute
-      location={location}
-      path="/login"
-      exact
-      component={LoginPage}
-    />
-  </React.Fragment>
-);
+class App extends React.Component {
+
+  componentDidMount = () => {
+    const { isAuthenticated, fetchCurrentUserRequest: fetchCurrentUserRequestAction } = this.props
+    if (isAuthenticated) {
+      fetchCurrentUserRequestAction()
+    }
+  }
+
+  render() {
+    const { location } = this.props
+    return (
+      <React.Fragment>
+        <Header />
+        <Route
+          location={location}
+          path="/home"
+          exact
+          component={Homepage}
+        />
+        <GuestRoute
+          location={location}
+          path="/signup"
+          exact
+          component={SignUpPage}
+        />
+        <GuestRoute
+          location={location}
+          path="/login"
+          exact
+          component={LoginPage}
+        />
+      </React.Fragment>
+    );
+  }
+}
 
 App.propTypes = {
   location: PropTypes.shape({
     pathname: PropTypes.string.isRequired
   }).isRequired,
+  isAuthenticated: PropTypes.bool.isRequired,
+  fetchCurrentUserRequest: PropTypes.func.isRequired,
 };
 
-export default App;
+const mapStateToProps = (state) => ({
+  isAuthenticated: !!state.user.email
+})
+
+const mapDispatchToProps = {
+  fetchCurrentUserRequest
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

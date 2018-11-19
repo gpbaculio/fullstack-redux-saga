@@ -1,11 +1,12 @@
 import express from "express";
 import { User } from '../models'
 import parseErrors from '../utils/parseErrors'
+import { authenticate } from '../middlewares'
 
 const router = express.Router()
 
 router.post('/', (req, res) => {
-    const {email, password} = req.body.user
+    const { email, password } = req.body.user
     const user = new User({
         email
     })
@@ -25,5 +26,16 @@ router.post('/', (req, res) => {
             })
         })
 })
+
+router.get("/current_user", authenticate, (req, res) => {
+    console.log('req current user', req.currentUser)
+    res.json({
+        user: {
+            email: req.currentUser.email,
+            confirmed: req.currentUser.confirmed,
+            username: req.currentUser.username
+        }
+    });
+});
 
 export default router
