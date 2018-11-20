@@ -6,7 +6,8 @@ import {
   LOGIN_USER_FAILURE,
   USER_LOGGED_IN,
   USER_CONFIRM_TOKEN_REQUEST,
-  USER_CONFIRM_TOKEN_FAILURE
+  USER_CONFIRM_TOKEN_FAILURE,
+  USER_CONFIRM_TOKEN_SUCCESS
 } from "../types";
 
 const initialState = {
@@ -32,6 +33,8 @@ export default (state = initialState, action) => {
       return { ...initialState, ...action.form }
     case USER_CONFIRM_TOKEN_REQUEST:
       return { ...state, loading: true, confirmToken: {} }
+    case USER_CONFIRM_TOKEN_SUCCESS:
+      return { ...state, loading: false, confirmToken: {} }
     case USER_CONFIRM_TOKEN_FAILURE:
       return { ...state, loading: false, confirmToken: action.errors }
     default:

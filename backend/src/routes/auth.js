@@ -33,14 +33,12 @@ router.post('/confirmation', (req, res) => {
         { confirmationToken: '', confirmed: true },
         { new: true }
     ).then(user => {
-        return user ? res.json({ success: true }) :
+        return user ? res.json({ user: { email: user.email } }) :
             res.status(400).json({
                 errors: {
                     global: 'Invalid Token'
                 }
             }) // error response as for token must be invalid
-    }).catch(e => {
-        console.log('e = ', e)
     })
 })
 

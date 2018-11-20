@@ -28,8 +28,7 @@ sagaMiddleware.run(sagas)
 
 const token = localStorage.getItem('gpbTodosJWT')
 
-if (token && !!window.location.href.includes('/confirmation/')) {
-  console.log('confirmation index true')
+if (token && !window.location.href.includes('/confirmation/')) {
   setAuthorizedHeader(token)
   store.dispatch(fetchCurrentUserRequest())
 } else {

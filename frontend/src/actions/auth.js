@@ -20,8 +20,9 @@ export const userConfirmTokenRequest = token => ({
   token
 })
 
-export const userConfirmTokenSuccess = () => ({
+export const userConfirmTokenSuccess = email => ({
   type: USER_CONFIRM_TOKEN_SUCCESS,
+  email
 })
 
 export const userConfirmTokenFailure = errors => ({

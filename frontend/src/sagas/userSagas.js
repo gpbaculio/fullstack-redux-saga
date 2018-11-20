@@ -1,8 +1,7 @@
-import { call, put, fork, cancel, } from 'redux-saga/effects'
+import { call, put } from 'redux-saga/effects'
 
-import { userLoggedIn, userLoggedOut } from '../actions/auth'
+import { userLoggedIn, userLoggedOut, userConfirmTokenSuccess, userConfirmTokenFailure } from '../actions/auth'
 import { createUserFailure, logInUserFailure } from '../actions/user'
-import { userConfirmTokenFailure } from '../actions/auth'
 import api from '../api'
 import history from '../history'
 
@@ -35,12 +34,11 @@ export function* fetchUserSaga() {
 
 export function* userConfirmTokenSaga(action) {
   try {
-    const task = yield fork(fetchUserSaga)
-    yield cancel(task)
-    yield call(api.user.confirm, action.token)
-    yield put(userLoggedOut())
     localStorage.removeItem('gpbTodosJWT')
+    yield put(userLoggedOut())
+    const { email } = yield call(api.user.confirm, action.token)
+    yield put(userConfirmTokenSuccess(email))
   } catch (e) {
-    yield put(userConfirmTokenFailure(e.response.data.error))
+    yield put(userConfirmTokenFailure(e.response.data.errors))
   }
 }

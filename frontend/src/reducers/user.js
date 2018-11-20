@@ -16,7 +16,7 @@ export default function user(state = initialState, action = {}) {
     case USER_LOGGED_OUT:
       return { ...initialState }
     case USER_CONFIRM_TOKEN_SUCCESS:
-      return { ...state, loading: false, confirmToken: {} }
+      return { ...state, confirmed: true, email: action.email }
     default:
       return state;
   }
