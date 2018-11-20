@@ -26,9 +26,10 @@ const store = createStore(
 
 sagaMiddleware.run(sagas)
 
-const token = localStorage.getItem('bookWormJWT')
+const token = localStorage.getItem('gpbTodosJWT')
 
-if (token) {
+if (token && !!window.location.href.includes('/confirmation/')) {
+  console.log('confirmation index true')
   setAuthorizedHeader(token)
   store.dispatch(fetchCurrentUserRequest())
 } else {

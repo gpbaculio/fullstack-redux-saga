@@ -24,7 +24,7 @@ class Header extends React.Component {
 
     logOut = async (e) => {
         e.preventDefault();
-        localStorage.removeItem('bookWormJWT')
+        localStorage.removeItem('gpbTodosJWT')
         const { userLoggedOut: userLoggedOutAction } = this.props
         userLoggedOutAction()
     };

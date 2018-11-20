@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux';
+import { Route } from 'react-router-dom'
 
-import { SignUpPage, LoginPage, Homepage } from './components/pages'
+import { SignUpPage, LoginPage, HomePage, ConfirmationPage } from './components/pages'
 import { GuestRoute, UserRoute } from './components/routes'
 import { Header } from './components/navigation'
 import { fetchCurrentUserRequest } from './actions/user';
@@ -10,8 +11,10 @@ import { fetchCurrentUserRequest } from './actions/user';
 class App extends React.Component {
 
   componentDidMount = () => {
+    const { location } = this.props;
     const { isAuthenticated, fetchCurrentUserRequest: fetchCurrentUserRequestAction } = this.props
-    if (isAuthenticated) {
+    if (isAuthenticated && !!location.pathname.includes('/confirmation/')) {
+      console.log('fetchcurrentuser!!!!')
       fetchCurrentUserRequestAction()
     }
   }
@@ -21,10 +24,15 @@ class App extends React.Component {
     return (
       <React.Fragment>
         <Header />
+        <Route
+          location={location}
+          path="/confirmation/:token"
+          component={ConfirmationPage}
+        />
         <UserRoute
           location={location}
           path="/(home)"
-          component={Homepage}
+          component={HomePage}
         />
         <GuestRoute
           location={location}

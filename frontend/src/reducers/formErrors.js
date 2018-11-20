@@ -4,13 +4,16 @@ import {
   RESET_FORM_STATE,
   LOGIN_USER_REQUEST,
   LOGIN_USER_FAILURE,
-  USER_LOGGED_IN
+  USER_LOGGED_IN,
+  USER_CONFIRM_TOKEN_REQUEST,
+  USER_CONFIRM_TOKEN_FAILURE
 } from "../types";
 
 const initialState = {
   loading: false,
   signUp: {},
-  logIn: {}
+  logIn: {},
+  confirmToken: {}
 }
 
 export default (state = initialState, action) => {
@@ -24,9 +27,13 @@ export default (state = initialState, action) => {
     case LOGIN_USER_FAILURE:
       return { ...state, loading: false, logIn: action.errors }
     case USER_LOGGED_IN:
-      return { ...state, loading: false }
+      return { ...initialState, loading: false }
     case RESET_FORM_STATE:
-      return { ...state, ...action.form }
+      return { ...initialState, ...action.form }
+    case USER_CONFIRM_TOKEN_REQUEST:
+      return { ...state, loading: true, confirmToken: {} }
+    case USER_CONFIRM_TOKEN_FAILURE:
+      return { ...state, loading: false, confirmToken: action.errors }
     default:
       return state
   }

@@ -27,7 +27,7 @@ class LoginForm extends React.Component {
 
   componentWillUnmount() {
     const { reset } = this.props
-    reset({ signUp: {} })
+    reset({ logIn: {} })
   }
 
   onChange = e => {

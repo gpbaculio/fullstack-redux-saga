@@ -2,6 +2,7 @@ import {
   USER_LOGGED_IN,
   FETCH_CURRENT_USER_SUCCESS,
   USER_LOGGED_OUT,
+  USER_CONFIRM_TOKEN_SUCCESS
 } from "../types";
 
 const initialState = {}
@@ -14,6 +15,8 @@ export default function user(state = initialState, action = {}) {
       return { ...state, ...action.user }
     case USER_LOGGED_OUT:
       return { ...initialState }
+    case USER_CONFIRM_TOKEN_SUCCESS:
+      return { ...state, loading: false, confirmToken: {} }
     default:
       return state;
   }
