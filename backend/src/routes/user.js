@@ -21,19 +21,18 @@ router.post('/', (req, res) => {
                 user: userRecord.toAuthJSON()
             })
         })
-        .catch(err => {
-            return res.status(400).json({
-                errors: parseErrors(err.errors)
-            })
-        })
+        .catch(err => res.status(400).json({
+            errors: parseErrors(err.errors)
+        }))
 })
 
 router.get("/current_user", authenticate, (req, res) => {
+    const { _id: id, email, confirmed } = req.currentUser
     res.json({
         user: {
-            email: req.currentUser.email,
-            confirmed: req.currentUser.confirmed,
-            username: req.currentUser.username
+            email,
+            confirmed,
+            id,
         }
     });
 });

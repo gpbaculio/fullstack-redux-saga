@@ -1,6 +1,7 @@
 import { call, put } from 'redux-saga/effects'
 
 import { userLoggedIn, userLoggedOut, userConfirmTokenSuccess, userConfirmTokenFailure } from '../actions/auth'
+import { addTodoSuccess, addTodoFailure } from '../actions/todo'
 import { createUserFailure, logInUserFailure } from '../actions/user'
 import api from '../api'
 import history from '../history'
@@ -40,5 +41,14 @@ export function* userConfirmTokenSaga(action) {
     yield put(userConfirmTokenSuccess(email))
   } catch (e) {
     yield put(userConfirmTokenFailure(e.response.data.errors))
+  }
+}
+
+export function* addTodoSaga({ todoTextWithUserId }) {
+  try {
+    const todoWithUserData = yield call(api.todo.addTodo, todoTextWithUserId)
+    yield put(addTodoSuccess(todoWithUserData))
+  } catch (e) {
+    yield put(addTodoFailure(e.response.data.errors))
   }
 }

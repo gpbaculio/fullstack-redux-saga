@@ -32,14 +32,14 @@ router.post('/confirmation', (req, res) => {
         { confirmationToken: token },
         { confirmationToken: '', confirmed: true },
         { new: true }
-    ).then(user => {
-        return user ? res.json({ user: { email: user.email } }) :
+    ).then(user => 
+         user ? res.json({ user: { email: user.email } }) :
             res.status(400).json({
                 errors: {
                     global: 'Invalid Token'
                 }
             }) // error response as for token must be invalid
-    })
+    )
 })
 
 export default router

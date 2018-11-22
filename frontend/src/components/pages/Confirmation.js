@@ -46,9 +46,9 @@ class Confirmation extends Component {
       <div className="container">
         <ClipLoader
           className={override}
-          sizeUnit={"px"}
+          sizeUnit="px"
           size={100}
-          color={'#123abc'}
+          color='#123abc'
           loading={loading}
         />
         {errors.global && (
@@ -70,7 +70,7 @@ const mapStateToProps = (state) => ({
   loading: state.formErrors.loading,
   serverErrors: state.formErrors.confirmToken,
   confirmed: !!state.user.confirmed,
-  email: state.user.email
+  email: state.user.email ? state.user.email : false
 })
 
 Confirmation.propTypes = {
@@ -81,7 +81,12 @@ Confirmation.propTypes = {
     }).isRequired,
   }).isRequired,
   confirmed: PropTypes.bool.isRequired,
-  email: PropTypes.string.isRequired,
+  email: PropTypes.oneOfType([
+    PropTypes.string.isRequired,
+    PropTypes.bool.isRequired
+  ]).isRequired,
+  loading: PropTypes.bool.isRequired,
+  reset: PropTypes.func.isRequired,
 }
 
 export default connect(mapStateToProps, {

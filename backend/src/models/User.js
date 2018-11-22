@@ -52,6 +52,7 @@ schema.methods.generateConfirmationUrl = function generateConfirmationUrl() {
 
 schema.methods.toAuthJSON = function toAuthJSON() {
     return {
+        id: this._id, // _id is mongoose id
         email: this.email,
         token: this.generateJWT(),
         confirmed: this.confirmed

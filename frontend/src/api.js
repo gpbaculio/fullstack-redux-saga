@@ -7,4 +7,7 @@ export default {
     fetchCurrentUser: () => axios.get("/api/user/current_user").then(res => res.data.user),
     confirm: token => axios.post('/api/auth/confirmation', { token }).then(res => res.data.user)
   },
+  todo: {
+    addTodo: ({ todoText, userId }) => axios.post("/api/todo", { todoText, userId }).then(res => res.data.todo),
+  }
 };
