@@ -11,8 +11,6 @@ import * as serviceWorker from './serviceWorker';
 import sagas from './sagas'
 import history from "./history";
 import reducers from './reducers'
-import setAuthorizedHeader from './utils/setAuthorizedHeader'
-import { fetchCurrentUserRequest, fetchCurrentUserSuccess } from './actions/user';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/index.css'
@@ -25,15 +23,6 @@ const store = createStore(
 );
 
 sagaMiddleware.run(sagas)
-
-const token = localStorage.getItem('gpbTodosJWT')
-
-if (token && !window.location.href.includes('/confirmation/')) {
-  setAuthorizedHeader(token)
-  store.dispatch(fetchCurrentUserRequest())
-} else {
-  store.dispatch(fetchCurrentUserSuccess({}))
-}
 
 ReactDOM.render(
   <Router history={history}>

@@ -10,7 +10,7 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 
-import { addTodoRequest } from '../../actions/todo'
+import { addTodoByUserRequest } from '../../actions/todo'
 
 class Home extends React.Component {
 
@@ -129,7 +129,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-  submit: addTodoRequest
+  submit: addTodoByUserRequest
 }
 
 

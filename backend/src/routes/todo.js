@@ -18,4 +18,19 @@ router.post('/', async (req, res) => {
     }))
 })
 
+router.get('/todos_by_user', async (req, res) => {
+  const { userId } = req.body;
+  await Todo
+    .find({ userId })
+    .populate('userId')
+    .sort({ createdAt: 'descending' })
+    .then(async ({ _id: id }) => {
+      const todoWithUserRecord = await Todo.findOne({ _id: id }).populate('userId', '_id')
+      return res.json({ todo: todoWithUserRecord })
+    })
+    .catch(err => res.status(400).json({
+      errors: parseErrors(err.errors)
+    }))
+})
+
 export default router

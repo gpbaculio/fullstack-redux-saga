@@ -5,7 +5,12 @@ import {
   USER_CONFIRM_TOKEN_SUCCESS
 } from "../types";
 
-const initialState = {}
+const initialState = {
+  id: '',
+  email: '',
+  token: '',
+  confirmed: false
+}
 
 export default function user(state = initialState, action = {}) {
   switch (action.type) {

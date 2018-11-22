@@ -6,16 +6,28 @@ import { Route } from 'react-router-dom'
 import { SignUpPage, LoginPage, HomePage, ConfirmationPage } from './components/pages'
 import { GuestRoute, UserRoute } from './components/routes'
 import { Header } from './components/navigation'
-import { fetchCurrentUserRequest } from './actions/user';
+import { fetchCurrentUserRequest, fetchCurrentUserSuccess } from './actions/user';
+import setAuthorizedHeader from './utils/setAuthorizedHeader'
+import { fetchTodosByUser } from './actions/todo'
 
 class App extends React.Component {
 
-  componentDidMount = () => {
-    const { location } = this.props;
-    const { isAuthenticated, fetchCurrentUserRequest: fetchCurrentUserRequestAction } = this.props
-    if (isAuthenticated && !!location.pathname.includes('/confirmation/')) {
-      console.log('fetchcurrentuser!!!!')
+  componentDidMount() {
+    const {
+      location,
+      id,
+      fetchCurrentUserRequest: fetchCurrentUserRequestAction,
+      fetchCurrentUserSuccess: fetchCurrentUserSuccessAction
+    } = this.props
+
+    const token = localStorage.getItem('gpbTodosJWT')
+
+    if (token && !location.pathname.includes('/confirmation')) {
+      setAuthorizedHeader(token)
       fetchCurrentUserRequestAction()
+      fetchTodosByUser(id)
+    } else {
+      fetchCurrentUserSuccessAction({})
     }
   }
 
@@ -31,7 +43,7 @@ class App extends React.Component {
         />
         <UserRoute
           location={location}
-          path="/(home)"
+          path="/home"
           component={HomePage}
         />
         <GuestRoute
@@ -55,16 +67,18 @@ App.propTypes = {
   location: PropTypes.shape({
     pathname: PropTypes.string.isRequired
   }).isRequired,
-  isAuthenticated: PropTypes.bool.isRequired,
+  id: PropTypes.string.isRequired,
   fetchCurrentUserRequest: PropTypes.func.isRequired,
+  fetchCurrentUserSuccess: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  isAuthenticated: !!state.user.email
+  id: state.user.id
 })
 
 const mapDispatchToProps = {
-  fetchCurrentUserRequest
+  fetchCurrentUserRequest,
+  fetchCurrentUserSuccess
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
