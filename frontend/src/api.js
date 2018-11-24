@@ -9,5 +9,12 @@ export default {
   },
   todo: {
     addTodo: ({ todoText, userId }) => axios.post("/api/todo", { todoText, userId }).then(res => res.data.todo),
+    fetchTodosByUser: ({ offset, limit, searchText }) => axios.get("/api/todo/todos_by_user", {
+      params: {
+        offset,
+        limit,
+        searchText
+      }
+    }).then(res => res.data.todos),
   }
 };

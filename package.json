@@ -9,7 +9,7 @@
     "concurrently": "^4.0.1"
   },
   "scripts": {
-    "start": "concurrently -- kill-others \"npm run backend\" \"npm run frontend\"",
+    "start": "concurrently --kill-others \"npm run backend\" \"npm run frontend\"",
     "backend": "cd backend && npm start",
     "frontend": "cd frontend && npm start",
     "build": "cd frontend && npm run build"

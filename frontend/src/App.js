@@ -8,16 +8,15 @@ import { GuestRoute, UserRoute } from './components/routes'
 import { Header } from './components/navigation'
 import { fetchCurrentUserRequest, fetchCurrentUserSuccess } from './actions/user';
 import setAuthorizedHeader from './utils/setAuthorizedHeader'
-import { fetchTodosByUser } from './actions/todo'
+import { fetchTodosByUserRequest } from './actions/todo'
 
 class App extends React.Component {
 
-  componentDidMount() {
+  componentDidMount = () => {
     const {
       location,
-      id,
       fetchCurrentUserRequest: fetchCurrentUserRequestAction,
-      fetchCurrentUserSuccess: fetchCurrentUserSuccessAction
+      fetchCurrentUserSuccess: fetchCurrentUserSuccessAction,
     } = this.props
 
     const token = localStorage.getItem('gpbTodosJWT')
@@ -25,9 +24,19 @@ class App extends React.Component {
     if (token && !location.pathname.includes('/confirmation')) {
       setAuthorizedHeader(token)
       fetchCurrentUserRequestAction()
-      fetchTodosByUser(id)
     } else {
       fetchCurrentUserSuccessAction({})
+    }
+  }
+
+  componentDidUpdate = () => {
+    const {
+      id,
+      fetchTodosByUserRequest: fetchTodosByUserRequestAction
+    } = this.props
+
+    if (id) { // the user has been fetched
+      fetchTodosByUserRequestAction()
     }
   }
 
@@ -70,6 +79,7 @@ App.propTypes = {
   id: PropTypes.string.isRequired,
   fetchCurrentUserRequest: PropTypes.func.isRequired,
   fetchCurrentUserSuccess: PropTypes.func.isRequired,
+  fetchTodosByUserRequest: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -78,7 +88,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   fetchCurrentUserRequest,
-  fetchCurrentUserSuccess
+  fetchCurrentUserSuccess,
+  fetchTodosByUserRequest
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -6,10 +6,13 @@ import {
   Row,
   Button
 } from 'reactstrap';
+import Pagination from 'react-js-pagination';
+import 'bootstrap/dist/css/bootstrap.css';
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 
+import { getTotalElements, ELEMENTS_PER_PAGE, setCurrentPage, getCurrentPage } from '../../todosPaginationConfig';
 import { addTodoByUserRequest } from '../../actions/todo'
 
 class Home extends React.Component {
@@ -55,9 +58,26 @@ class Home extends React.Component {
     return errors;
   };
 
+  onChosenPageChanged = (page) => {
+    const { setCurrentPageActionCreator } = this.props;
+    setCurrentPageActionCreator(page);
+  }
+
   render() {
     const { todoText, errors } = this.state
-    const { confirmed, loading, todos } = this.props;
+    const { confirmed, loading, todos, activePage, totalItemsCount } = this.props;
+    // if (state.limit !== props.limit) {
+    //   const { data, limit } = props;
+    //   const contacts = get(data, 'Account.contacts.contacts', []);
+    //   const pages = Math.ceil(contacts.length / limit);
+    //   return {
+    //     contactData: contacts,
+    //     limit,
+    //     pages,
+    //   };
+    // }
+    console.log('activePage = ', activePage)
+    console.log('totalItemsCount = ', totalItemsCount)
     return (
       <Container>
         <Row>
@@ -100,6 +120,13 @@ class Home extends React.Component {
               </div>
             </div>
           ))}
+          <Pagination
+            activePage={activePage}
+            itemsCountPerPage={ELEMENTS_PER_PAGE}
+            totalItemsCount={totalItemsCount}
+            pageRangeDisplayed={3}
+            onChange={this.onChosenPageChanged}
+          />
         </Row>
       </Container>
     )
@@ -107,6 +134,9 @@ class Home extends React.Component {
 }
 
 Home.propTypes = {
+  setCurrentPageActionCreator: PropTypes.func.isRequired,
+  totalItemsCount: PropTypes.number.isRequired,
+  activePage: PropTypes.number.isRequired,
   confirmed: PropTypes.bool.isRequired,
   submit: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
@@ -125,12 +155,14 @@ const mapStateToProps = (state) => ({
   userId: state.user.id,
   confirmed: state.user.confirmed,
   loading: state.formErrors.loading,
-  serverErrors: state.formErrors.signUp
+  serverErrors: state.formErrors.signUp,
+  totalItemsCount: getTotalElements(state),
+  activePage: getCurrentPage(state).pageNumber,
 })
 
-const mapDispatchToProps = {
-  submit: addTodoByUserRequest
-}
-
+const mapDispatchToProps = () => ({
+  submit: addTodoByUserRequest,
+  setCurrentPageActionCreator: setCurrentPage
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

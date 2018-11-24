@@ -8,9 +8,9 @@ import {
   USER_CONFIRM_TOKEN_REQUEST,
   USER_CONFIRM_TOKEN_FAILURE,
   USER_CONFIRM_TOKEN_SUCCESS,
-  ADD_TODO_REQUEST,
-  ADD_TODO_SUCCESS,
-  ADD_TODO_FAILURE
+  ADD_TODO_BY_USER_REQUEST,
+  ADD_TODO_BY_USER_SUCCESS,
+  ADD_TODO_BY_USER_FAILURE
 } from "../types";
 
 const initialState = {
@@ -51,13 +51,13 @@ export default (state = initialState, action) => {
     case USER_CONFIRM_TOKEN_FAILURE:
       return { ...state, loading: false, confirmToken: action.errors }
 
-    case ADD_TODO_REQUEST:
+    case ADD_TODO_BY_USER_REQUEST:
       return { ...state, loading: true, todo: {} }
 
-    case ADD_TODO_SUCCESS:
+    case ADD_TODO_BY_USER_SUCCESS:
       return { ...state, loading: false, todo: {} }
 
-    case ADD_TODO_FAILURE:
+    case ADD_TODO_BY_USER_FAILURE:
       return { ...state, loading: false, todo: action.errors }
 
     default:
