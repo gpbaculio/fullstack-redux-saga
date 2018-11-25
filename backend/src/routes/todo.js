@@ -28,7 +28,6 @@ router.get("/todos_by_user", authenticate, async (req, res) => {
   } else {
     findQuery = { userId }
   }
-  console.log('findQuery = ', findQuery)
   Todo.paginate(
     findQuery,
     { offset: parseFloat(offset), limit: parseFloat(limit) },
@@ -36,7 +35,7 @@ router.get("/todos_by_user", authenticate, async (req, res) => {
       if (err) {
         res.status(400).json({ error: err })
       } else {
-        res.json({ count: total, todos: docs })
+        res.status(200).json({ count: total, todos: docs })
       }
     });
 });

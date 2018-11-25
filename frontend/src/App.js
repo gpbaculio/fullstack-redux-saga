@@ -6,39 +6,20 @@ import { Route } from 'react-router-dom'
 import { SignUpPage, LoginPage, HomePage, ConfirmationPage } from './components/pages'
 import { GuestRoute, UserRoute } from './components/routes'
 import { Header } from './components/navigation'
-import { fetchCurrentUserRequest, fetchCurrentUserSuccess } from './actions/user';
-import setAuthorizedHeader from './utils/setAuthorizedHeader'
 import { fetchTodosByUserRequest } from './actions/todo'
 
 class App extends React.Component {
 
-  componentDidMount = () => {
-    const {
-      location,
-      fetchCurrentUserRequest: fetchCurrentUserRequestAction,
-      fetchCurrentUserSuccess: fetchCurrentUserSuccessAction,
-    } = this.props
+  // componentDidUpdate = () => {
+  //   const {
+  //     id,
+  //     fetchTodosByUserRequest: fetchTodosByUserRequestAction
+  //   } = this.props
 
-    const token = localStorage.getItem('gpbTodosJWT')
-
-    if (token && !location.pathname.includes('/confirmation')) {
-      setAuthorizedHeader(token)
-      fetchCurrentUserRequestAction()
-    } else {
-      fetchCurrentUserSuccessAction({})
-    }
-  }
-
-  componentDidUpdate = () => {
-    const {
-      id,
-      fetchTodosByUserRequest: fetchTodosByUserRequestAction
-    } = this.props
-
-    if (id) { // the user has been fetched
-      fetchTodosByUserRequestAction()
-    }
-  }
+  //   if (id) { // the user has been fetched
+  //     fetchTodosByUserRequestAction()
+  //   }
+  // }
 
   render() {
     const { location } = this.props
@@ -76,19 +57,17 @@ App.propTypes = {
   location: PropTypes.shape({
     pathname: PropTypes.string.isRequired
   }).isRequired,
-  id: PropTypes.string.isRequired,
+  id: PropTypes.bool.isRequired,
   fetchCurrentUserRequest: PropTypes.func.isRequired,
   fetchCurrentUserSuccess: PropTypes.func.isRequired,
   fetchTodosByUserRequest: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  id: state.user.id
+  id: !!state.user.id
 })
 
 const mapDispatchToProps = {
-  fetchCurrentUserRequest,
-  fetchCurrentUserSuccess,
   fetchTodosByUserRequest
 }
 

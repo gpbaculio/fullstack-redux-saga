@@ -10,7 +10,7 @@ import { auth, user, todo } from './routes'
 dotenv.config()
 const app = express()
 app.use(bodyParser.json())
-mongoose.Promise = Promise;
+mongoose['Promise'] = Promise;
 mongoose.connect(process.env.MONGODB_URL, {
     useNewUrlParser: true
 })

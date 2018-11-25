@@ -28,13 +28,17 @@ router.post('/', (req, res) => {
 
 router.get("/current_user", authenticate, (req, res) => {
     const { _id: id, email, confirmed } = req.currentUser
-    res.json({
-        user: {
-            email,
-            confirmed,
-            id,
-        }
-    });
+    if (id) {
+        res.json({
+            user: {
+                email,
+                confirmed,
+                id,
+            }
+        });
+    } else {
+        res.status(400).json({ error: 'failed to retrieve user' })
+    }
 });
 
 export default router

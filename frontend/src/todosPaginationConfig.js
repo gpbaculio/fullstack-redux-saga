@@ -8,26 +8,51 @@ const todo = new schema.Entity('todos');
 const responseSchema = new schema.Object({ elements: new schema.Array(todo) });
 
 const normalizeResponse = serverResponse => {
-  console.log('serverResponse = ', serverResponse)
   const normalizedData = normalize(serverResponse, responseSchema);
-  console.log('normalizedData = ', normalizedData)
-  const notNullEntities = normalizedData.entities.examinations ? normalizedData.entities.examinations : [];
-  console.log('notNullEntities = ', notNullEntities)
+  const notNullEntities = normalizedData.entities.todos ? normalizedData.entities.todos : [];
   return {
-    totalElements: serverResponse.count,
+    totalElements: serverResponse.totalElements,
     elements: normalizedData.result.elements,
     entities: notNullEntities
   };
 };
 
-const todosApi = (page, requestParams) => {
+const todosApi = async (page, requestParams) => {
   const { offset, limit, searchText } = requestParams;
-  return new Promise((resolve) => {
-    const serverResponse = api.todo.fetchTodosByUser({ offset, limit, searchText })
+  return new Promise(async (resolve, reject) => {
+    const serverResponse = await api.todo.fetchTodosByUser({ offset: page, limit: ELEMENTS_PER_PAGE, searchText })
+    console.log('serverResponse = ', serverResponse)
+    if (!serverResponse) {
+      reject('no response!')
+    }
     const formattedResponse = normalizeResponse(serverResponse);
     resolve(formattedResponse);
   });
 };
+// const todosApi = (page, requestParams) => {
+//   const { offset, limit, searchText } = requestParams;
+//   return new Promise((resolve, reject) => {
+//     const xhttp = new XMLHttpRequest()
+//     const token = localStorage.getItem('gpbTodosJWT')
+//     xhttp.open('GET', '/api/todo/todos_by_user', true)
+//     xhttp.setRequestHeader('authorization', `Bearer ${token}`)
+//     xhttp.onload = function () {
+//       console.log('xhttp response = ', xhttp.response)
+//       const nr = normalizeResponse({ todos: xhttp.response.todos, count: xhttp.response.count })
+//       console.log('xhttp nr = ', nr)
+//       if (xhttp.status === 200) {
+//         resolve({ todos: xhttp.response.todos, count: xhttp.response.count })
+//       } else {
+//         reject(xhttp.statusText)
+//       }
+//     }
+//     xhttp.onerror = function () {
+//       reject(xhttp.statusText)
+//     }
+//     xhttp.send()
+//   });
+// };
+
 
 const searchParamsInitState = { searchText: '' };
 
