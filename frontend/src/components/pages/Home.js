@@ -5,10 +5,8 @@ import {
   Container,
   Row,
   Button,
-  Pagination,
-  PaginationItem,
-  PaginationLink,
 } from 'reactstrap';
+import Pagination from 'react-js-pagination'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
@@ -94,7 +92,7 @@ class Home extends React.Component {
         console.log('x = ', todo)
         return (
           <div key={i} className="col-lg-4 col-md-6 col-sm-12">
-            <div className="card mr-auto ml-auto mb-2" style={{ width: '10rem' }}>
+            <div className="card mr-auto ml-auto mb-5 w-50">
               <div className="card-body">
                 <h5 className="card-title">{todo.text}</h5>
                 <p className="card-text">{todo.createdAt === todo.updatedAt ? moment(todo.createdAt).format('LLLL') : `${moment(todo.updatedAt).format('LLLL')} Edited`}</p>
@@ -139,23 +137,15 @@ class Home extends React.Component {
           </Row>
           <Row>
             <Col>
-              <Pagination>
-                <PaginationItem disabled>
-                  <PaginationLink href="#" previous onClick={() => console.log('prev')} />
-                </PaginationItem>
-                {
-                  times(pages, Number).map(val => (
-                    <PaginationItem active={(paged - 1) === val} key={val}>
-                      <PaginationLink href="#" onClick={this.handlePaginate.bind(null, val + 1)}>
-                        {val + 1}
-                      </PaginationLink>
-                    </PaginationItem>
-                  ))
-                }
-                <PaginationItem disabled={paged >= pages}>
-                  <PaginationLink href="#" next onClick={this.handleNext} />
-                </PaginationItem>
-              </Pagination>
+              <div className="d-flex justify-content-center my-1">
+                <Pagination
+                  activePage={3}
+                  itemsCountPerPage={10}
+                  totalItemsCount={21}
+                  pageRangeDisplayed={5}
+                  onChange={() => console.log('click page')}
+                />
+              </div>
             </Col>
           </Row>
         </Container>

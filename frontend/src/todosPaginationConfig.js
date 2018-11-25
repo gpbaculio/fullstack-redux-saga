@@ -2,7 +2,7 @@ import { createPaginator } from 'redux-cached-pagination';
 import { normalize, schema } from 'normalizr';
 import api from './api';
 
-export const ELEMENTS_PER_PAGE = 10;
+export const ELEMENTS_PER_PAGE = 6;
 
 const todo = new schema.Entity('todos');
 const responseSchema = new schema.Object({ elements: new schema.Array(todo) });
@@ -21,7 +21,6 @@ const todosApi = async (page, requestParams) => {
   const { offset, limit, searchText } = requestParams;
   return new Promise(async (resolve, reject) => {
     const serverResponse = await api.todo.fetchTodosByUser({ offset: page, limit: ELEMENTS_PER_PAGE, searchText })
-    console.log('serverResponse = ', serverResponse)
     if (!serverResponse) {
       reject('no response!')
     }
