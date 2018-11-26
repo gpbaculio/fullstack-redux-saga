@@ -11,7 +11,7 @@ import {
   getCurrentPage,
   getPage,
   loadTodosPage,
-} from '../../todosPaginationConfig';
+} from '../../../todosPaginationConfig';
 
 const override = css`
     display: block;

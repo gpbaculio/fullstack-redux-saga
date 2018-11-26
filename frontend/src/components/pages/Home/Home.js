@@ -13,11 +13,11 @@ import PropTypes from 'prop-types'
 import {
   loadTodosPage,
   setCurrentPage
-} from '../../todosPaginationConfig';
+} from '../../../todosPaginationConfig';
 import Paginator from './Paginator';
 import PageItem from './PageItem'
 import Search from './Search'
-import { addTodoByUserRequest } from '../../actions/todo'
+import { addTodoByUserRequest } from '../../../actions/todo'
 
 class Home extends React.Component {
 

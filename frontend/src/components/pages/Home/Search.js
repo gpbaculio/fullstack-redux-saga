@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { Input } from 'reactstrap'
 import PropTypes from 'prop-types'
 
-import { getSearchParams, updateSearchParams } from '../../todosPaginationConfig';
+import { getSearchParams, updateSearchParams } from '../../../todosPaginationConfig';
 
 const mapDispatchToProps = dispatch => bindActionCreators(
   {

@@ -9,7 +9,7 @@ import {
   ELEMENTS_PER_PAGE,
   getCurrentPage,
   setCurrentPage
-} from '../../todosPaginationConfig';
+} from '../../../todosPaginationConfig';
 
 const mapStateToProps = (state) => {
   const totalItemsCount = getTotalElements(state);
