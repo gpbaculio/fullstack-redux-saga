@@ -26,7 +26,7 @@ router.get("/todos_by_user", authenticate, async (req, res) => {
   if (searchText) {
     findQuery = {
       userId,
-      text: new RegExp(`^${searchText}$`, "i"),
+      text: { '$regex': `${searchText}`, '$options': 'i' },
     }
   } else {
     findQuery = {
@@ -40,7 +40,7 @@ router.get("/todos_by_user", authenticate, async (req, res) => {
       offset: parseFloat(offset),
       limit: parseFloat(limit),
       sort: {
-        createdAt: -1 //Sort by Date Added DESC
+        createdAt: -1 // Sort by Date Added DESC
       }
     },
     (err, { docs, total }) => {

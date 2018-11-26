@@ -40,10 +40,10 @@ class PageItem extends Component {
     loadTodosPageAction(1);
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate() {
     // Typical usage (don't forget to compare props):
     const { chosenPage } = this.props
-    if (chosenPage !== prevProps.chosenPage) {
+    if (chosenPage) {
       const { loadTodosPage: loadTodosPageAction } = this.props
       loadTodosPageAction(chosenPage);
     }

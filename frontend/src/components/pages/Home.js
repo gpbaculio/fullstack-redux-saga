@@ -40,6 +40,12 @@ class Home extends React.Component {
     return null;
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.state.errors.todoText) {
+      return true
+    }
+  }
+
   onChange = e => {
     const { name, value } = e.target
     this.setState({
@@ -51,21 +57,24 @@ class Home extends React.Component {
     e.preventDefault();
     const { addTodo, userId } = this.props
     const { todoText } = this.state
-    const errors = this.validate({ todoText });
-    this.setState({ errors });
+    const errors = await this.validate(todoText);
+    console.log('errors = ', errors)
+    await this.setState({ errors });
+    console.log('this.state', this.state)
     if (Object.keys(errors).length === 0) {
+      console.log('errors = ', errors)
       await addTodo({ todoText, userId })
       this.setState({ todoText: '' });
     }
   };
 
-  onSearchPhraseChanged = () => {
-    const { setCurrentPage: setCurrentPageAction } = this.props
-    setCurrentPageAction(1);
+  onSearchPhraseChanged = (searchPhrase) => {
+    this.props.setCurrentPage(1);
   }
 
-  validate = ({ todoText }) => {
+  validate = (todoText) => {
     const errors = {}
+    console.log('todoText = ', !todoText)
     if (!todoText) {
       errors.todoText = "Can't be blank";
     }
@@ -74,6 +83,7 @@ class Home extends React.Component {
 
   render() {
     const { loading, errors, todoText } = this.state
+    console.log('errors = ', errors)
     const { confirmed } = this.props
     return (
       <React.Fragment>
@@ -82,10 +92,10 @@ class Home extends React.Component {
             <Col xs="12" md="6">
               {confirmed ? (
                 <form
-                  className="form-inline justify-content-center mx-auto my-5 w-60 align-items-start"
+                  className="form-inline justify-content-center mx-auto my-3 align-items-start"
                   onSubmit={this.onSubmit}
                 >
-                  <div className="form-group form-inline w-50">
+                  <div className="form-group form-inline">
                     <input
                       type="text"
                       id="todoText"

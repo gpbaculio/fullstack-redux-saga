@@ -31,9 +31,9 @@ class Search extends Component {
   render() {
     const { searchPhrase } = this.props
     return (
-      <div className="justify-content-center mx-auto my-5 w-60 ">
+      <div className="justify-content-center mx-auto my-3 w-75">
         <Input
-          placeholder="Search your todos by text"
+          placeholder="type search phrase"
           value={searchPhrase}
           onChange={this.inputChanged}
         />

@@ -19,9 +19,10 @@ const normalizeResponse = serverResponse => {
 
 const todosApi = async (page, requestParams) => {
   const offset = (page - 1) * ELEMENTS_PER_PAGE
-  const { searchText } = requestParams;
+  const { searchPhrase } = requestParams;
+  console.log('todosApi fired searchPhrase')
   return new Promise(async (resolve) => {
-    const serverResponse = await api.todo.fetchTodosByUser({ offset, limit: ELEMENTS_PER_PAGE, searchText })
+    const serverResponse = await api.todo.fetchTodosByUser({ offset, limit: ELEMENTS_PER_PAGE, searchText: searchPhrase })
     const formattedResponse = normalizeResponse(serverResponse);
     resolve(formattedResponse);
   });
@@ -51,7 +52,7 @@ const todosApi = async (page, requestParams) => {
 // };
 
 
-const searchParamsInitState = { searchText: '' };
+const searchParamsInitState = { searchPhrase: '' };
 
 // default config below
 const config = {
