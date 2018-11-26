@@ -23,7 +23,6 @@ class Home extends React.Component {
 
   state = {
     todoText: '',
-    errors: {},
   }
 
   componentDidMount = () => {
@@ -62,17 +61,8 @@ class Home extends React.Component {
     setCurrentPageAction(1);
   }
 
-  validate = (todoText) => {
-    const errors = {}
-    if (!todoText) {
-      errors.todoText = "Can't be blank";
-    }
-    return errors;
-  };
-
   render() {
-    const { errors, todoText } = this.state
-    console.log('errors = ', errors)
+    const { todoText } = this.state
     const { confirmed, loading } = this.props
     return (
       <React.Fragment>
