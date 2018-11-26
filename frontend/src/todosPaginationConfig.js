@@ -20,37 +20,12 @@ const normalizeResponse = serverResponse => {
 const todosApi = async (page, requestParams) => {
   const offset = (page - 1) * ELEMENTS_PER_PAGE
   const { searchPhrase } = requestParams;
-  console.log('todosApi fired searchPhrase')
   return new Promise(async (resolve) => {
     const serverResponse = await api.todo.fetchTodosByUser({ offset, limit: ELEMENTS_PER_PAGE, searchText: searchPhrase })
     const formattedResponse = normalizeResponse(serverResponse);
     resolve(formattedResponse);
   });
 };
-// const todosApi = (page, requestParams) => {
-//   const { offset, limit, searchText } = requestParams;
-//   return new Promise((resolve, reject) => {
-//     const xhttp = new XMLHttpRequest()
-//     const token = localStorage.getItem('gpbTodosJWT')
-//     xhttp.open('GET', '/api/todo/todos_by_user', true)
-//     xhttp.setRequestHeader('authorization', `Bearer ${token}`)
-//     xhttp.onload = function () {
-//       console.log('xhttp response = ', xhttp.response)
-//       const nr = normalizeResponse({ todos: xhttp.response.todos, count: xhttp.response.count })
-//       console.log('xhttp nr = ', nr)
-//       if (xhttp.status === 200) {
-//         resolve({ todos: xhttp.response.todos, count: xhttp.response.count })
-//       } else {
-//         reject(xhttp.statusText)
-//       }
-//     }
-//     xhttp.onerror = function () {
-//       reject(xhttp.statusText)
-//     }
-//     xhttp.send()
-//   });
-// };
-
 
 const searchParamsInitState = { searchPhrase: '' };
 
