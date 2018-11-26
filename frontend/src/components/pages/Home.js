@@ -40,12 +40,6 @@ class Home extends React.Component {
     return null;
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    if (this.state.errors.todoText) {
-      return true
-    }
-  }
-
   onChange = e => {
     const { name, value } = e.target
     this.setState({
@@ -57,24 +51,19 @@ class Home extends React.Component {
     e.preventDefault();
     const { addTodo, userId } = this.props
     const { todoText } = this.state
-    const errors = await this.validate(todoText);
-    console.log('errors = ', errors)
-    await this.setState({ errors });
-    console.log('this.state', this.state)
-    if (Object.keys(errors).length === 0) {
-      console.log('errors = ', errors)
+    if (todoText) {
       await addTodo({ todoText, userId })
       this.setState({ todoText: '' });
     }
   };
 
-  onSearchPhraseChanged = (searchPhrase) => {
-    this.props.setCurrentPage(1);
+  onSearchPhraseChanged = () => {
+    const { setCurrentPage: setCurrentPageAction } = this.props
+    setCurrentPageAction(1);
   }
 
   validate = (todoText) => {
     const errors = {}
-    console.log('todoText = ', !todoText)
     if (!todoText) {
       errors.todoText = "Can't be blank";
     }
@@ -82,9 +71,9 @@ class Home extends React.Component {
   };
 
   render() {
-    const { loading, errors, todoText } = this.state
+    const { errors, todoText } = this.state
     console.log('errors = ', errors)
-    const { confirmed } = this.props
+    const { confirmed, loading } = this.props
     return (
       <React.Fragment>
         <Container>
@@ -92,23 +81,21 @@ class Home extends React.Component {
             <Col xs="12" md="6">
               {confirmed ? (
                 <form
-                  className="form-inline justify-content-center mx-auto my-3 align-items-start"
+                  className="form-inline justify-content-center mx-auto mt-4 mb-xs-1 mb-md-5 align-items-start"
                   onSubmit={this.onSubmit}
                 >
-                  <div className="form-group form-inline">
+                  <div className="d-flex w-75">
                     <input
                       type="text"
                       id="todoText"
                       name="todoText"
                       value={todoText}
+                      placeholder="Add Todo"
                       onChange={this.onChange}
-                      className={
-                        `w-100 ${errors.todoText ? "form-control is-invalid" : "form-control"}`
-                      }
+                      className="form-control w-75"
                     />
-                    <div className="invalid-feedback">{errors.todoText}</div>
+                    <Button type="submit" disabled={!todoText || loading} color="primary" className="ml-3">Submit</Button>
                   </div>
-                  <Button type="submit" disabled={loading} color="primary" className="ml-3">Submit</Button>
                 </form>
               ) : (
                   <Alert className="text-center" color="primary">
@@ -144,12 +131,14 @@ Home.propTypes = {
   userId: PropTypes.string.isRequired,
   loadTodosPage: PropTypes.func.isRequired,
   setCurrentPage: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
 }
 
 const mapStateToProps = (state) => ({
   userId: state.user.id,
   confirmed: state.user.confirmed,
   serverErrors: state.formErrors.signUp,
+  loading: state.formErrors.loading
 })
 const mapDispatchToProps = dispatch => bindActionCreators({
   loadTodosPage,

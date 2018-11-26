@@ -57,7 +57,7 @@ const searchParamsInitState = { searchPhrase: '' };
 // default config below
 const config = {
   refreshResultInBackground: true,
-  timeToRefresh: 3000, // [ms]
+  timeToRefresh: 10000, // [ms]
   searchHistoryLength: 5,
   elementsPerPage: ELEMENTS_PER_PAGE
 };

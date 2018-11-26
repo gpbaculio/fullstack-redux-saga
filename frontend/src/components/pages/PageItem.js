@@ -77,7 +77,7 @@ class PageItem extends Component {
 
       const content = page.elements.map((todo) => (
         <div key={todo._id} className="col-lg-4 col-md-6 col-sm-12">
-          <div className="card mr-auto ml-auto mb-5 w-50">
+          <div className="card mr-auto ml-auto mb-5 w-75">
             <div className="card-body">
               <h5 className="card-title">{todo.text}</h5>
               <p className="card-text">{todo.createdAt === todo.updatedAt ? moment(todo.createdAt).format('LLLL') : `${moment(todo.updatedAt).format('LLLL')} Edited`}</p>
