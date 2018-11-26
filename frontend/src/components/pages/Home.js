@@ -103,7 +103,7 @@ class Home extends React.Component {
           <Container>
             <Row>
               <Col>
-                <div className="footer d-flex justify-content-center my-1">
+                <div className="footer d-flex justify-content-center mt-4">
                   <Paginator />
                 </div>
               </Col>

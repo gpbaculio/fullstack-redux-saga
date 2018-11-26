@@ -11,7 +11,6 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import sagas from './sagas'
 import history from "./history";
-import axios from 'axios'
 import reducers from './reducers'
 import { fetchCurrentUserRequest, fetchCurrentUserSuccess } from './actions/user';
 import setAuthorizedHeader from './utils/setAuthorizedHeader'

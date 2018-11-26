@@ -5,6 +5,7 @@ import { ClipLoader } from 'react-spinners';
 import { css } from 'react-emotion';
 import moment from 'moment'
 import PropTypes from 'prop-types'
+import { Input } from 'reactstrap'
 
 import {
   getCurrentPage,
@@ -77,11 +78,16 @@ class PageItem extends Component {
 
       const content = page.elements.map((todo) => (
         <div key={todo._id} className="col-lg-4 col-md-6 col-sm-12">
-          <div className="card mr-auto ml-auto mb-5 w-75">
+          <div className="card mx-auto mt-3 w-75">
             <div className="card-body">
-              <h5 className="card-title">{todo.text}</h5>
-              <p className="card-text">{todo.createdAt === todo.updatedAt ? moment(todo.createdAt).format('LLLL') : `${moment(todo.updatedAt).format('LLLL')} Edited`}</p>
-              <a href="/to" className="btn btn-primary btn-block">complete</a>
+              <h5 className="card-title text-center">
+                <Input type="checkbox" />
+                {todo.text}
+              </h5>
+              <div className="card-text my-3 text-center">
+                <div style={{ borderBottom: 'solid black 1px', fontSize: '15px' }}>{todo.createdAt === todo.updatedAt ? moment(todo.createdAt).format('LLLL') : `${moment(todo.updatedAt).format('LLLL')} Edited`}</div>
+                <div style={{ fontSize: '14px' }}>Date Added</div>
+              </div>
             </div>
           </div>
         </div>
@@ -109,6 +115,9 @@ class PageItem extends Component {
     }
   }
 }
+PageItem.defaultProps = {
+  page: {}
+}
 
 PageItem.propTypes = {
   page: PropTypes.shape({
@@ -117,7 +126,7 @@ PageItem.propTypes = {
     isFetching: PropTypes.bool.isRequired,
     isRefreshing: PropTypes.bool.isRequired,
     isSuccess: PropTypes.bool.isRequired,
-  }).isRequired,
+  }),
   loadTodosPage: PropTypes.func.isRequired,
   chosenPage: PropTypes.number.isRequired,
 }
