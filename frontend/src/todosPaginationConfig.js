@@ -18,12 +18,10 @@ const normalizeResponse = serverResponse => {
 };
 
 const todosApi = async (page, requestParams) => {
-  const { offset, limit, searchText } = requestParams;
-  return new Promise(async (resolve, reject) => {
-    const serverResponse = await api.todo.fetchTodosByUser({ offset: page, limit: ELEMENTS_PER_PAGE, searchText })
-    if (!serverResponse) {
-      reject('no response!')
-    }
+  const offset = (page - 1) * ELEMENTS_PER_PAGE
+  const { searchText } = requestParams;
+  return new Promise(async (resolve) => {
+    const serverResponse = await api.todo.fetchTodosByUser({ offset, limit: ELEMENTS_PER_PAGE, searchText })
     const formattedResponse = normalizeResponse(serverResponse);
     resolve(formattedResponse);
   });

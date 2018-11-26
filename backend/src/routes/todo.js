@@ -24,13 +24,25 @@ router.get("/todos_by_user", authenticate, async (req, res) => {
   const { offset, limit, searchText } = req.query
   let findQuery;
   if (searchText) {
-    findQuery = { userId, text: new RegExp(`^${searchText}$`, "i") }
+    findQuery = {
+      userId,
+      text: new RegExp(`^${searchText}$`, "i"),
+    }
   } else {
-    findQuery = { userId }
+    findQuery = {
+      userId
+    }
   }
+  console.log('req.query - ', req.query)
   Todo.paginate(
     findQuery,
-    { offset: parseFloat(offset), limit: parseFloat(limit) },
+    {
+      offset: parseFloat(offset),
+      limit: parseFloat(limit),
+      sort: {
+        createdAt: -1 //Sort by Date Added DESC
+      }
+    },
     (err, { docs, total }) => {
       if (err) {
         res.status(400).json({ error: err })

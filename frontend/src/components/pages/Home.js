@@ -6,19 +6,18 @@ import {
   Row,
   Button,
 } from 'reactstrap';
-import Pagination from 'react-js-pagination'
+import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import _ from 'lodash'
-import moment from 'moment'
 
 import {
-  getTotalElements,
-  ELEMENTS_PER_PAGE,
-  getCurrentPage,
-  getPage,
-  loadTodosPage
+  loadTodosPage,
+  setCurrentPage
 } from '../../todosPaginationConfig';
+import Paginator from './Paginator';
+import PageItem from './PageItem'
+import Search from './Search'
+import { addTodoByUserRequest } from '../../actions/todo'
 
 class Home extends React.Component {
 
@@ -50,15 +49,20 @@ class Home extends React.Component {
 
   onSubmit = async (e) => {
     e.preventDefault();
-    const { submit, userId } = this.props
+    const { addTodo, userId } = this.props
     const { todoText } = this.state
     const errors = this.validate({ todoText });
     this.setState({ errors });
     if (Object.keys(errors).length === 0) {
-      await submit({ todoText, userId })
+      await addTodo({ todoText, userId })
       this.setState({ todoText: '' });
     }
   };
+
+  onSearchPhraseChanged = () => {
+    const { setCurrentPage: setCurrentPageAction } = this.props
+    setCurrentPageAction(1);
+  }
 
   validate = ({ todoText }) => {
     const errors = {}
@@ -68,44 +72,14 @@ class Home extends React.Component {
     return errors;
   };
 
-  onChosenPageChanged = (page) => {
-    const { setCurrentPageActionCreator } = this.props;
-    setCurrentPageActionCreator(page);
-  }
-
   render() {
-    const { todoText, errors } = this.state
-    const { confirmed, loading, todos, activePage, totalItemsCount } = this.props;
-    const { page } = this.props;
-    if (!page) {
-      return <div>no data</div>;
-    }
-    if (page.isFetching) {
-      return <div>Loading ...</div>;
-    }
-    if (page.isSuccess || page.isRefreshing) {
-      if (page.elements.length === 0) {
-        return <div>elements not found</div>;
-      }
-
-      const content = page.elements.map((todo, i) => {
-        console.log('x = ', todo)
-        return (
-          <div key={i} className="col-lg-4 col-md-6 col-sm-12">
-            <div className="card mr-auto ml-auto mb-5 w-50">
-              <div className="card-body">
-                <h5 className="card-title">{todo.text}</h5>
-                <p className="card-text">{todo.createdAt === todo.updatedAt ? moment(todo.createdAt).format('LLLL') : `${moment(todo.updatedAt).format('LLLL')} Edited`}</p>
-                <a href="/to" className="btn btn-primary btn-block">complete</a>
-              </div>
-            </div>
-          </div>
-        )
-      });
-      return (
+    const { loading, errors, todoText } = this.state
+    const { confirmed } = this.props
+    return (
+      <React.Fragment>
         <Container>
           <Row>
-            <Col xs="12">
+            <Col xs="12" md="6">
               {confirmed ? (
                 <form
                   className="form-inline justify-content-center mx-auto my-5 w-60 align-items-start"
@@ -132,64 +106,44 @@ class Home extends React.Component {
                   </Alert>
                 )}
             </Col>
-            {page.isRefreshing && <div>refreshing ...</div>}
-            {content}
-          </Row>
-          <Row>
-            <Col>
-              <div className="d-flex justify-content-center my-1">
-                <Pagination
-                  activePage={3}
-                  itemsCountPerPage={10}
-                  totalItemsCount={21}
-                  pageRangeDisplayed={5}
-                  onChange={() => console.log('click page')}
-                />
-              </div>
+            <Col xs="12" md="6">
+              <Search onSearchPhraseChanged={this.onSearchPhraseChanged} />
             </Col>
+            <PageItem />
           </Row>
         </Container>
-      );
-    }
-
-    if (page.isFailed) {
-      return <div>isFailed</div>;
-    }
+        <div className="footer">
+          <Container>
+            <Row>
+              <Col>
+                <div className="footer d-flex justify-content-center my-1">
+                  <Paginator />
+                </div>
+              </Col>
+            </Row>
+          </Container>
+        </div>
+      </React.Fragment>
+    );
   }
 }
 
 Home.propTypes = {
-  setCurrentPageActionCreator: PropTypes.func.isRequired,
-  totalItemsCount: PropTypes.number.isRequired,
-  activePage: PropTypes.number.isRequired,
   confirmed: PropTypes.bool.isRequired,
-  submit: PropTypes.func.isRequired,
-  loading: PropTypes.bool.isRequired,
+  addTodo: PropTypes.func.isRequired,
   userId: PropTypes.string.isRequired,
-  todos: PropTypes.objectOf(PropTypes.shape({
-    _id: PropTypes.string.isRequired,
-    complete: PropTypes.bool.isRequired,
-    text: PropTypes.string.isRequired,
-    createdAt: PropTypes.string.isRequired,
-    updatedAt: PropTypes.string.isRequired,
-  }).isRequired).isRequired,
   loadTodosPage: PropTypes.func.isRequired,
+  setCurrentPage: PropTypes.func.isRequired,
 }
 
-const mapStateToProps = (state) => {
-  const chosenPage = getCurrentPage(state).pageNumber;
-  const page = getPage(state, chosenPage);
-  return ({
-    todos: state.todos,
-    userId: state.user.id,
-    confirmed: state.user.confirmed,
-    loading: state.formErrors.loading,
-    serverErrors: state.formErrors.signUp,
-    totalItemsCount: getTotalElements(state),
-    activePage: getCurrentPage(state).pageNumber,
-    chosenPage,
-    page
-  })
-}
-
-export default connect(mapStateToProps, { loadTodosPage })(Home);
+const mapStateToProps = (state) => ({
+  userId: state.user.id,
+  confirmed: state.user.confirmed,
+  serverErrors: state.formErrors.signUp,
+})
+const mapDispatchToProps = dispatch => bindActionCreators({
+  loadTodosPage,
+  addTodo: addTodoByUserRequest,
+  setCurrentPage
+}, dispatch)
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
