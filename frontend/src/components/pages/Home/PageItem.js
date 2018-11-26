@@ -115,10 +115,10 @@ class PageItem extends Component {
     }
   }
 }
-PageItem.defaultProps = {
-  page: {}
-}
 
+PageItem.defaultProps = {
+  page: null
+}
 PageItem.propTypes = {
   page: PropTypes.shape({
     elements: PropTypes.array.isRequired,
