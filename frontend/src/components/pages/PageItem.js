@@ -4,6 +4,8 @@ import { bindActionCreators } from 'redux';
 import { ClipLoader } from 'react-spinners';
 import { css } from 'react-emotion';
 import moment from 'moment'
+import PropTypes from 'prop-types'
+
 import {
   getCurrentPage,
   getPage,
@@ -47,6 +49,7 @@ class PageItem extends Component {
     }
   }
 
+  // eslint-disable-next-line consistent-return
   render() {
     const { page } = this.props;
     if (!page) {
@@ -72,8 +75,8 @@ class PageItem extends Component {
         return <div>elements not found</div>;
       }
 
-      const content = page.elements.map((todo, i) => (
-        <div key={i} className="col-lg-4 col-md-6 col-sm-12">
+      const content = page.elements.map((todo) => (
+        <div key={todo._id} className="col-lg-4 col-md-6 col-sm-12">
           <div className="card mr-auto ml-auto mb-5 w-50">
             <div className="card-body">
               <h5 className="card-title">{todo.text}</h5>
@@ -105,6 +108,18 @@ class PageItem extends Component {
       return <div>isFailed</div>;
     }
   }
+}
+
+PageItem.propTypes = {
+  page: PropTypes.shape({
+    elements: PropTypes.array.isRequired,
+    isFailed: PropTypes.bool.isRequired,
+    isFetching: PropTypes.bool.isRequired,
+    isRefreshing: PropTypes.bool.isRequired,
+    isSuccess: PropTypes.bool.isRequired,
+  }).isRequired,
+  loadTodosPage: PropTypes.func.isRequired,
+  chosenPage: PropTypes.number.isRequired,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PageItem);
