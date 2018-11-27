@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Input } from 'reactstrap'
 import PropTypes from 'prop-types'
-import moment from 'moment'
+import { timeDifferenceForDate } from '../../../../utils/timeDifference'
 
 import { toggleTodoCompleteByUserRequest } from '../../../../actions/todo'
 
@@ -28,13 +28,10 @@ class PageTodo extends Component {
               <Input onChange={this.handleInputCheck} type="checkbox" />
               {todo.text}
             </h5>
-            <div className="card-text my-3 text-center">
-              <div style={{ borderBottom: 'solid black 1px', fontSize: '15px' }}>
+            <div className="card-text mt-2 text-center">
+              <div style={{ fontSize: '15px' }}>
                 {todo.createdAt === todo.updatedAt ?
-                  moment(todo.createdAt).format('LLLL') : `${moment(todo.updatedAt).format('LLLL')} Edited`}
-              </div>
-              <div style={{ fontSize: '14px' }}>
-                {`Date ${todo.createdAt === todo.updatedAt ? 'Added' : 'Edited'}`}
+                  `Added ${timeDifferenceForDate(todo.createdAt)}` : `Edited ${timeDifferenceForDate(todo.updatedAt)}`}
               </div>
             </div>
           </div>

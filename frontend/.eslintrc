@@ -22,6 +22,7 @@
   },
   "rules": {
     "import/prefer-default-export": "off",
+    "consistent-return": "off",
     "react/jsx-filename-extension": [
       1,
       {

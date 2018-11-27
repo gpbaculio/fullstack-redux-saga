@@ -8,12 +8,13 @@ import { Router, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
 import App from './App';
-import * as serviceWorker from './serviceWorker';
 import sagas from './sagas'
 import history from "./history";
 import reducers from './reducers'
+import middlewareApi from "./middlewareApi";
 import { fetchCurrentUserRequest, fetchCurrentUserSuccess } from './actions/user';
 import setAuthorizedHeader from './utils/setAuthorizedHeader'
+import * as serviceWorker from './serviceWorker';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/index.css'
@@ -22,7 +23,7 @@ const sagaMiddleware = createSagaMiddleware();
 
 const store = createStore(
   reducers,
-  composeWithDevTools(applyMiddleware(sagaMiddleware, reduxThunk))
+  composeWithDevTools(applyMiddleware(sagaMiddleware, reduxThunk, middlewareApi))
 );
 
 sagaMiddleware.run(sagas)
