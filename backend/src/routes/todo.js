@@ -18,38 +18,45 @@ router.post('/', async (req, res) => {
       errors: parseErrors(err.errors)
     }))
 })
-
+router.post('/update_todo', async (req, res) => {
+  const { todoId, userId, complete } = req.body;
+  try {
+    const updatedTodo = await Todo.findOneAndUpdate(
+      { _id: todoId, userId },
+      { $set: { complete: !complete } },
+      { new: true } // return latest
+    ).populate('userId');
+    res.json({ updatedTodo })
+  } catch (error) {
+    res.status(400).json({ error })
+  }
+})
 router.get("/todos_by_user", authenticate, async (req, res) => {
+
   const { _id: userId } = req.currentUser
   const { offset, limit, searchText } = req.query
   let findQuery;
+
   if (searchText) {
     findQuery = {
       userId,
       text: { '$regex': `${searchText}`, '$options': 'i' },
     }
   } else {
-    findQuery = {
-      userId
-    }
+    findQuery = { userId }
   }
-  console.log('req.query - ', req.query)
+
   Todo.paginate(
     findQuery,
     {
       offset: parseFloat(offset),
       limit: parseFloat(limit),
-      sort: {
-        createdAt: -1 // Sort by Date Added DESC
-      }
+      sort: { createdAt: -1 } // Sort by Date Added DESC
     },
-    (err, { docs, total }) => {
-      if (err) {
-        res.status(400).json({ error: err })
-      } else {
+    (error, { docs, total }) =>
+      error ? res.status(400).json({ error }) :
         res.status(200).json({ count: total, todos: docs })
-      }
-    });
+  );
 });
 
 export default router

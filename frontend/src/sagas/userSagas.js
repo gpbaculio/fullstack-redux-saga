@@ -10,7 +10,9 @@ import {
   addTodoByUserSuccess,
   addTodoByUserFailure,
   fetchTodosByUserSuccess,
-  fetchTodosByUserFailure
+  fetchTodosByUserFailure,
+  toggleTodoCompleteByUserSuccess,
+  toggleTodoCompleteByUserFailure
 } from '../actions/todo'
 import {
   createUserFailure,
@@ -57,9 +59,9 @@ export function* userConfirmTokenSaga(action) {
   }
 }
 
-export function* addTodoSaga({ todoTextWithUserId }) {
+export function* addTodoByUserSaga({ todoTextWithUserId }) {
   try {
-    const todoWithUserData = yield call(api.todo.addTodo, todoTextWithUserId)
+    const todoWithUserData = yield call(api.todo.addTodoByUser, todoTextWithUserId)
     yield put(addTodoByUserSuccess(todoWithUserData))
   } catch (e) {
     yield put(addTodoByUserFailure(e.response.data.errors))
@@ -68,10 +70,19 @@ export function* addTodoSaga({ todoTextWithUserId }) {
 
 export function* fetchTodosByUserSaga() {
   try {
-    const data = { offset: 10, limit: 5}
+    const data = { offset: 10, limit: 5 }
     const todos = yield call(api.todo.fetchTodosByUser, data)
     yield put(fetchTodosByUserSuccess(todos))
   } catch (e) {
     yield put(fetchTodosByUserFailure(e.response.data.errors))
+  }
+}
+
+export function* toggleTodoCompleteByUserSaga({ todoId, userId, complete }) {
+  try {
+    const updatedTodo = yield call(api.todo.toggleTodoCompleteByUser, { todoId, userId, complete })
+    yield put(toggleTodoCompleteByUserSuccess(updatedTodo))
+  } catch (e) {
+    yield put(toggleTodoCompleteByUserFailure(e.response.data.errors))
   }
 }
