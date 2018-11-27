@@ -33,7 +33,7 @@ export default {
         return null
       }
     },
-    toggleTodoByUser: async ({ todoId, userId, complete }) => {
+    toggleTodoCompleteByUser: async ({ todoId, userId, complete }) => {
       try {
         const updatedTodo = await axios.post('/api/todo/update_todo', { todoId, userId, complete })
         return updatedTodo

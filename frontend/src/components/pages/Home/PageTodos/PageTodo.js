@@ -4,9 +4,9 @@ import { Input } from 'reactstrap'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 
-import { toggleTodoCompleteByUserRequest } from '../../../actions/todo'
+import { toggleTodoCompleteByUserRequest } from '../../../../actions/todo'
 
-class PageTodoItem extends Component {
+class PageTodo extends Component {
 
   handleInputCheck = () => {
     const {
@@ -14,7 +14,7 @@ class PageTodoItem extends Component {
       userId,
       toggleTodoCompleteByUserRequest: toggleTodoCompleteByUserRequestAction
     } = this.props
-    const { id, complete } = todo
+    const { _id: id, complete } = todo
     toggleTodoCompleteByUserRequestAction({ todoId: id, userId, complete })
   }
 
@@ -44,7 +44,7 @@ class PageTodoItem extends Component {
   }
 }
 
-PageTodoItem.propTypes = {
+PageTodo.propTypes = {
   todo: PropTypes.shape({
     text: PropTypes.string.isRequired,
     createdAt: PropTypes.string.isRequired,
@@ -63,4 +63,4 @@ const mapDispatchToProps = {
   toggleTodoCompleteByUserRequest
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PageTodoItem)
+export default connect(mapStateToProps, mapDispatchToProps)(PageTodo)

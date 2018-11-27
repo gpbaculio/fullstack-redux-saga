@@ -9,10 +9,10 @@ export default (state = initialState, action) => {
   switch (action.type) {
 
     case TOGGLE_TODO_COMPLETE_BY_USER_REQUEST:
-      return { ...state, loading: true, todo: {} }
+      return { ...state, loading: true, error: '' }
 
     case TOGGLE_TODO_COMPLETE_BY_USER_SUCCESS:
-      return { ...state, loading: false, todo: {} }
+      return { ...state, loading: false, error: '' }
 
     case TOGGLE_TODO_COMPLETE_BY_USER_FAILURE:
       return {

@@ -9,8 +9,8 @@ import {
   getCurrentPage,
   getPage,
   loadTodosPage,
-} from '../../../todosPaginationConfig';
-import PageTodoItem from './PageTodoItem';
+} from '../../../../todosPaginationConfig';
+import PageTodo from './PageTodo';
 
 const override = css`
     display: block;
@@ -32,7 +32,7 @@ const mapStateToProps = (state) => {
   };
 };
 
-class PageItem extends Component {
+class PageTodos extends Component {
   componentDidMount() {
     const { loadTodosPage: loadTodosPageAction } = this.props
     loadTodosPageAction(1);
@@ -74,7 +74,7 @@ class PageItem extends Component {
       }
 
       const content = page.elements.map((todo) => (
-        <PageTodoItem todo={todo} />
+        <PageTodo key={todo._id} todo={todo} />
       ));
       return (
         <React.Fragment>
@@ -100,10 +100,10 @@ class PageItem extends Component {
   }
 }
 
-PageItem.defaultProps = {
+PageTodos.defaultProps = {
   page: null
 }
-PageItem.propTypes = {
+PageTodos.propTypes = {
   page: PropTypes.shape({
     elements: PropTypes.array.isRequired,
     isFailed: PropTypes.bool.isRequired,
@@ -115,4 +115,4 @@ PageItem.propTypes = {
   chosenPage: PropTypes.number.isRequired,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PageItem);
+export default connect(mapStateToProps, mapDispatchToProps)(PageTodos);

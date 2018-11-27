@@ -4,7 +4,6 @@ import {
   Col,
   Container,
   Row,
-  Button,
 } from 'reactstrap';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -14,47 +13,17 @@ import {
   loadTodosPage,
   setCurrentPage
 } from '../../../todosPaginationConfig';
+import AddTodo from "./AddTodo";
 import Paginator from './Paginator';
-import PageItem from './PageItem'
+import PageTodos from './PageTodos'
 import Search from './Search'
-import { addTodoByUserRequest } from '../../../actions/todo'
 
 class Home extends React.Component {
-
-  state = {
-    todoText: '',
-  }
 
   componentDidMount = () => {
     const { loadTodosPage: loadTodosPaging } = this.props
     loadTodosPaging(1);
   }
-
-  static getDerivedStateFromProps(nextProps) {
-    if (nextProps.serverErrors) {
-      return {
-        errors: nextProps.serverErrors
-      }
-    }
-    return null;
-  }
-
-  onChange = e => {
-    const { name, value } = e.target
-    this.setState({
-      [name]: value
-    });
-  }
-
-  onSubmit = async (e) => {
-    e.preventDefault();
-    const { addTodo, userId } = this.props
-    const { todoText } = this.state
-    if (todoText) {
-      await addTodo({ todoText, userId })
-      this.setState({ todoText: '' });
-    }
-  };
 
   onSearchPhraseChanged = () => {
     const { setCurrentPage: setCurrentPageAction } = this.props
@@ -62,32 +31,14 @@ class Home extends React.Component {
   }
 
   render() {
-    const { todoText } = this.state
-    const { confirmed, loading } = this.props
+    const { confirmed } = this.props
     return (
       <React.Fragment>
         <Container>
           <Row>
             <Col xs="12" md="6">
-              {confirmed ? (
-                <form
-                  className="form-inline justify-content-center mx-auto mt-4 mb-xs-1 mb-md-5 align-items-start"
-                  onSubmit={this.onSubmit}
-                >
-                  <div className="d-flex w-75">
-                    <input
-                      type="text"
-                      id="todoText"
-                      name="todoText"
-                      value={todoText}
-                      placeholder="Add Todo"
-                      onChange={this.onChange}
-                      className="form-control w-75"
-                    />
-                    <Button type="submit" disabled={!todoText || loading} color="primary" className="ml-3">Submit</Button>
-                  </div>
-                </form>
-              ) : (
+              {confirmed ? <AddTodo /> :
+                (
                   <Alert className="text-center" color="primary">
                     Please confirm your account to Add Todo
                   </Alert>
@@ -96,7 +47,7 @@ class Home extends React.Component {
             <Col xs="12" md="6">
               <Search onSearchPhraseChanged={this.onSearchPhraseChanged} />
             </Col>
-            <PageItem />
+            <PageTodos />
           </Row>
         </Container>
         <div className="footer">
@@ -117,11 +68,8 @@ class Home extends React.Component {
 
 Home.propTypes = {
   confirmed: PropTypes.bool.isRequired,
-  addTodo: PropTypes.func.isRequired,
-  userId: PropTypes.string.isRequired,
   loadTodosPage: PropTypes.func.isRequired,
   setCurrentPage: PropTypes.func.isRequired,
-  loading: PropTypes.bool.isRequired,
 }
 
 const mapStateToProps = (state) => ({
@@ -132,7 +80,6 @@ const mapStateToProps = (state) => ({
 })
 const mapDispatchToProps = dispatch => bindActionCreators({
   loadTodosPage,
-  addTodo: addTodoByUserRequest,
   setCurrentPage
 }, dispatch)
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
