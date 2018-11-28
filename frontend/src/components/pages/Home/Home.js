@@ -9,26 +9,11 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 
-import {
-  loadTodosPage,
-  setCurrentPage
-} from '../../../todosPaginationConfig';
 import AddTodo from "./AddTodo";
 import Paginator from './Paginator';
 import PageTodos from './PageTodos'
-import Search from './Search'
 
 class Home extends React.Component {
-
-  componentDidMount = () => {
-    const { loadTodosPage: loadTodosPaging } = this.props
-    loadTodosPaging(1);
-  }
-
-  onSearchPhraseChanged = () => {
-    const { setCurrentPage: setCurrentPageAction } = this.props
-    setCurrentPageAction(1);
-  }
 
   render() {
     const { confirmed } = this.props
@@ -44,9 +29,9 @@ class Home extends React.Component {
                   </Alert>
                 )}
             </Col>
-            <Col xs="12" md="6">
+            {/*<Col xs="12" md="6">
               <Search onSearchPhraseChanged={this.onSearchPhraseChanged} />
-            </Col>
+                </Col> */}
             <PageTodos />
           </Row>
         </Container>
@@ -68,8 +53,6 @@ class Home extends React.Component {
 
 Home.propTypes = {
   confirmed: PropTypes.bool.isRequired,
-  loadTodosPage: PropTypes.func.isRequired,
-  setCurrentPage: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state) => ({
@@ -78,8 +61,8 @@ const mapStateToProps = (state) => ({
   serverErrors: state.formErrors.signUp,
   loading: state.formErrors.loading
 })
-const mapDispatchToProps = dispatch => bindActionCreators({
-  loadTodosPage,
-  setCurrentPage
-}, dispatch)
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+// const mapDispatchToProps = dispatch => bindActionCreators({
+//   loadTodosPage,
+//   setCurrentPage
+// }, dispatch)
+export default connect(mapStateToProps, null)(Home);

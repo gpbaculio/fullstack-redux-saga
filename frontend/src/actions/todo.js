@@ -1,27 +1,38 @@
-import { ADD_TODO_BY_USER_REQUEST, ADD_TODO_BY_USER_SUCCESS, ADD_TODO_BY_USER_FAILURE, FETCH_TODOS_BY_USER_REQUEST, FETCH_TODOS_BY_USER_SUCCESS, FETCH_TODOS_BY_USER_FAILURE, TOGGLE_TODO_COMPLETE_BY_USER_SUCCESS, TOGGLE_TODO_COMPLETE_BY_USER_FAILURE, TOGGLE_TODO_COMPLETE_BY_USER_REQUEST } from "../types";
+import {
+  ADD_TODO_BY_USER_REQUEST,
+  ADD_TODO_BY_USER_SUCCESS,
+  ADD_TODO_BY_USER_FAILURE,
+  FETCH_TODOS_BY_USER_REQUEST,
+  FETCH_TODOS_BY_USER_SUCCESS,
+  FETCH_TODOS_BY_USER_FAILURE,
+  TOGGLE_TODO_COMPLETE_BY_USER_SUCCESS,
+  TOGGLE_TODO_COMPLETE_BY_USER_FAILURE,
+  TOGGLE_TODO_COMPLETE_BY_USER_REQUEST
+} from "../types";
 
 export const addTodoByUserRequest = todoTextWithUserId => ({
   type: ADD_TODO_BY_USER_REQUEST,
   todoTextWithUserId
 })
 
-export const addTodoByUserSuccess = todoWithUserData => ({
+export const addTodoByUserSuccess = data => ({
   type: ADD_TODO_BY_USER_SUCCESS,
-  todoWithUserData
+  data
 })
 
-export const addTodoByUserFailure = errors => ({
+export const addTodoByUserFailure = error => ({
   type: ADD_TODO_BY_USER_FAILURE,
-  errors
+  error
 })
 
-export const fetchTodosByUserRequest = () => ({
+export const fetchTodosByUserRequest = page => ({
   type: FETCH_TODOS_BY_USER_REQUEST,
+  page
 })
 
-export const fetchTodosByUserSuccess = todos => ({
+export const fetchTodosByUserSuccess = data => ({
   type: FETCH_TODOS_BY_USER_SUCCESS,
-  todos
+  data
 })
 
 export const fetchTodosByUserFailure = errors => ({

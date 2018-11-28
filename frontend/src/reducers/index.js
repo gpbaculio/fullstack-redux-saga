@@ -1,7 +1,6 @@
 import { combineReducers } from 'redux';
 import optimist from 'redux-optimist'
 
-import { todosPaginatorReducers, todosStoreName } from '../todosPaginationConfig';
 import user from './user'
 import formErrors from './formErrors'
 import todos from './todos'
@@ -12,5 +11,4 @@ export default optimist(combineReducers({
   formErrors,
   todos,
   updateTodo,
-  [todosStoreName]: todosPaginatorReducers,
 }))

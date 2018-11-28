@@ -7,6 +7,9 @@ const router = express.Router()
 
 router.post('/', async (req, res) => {
   const { todoText: text, userId } = req.body;
+  console.log('req = ', req)
+  console.log("text = ", text)
+  console.log("userId = ", userId)
   const newTodo = await new Todo({ text, userId });
   newTodo
     .save()
@@ -14,9 +17,7 @@ router.post('/', async (req, res) => {
       const todoWithUserRecord = await Todo.findOne({ _id: id }).populate('userId', '_id')
       return res.json({ todo: todoWithUserRecord })
     })
-    .catch(err => res.status(400).json({
-      errors: parseErrors(err.errors)
-    }))
+    .catch(error => res.status(400).json({ error }))
 })
 router.post('/update_todo', async (req, res) => {
   const { todoId, userId, complete } = req.body;

@@ -22,7 +22,7 @@ class PageTodo extends Component {
     const { todo } = this.props
     return (
       <div key={todo._id} className="col-lg-4 col-md-6 col-sm-12">
-        <div className="card mx-auto mt-3 w-75">
+        <div className="card mx-auto mt-4 w-75">
           <div className="card-body">
             <h5 className="card-title text-center">
               <Input onChange={this.handleInputCheck} type="checkbox" />

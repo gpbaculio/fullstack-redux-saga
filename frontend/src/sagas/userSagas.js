@@ -7,8 +7,8 @@ import {
   userConfirmTokenFailure
 } from '../actions/auth'
 import {
-  addTodoByUserSuccess,
-  addTodoByUserFailure,
+  // addTodoByUserSuccess,
+  // addTodoByUserFailure,
   fetchTodosByUserSuccess,
   fetchTodosByUserFailure,
   toggleTodoCompleteByUserSuccess,
@@ -59,20 +59,21 @@ export function* userConfirmTokenSaga(action) {
   }
 }
 
-export function* addTodoByUserSaga({ todoTextWithUserId }) {
-  try {
-    const todoWithUserData = yield call(api.todo.addTodoByUser, todoTextWithUserId)
-    yield put(addTodoByUserSuccess(todoWithUserData))
-  } catch (e) {
-    yield put(addTodoByUserFailure(e.response.data.errors))
-  }
-}
+// export function* addTodoByUserSaga({ todoTextWithUserId }) {
+//   try {
+//     const todoWithUserData = yield call(api.todo.addTodoByUser, todoTextWithUserId)
+//     yield put(addTodoByUserSuccess(todoWithUserData))
+//   } catch (e) {
+//     yield put(addTodoByUserFailure(e.response.data.errors))
+//   }
+// }
 
-export function* fetchTodosByUserSaga() {
+export function* fetchTodosByUserSaga({ page }) {
   try {
-    const data = { offset: 10, limit: 5 }
-    const todos = yield call(api.todo.fetchTodosByUser, data)
-    yield put(fetchTodosByUserSuccess(todos))
+    const limit = 9
+    const offset = (page - 1) * limit
+    const { count, todos } = yield call(api.todo.fetchTodosByUser, { limit, offset })
+    yield put(fetchTodosByUserSuccess({ count, todos }))
   } catch (e) {
     yield put(fetchTodosByUserFailure(e.response.data.errors))
   }

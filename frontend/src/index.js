@@ -6,6 +6,8 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import createSagaMiddleware from "redux-saga";
 import { Router, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
+import 'axios-progress-bar/dist/nprogress.css'
+import { loadProgressBar } from 'axios-progress-bar'
 
 import App from './App';
 import sagas from './sagas'
@@ -18,6 +20,8 @@ import * as serviceWorker from './serviceWorker';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/index.css'
+
+loadProgressBar()
 
 const sagaMiddleware = createSagaMiddleware();
 

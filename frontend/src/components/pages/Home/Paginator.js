@@ -1,57 +1,48 @@
 import React, { Component } from 'react';
 import Pagination from 'react-js-pagination';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 
-import {
-  getTotalElements,
-  ELEMENTS_PER_PAGE,
-  getCurrentPage,
-  setCurrentPage
-} from '../../../todosPaginationConfig';
-
-const mapStateToProps = (state) => {
-  const totalItemsCount = getTotalElements(state);
-  const activePage = getCurrentPage(state).pageNumber;
-  return {
-    totalItemsCount,
-    activePage,
-  }
-}
-
-const mapDispatchToProps = (dispatch) => bindActionCreators({
-  setCurrentPage
-}, dispatch)
+import { fetchTodosByUserRequest } from '../../../actions/todo'
 
 class Paginator extends Component {
 
-  constructor(props) {
-    super(props);
-    this.onChosenPageChanged = this.onChosenPageChanged.bind(this);
+  state = {
+    activePage: 1
   }
 
-  onChosenPageChanged(page) {
-    const { setCurrentPage: setCurrentPageAction } = this.props
-    setCurrentPageAction(page);
+  onChosenPageChanged = async (page) => {
+    const { fetchTodos } = this.props
+    await fetchTodos(page)
+    this.setState({ activePage: page })
   }
 
   render() {
-    const { totalItemsCount, activePage } = this.props;
+    const { activePage } = this.state
+    const { count } = this.props
     return (
       <Pagination
         activePage={activePage}
-        itemsCountPerPage={ELEMENTS_PER_PAGE}
-        totalItemsCount={totalItemsCount}
+        itemsCountPerPage={9}
+        totalItemsCount={count}
         pageRangeDisplayed={5}
         onChange={this.onChosenPageChanged}
       />
     );
   }
 }
+
 Paginator.propTypes = {
-  activePage: PropTypes.number.isRequired,
-  totalItemsCount: PropTypes.number.isRequired,
-  setCurrentPage: PropTypes.func.isRequired,
+  fetchTodos: PropTypes.func.isRequired,
+  count: PropTypes.number.isRequired,
 }
+
+const mapStateToProps = ({ todos }) => ({
+  count: todos.count
+})
+
+const mapDispatchToProps = {
+  fetchTodos: fetchTodosByUserRequest
+}
+
 export default connect(mapStateToProps, mapDispatchToProps)(Paginator)

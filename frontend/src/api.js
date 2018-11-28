@@ -8,27 +8,11 @@ export default {
     confirm: token => axios.post('/api/auth/confirmation', { token }).then(res => res.data.user)
   },
   todo: {
-    addTodoByUser: ({ todoText, userId }) => axios.post("/api/todo", { todoText, userId }).then(res => res.data.todo),
+    // addTodoByUser: ({ todoText, userId }) => axios.post("/api/todo", { todoText, userId }).then(res => res.data.todo),
     fetchTodosByUser: async ({ offset, limit, searchText }) => {
       try {
-        let todosData;
-        await axios.get(
-          "/api/todo/todos_by_user", {
-            params: {
-              offset,
-              limit,
-              searchText
-            }
-          }).then(res => {
-            todosData = {
-              totalElements: res.data.count,
-              elements: res.data.todos.map(t => ({
-                ...t,
-                id: t._id
-              }))
-            }
-          })
-        return todosData
+        const { data } = await axios.get("/api/todo/todos_by_user", { params: { offset, limit, searchText } })
+        return { count: data.count, todos: data.todos };
       } catch (e) {
         return null
       }
