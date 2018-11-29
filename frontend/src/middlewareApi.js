@@ -15,7 +15,7 @@ export default function (store) {
     next({ // data is mock todo
       type: ADD_TODO_BY_USER_SUCCESS,
       data: {
-        transactionId: transactionID,
+        transactionId: transactionID, // so we can trace
         complete: false,
         createdAt: new Date().toISOString(),
         _id: uuidV1(),
