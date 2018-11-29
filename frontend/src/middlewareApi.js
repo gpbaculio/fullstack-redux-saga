@@ -29,18 +29,18 @@ export default function (store) {
     });
     try {
       const { data } = await axios.post("/api/todo", { todoText, userId })
-      let { entities, ids } = store.getState().todos
-      const { count } = store.getState().todos
+      let { entities, ids, count } = store.getState().todos
       const entArr = _.values(entities)
       const entIdx = _.values(entities).findIndex(todo => todo.transactionId === transactionID)
       entArr[entIdx] = data.todo
       entities = _.keyBy(entArr, (todo) => todo._id)
       ids = [data.todo._id, ...ids].filter(id => id !== transactionID)
+      count += 1
       next({
         type: ADD_TODO_BY_USER_SUCCESS,
         entities,
         ids,
-        count: count + 1,
+        count,
         optimist: { type: COMMIT, id: transactionID }
       })
     } catch (error) {
