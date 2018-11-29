@@ -5,7 +5,6 @@ import {
   Container,
   Row,
 } from 'reactstrap';
-import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 
@@ -29,7 +28,7 @@ class Home extends React.Component {
                   </Alert>
                 )}
             </Col>
-            {/*<Col xs="12" md="6">
+            {/* <Col xs="12" md="6">
               <Search onSearchPhraseChanged={this.onSearchPhraseChanged} />
                 </Col> */}
             <PageTodos />
