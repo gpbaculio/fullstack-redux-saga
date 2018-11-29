@@ -10,27 +10,21 @@ export default function () {
     }
 
     const transactionID = uuidV1();
-    // ({ todoText, userId }) => axios.post("/api/todo", { todoText, userId }),
-    // case ADD_TODO_BY_USER_SUCCESS:
-    //   return { ...state, [action.todoWithUserData._id]: { ...action.todoWithUserData } }
     const { todoText, userId } = action.todoTextWithUserId
 
-    const randdId = uuidV1()
-    const optimisticTodo = { // expected todo fields on response
-      id: randdId,
-      complete: false,
-      createdAt: new Date().toDateString(),
-      _id: randdId,
-      text: todoText,
-      updatedAt: new Date().toDateString(),
-      userId: {
-        _id: userId
-      },
-    }
-
-    next({ // PERFORM 'AS IS' SUCCESS MUTATION HERE
+    next({ // data is mock todo
       type: ADD_TODO_BY_USER_SUCCESS,
-      data: optimisticTodo,
+      data: {
+        transactionId: transactionID,
+        complete: false,
+        createdAt: new Date().toISOString(),
+        _id: uuidV1(),
+        text: todoText,
+        updatedAt: new Date().toISOString(),
+        userId: {
+          _id: userId
+        },
+      },
       optimist: { type: BEGIN, id: transactionID }
     });
     try {
