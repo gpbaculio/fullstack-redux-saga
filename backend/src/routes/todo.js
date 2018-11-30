@@ -31,6 +31,20 @@ router.post('/toggle_complete', async (req, res) => {
   }
 })
 
+router.post('/toggle_all', async (req, res) => {
+  const { ids, userId, complete } = req.body;
+  try {
+    const todos = await Todo.update(
+      { _id: { $in: ids }, userId },
+      { $set: { complete } },
+      { new: true }
+    ).populate('userId', '_id');
+    res.json({ todos })
+  } catch (error) {
+    res.status(400).json({ error })
+  }
+})
+
 router.get("/todos_by_user", authenticate, async (req, res) => {
 
   const { _id: userId } = req.currentUser
