@@ -1,19 +1,27 @@
 import React from "react";
+import {
+    Container,
+    Row,
+    Col,
+    Card,
+    CardHeader,
+    CardBody,
+} from 'reactstrap'
 import { SignUpForm } from "../forms";
 
 const SignupPage = () => (
-    <div className="container" style={{ height: "100vh" }}>
-        <div className="row align-items-center" style={{ height: "100vh" }}>
-            <div className="col col-xs-12 col-sm-8 offset-sm-2 col-lg-6 offset-lg-3">
-                <div className="card">
-                    <h2 className="card-header">Join the Club!</h2>
-                    <div className="card-body">
+    <Container style={{ height: "100vh" }}>
+        <Row className="align-items-center" style={{ height: "100vh" }}>
+            <Col xs="12" sm="8" lg="6">
+                <Card>
+                    <CardHeader>Join the Club!</CardHeader>
+                    <CardBody>
                         <SignUpForm />
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                    </CardBody>
+                </Card>
+            </Col>
+        </Row>
+    </Container>
 );
 
 export default SignupPage;

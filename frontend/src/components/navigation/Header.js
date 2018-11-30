@@ -6,6 +6,7 @@ import {
     NavbarBrand,
     Nav,
     NavItem,
+    Container
 } from 'reactstrap';
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
@@ -40,10 +41,12 @@ class Header extends React.Component {
         const { isOpen } = this.state
         const { authorized } = this.props
         return (
-            <div>
+            <React.Fragment>
                 <Navbar color="light" light expand="md">
-                    <div className="container" >
-                        <NavbarBrand href="/">Fullstack Redux Saga</NavbarBrand>
+                    <Container>
+                        <NavbarBrand href="/">
+                            Fullstack Redux Saga
+                        </NavbarBrand>
                         <NavbarToggler onClick={this.toggle} />
                         <Collapse isOpen={isOpen} navbar>
                             <Nav className="ml-auto" navbar>
@@ -77,9 +80,9 @@ class Header extends React.Component {
                                     )}
                             </Nav>
                         </Collapse>
-                    </div>
+                    </Container>
                 </Navbar>
-            </div>
+            </React.Fragment>
         );
     }
 }

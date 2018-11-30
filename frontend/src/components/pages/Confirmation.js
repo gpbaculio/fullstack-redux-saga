@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types'
 import { ClipLoader } from 'react-spinners';
 import { css } from 'react-emotion';
-import { Alert } from "reactstrap";
+import { Alert, Container } from "reactstrap";
 
 import { userConfirmTokenRequest } from '../../actions/auth'
 import { resetFormState } from '../../actions/user'
@@ -43,7 +43,7 @@ class Confirmation extends Component {
     const { loading, confirmed, email } = this.props
     const { errors } = this.state
     return (
-      <div className="container">
+      <Container>
         <ClipLoader
           className={override}
           sizeUnit="px"
@@ -61,7 +61,7 @@ class Confirmation extends Component {
             <h4 className="alert-heading">Congratulations! <strong>{email}</strong> You have successfully verified your account</h4>
           </Alert>
         )}
-      </div>
+      </Container>
     )
   }
 }

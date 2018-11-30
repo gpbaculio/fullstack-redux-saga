@@ -8,47 +8,45 @@ import {
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 
+import Filter from './Filter'
 import AddTodo from "./AddTodo";
 import Paginator from './Paginator';
 import PageTodos from './PageTodos'
 
-class Home extends React.Component {
-
-  render() {
-    const { confirmed } = this.props
-    return (
-      <React.Fragment>
-        <Container>
-          <Row>
-            <Col xs="12" md="6">
-              {confirmed ? <AddTodo /> :
-                (
-                  <Alert className="text-center" color="primary">
-                    Please confirm your account to Add Todo
+const Home = ({ confirmed }) => (
+  <React.Fragment>
+    <Container>
+      <Row>
+        <Col xs="12" md="6">
+          {confirmed ? <AddTodo /> :
+            (
+              <Alert className="text-center" color="primary">
+                Please confirm your account to Add Todo
                   </Alert>
-                )}
-            </Col>
-            {/* <Col xs="12" md="6">
+            )}
+        </Col>
+        <Col sm="12">
+          <Filter />
+        </Col>
+        {/* <Col xs="12" md="6">
               <Search onSearchPhraseChanged={this.onSearchPhraseChanged} />
                 </Col> */}
-            <PageTodos />
-          </Row>
-        </Container>
-        <div className="footer">
-          <Container>
-            <Row>
-              <Col>
-                <div className="footer d-flex justify-content-center mt-4">
-                  <Paginator />
-                </div>
-              </Col>
-            </Row>
-          </Container>
-        </div>
-      </React.Fragment>
-    );
-  }
-}
+        <PageTodos />
+      </Row>
+    </Container>
+    <div className="footer">
+      <Container>
+        <Row>
+          <Col>
+            <div className="footer d-flex justify-content-center mt-4">
+              <Paginator />
+            </div>
+          </Col>
+        </Row>
+      </Container>
+    </div>
+  </React.Fragment>
+);
 
 Home.propTypes = {
   confirmed: PropTypes.bool.isRequired,

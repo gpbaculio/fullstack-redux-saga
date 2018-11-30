@@ -1,6 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Input } from 'reactstrap'
+import {
+  Input,
+  Col,
+  Card,
+  CardBody,
+  CardTitle,
+  CardText
+} from 'reactstrap'
 import PropTypes from 'prop-types'
 import { timeDifferenceForDate } from '../../../../utils/timeDifference'
 
@@ -20,22 +27,33 @@ class PageTodo extends Component {
   render() {
     const { todo } = this.props
     return (
-      <div key={todo._id} className="col-lg-4 col-md-6 col-sm-12">
-        <div className="card mx-auto mt-4 w-75">
-          <div className="card-body">
-            <h5 style={{ textDecoration: todo.complete ? 'line-through' : 'none' }} className="card-title text-center">
-              <Input onChange={this.handleInputCheck} checked={todo.complete} type="checkbox" />
+      <Col lg="4" md="6" sm="12">
+        <Card className="mx-auto mt-4 w-75 p-3">
+          <CardBody>
+            <CardTitle
+              style={{
+                textDecoration: todo.complete ? 'line-through' : 'none'
+              }}
+              className="text-center"
+            >
+              <Input
+                onChange={this.handleInputCheck}
+                checked={todo.complete}
+                type="checkbox"
+              />
               {todo.text}
-            </h5>
-            <div className="card-text mt-2 text-center">
-              <div style={{ fontSize: '15px' }}>
-                {todo.createdAt === todo.updatedAt ?
-                  `Added ${timeDifferenceForDate(todo.createdAt)}` : `Updated ${timeDifferenceForDate(todo.updatedAt)}`}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+            </CardTitle>
+            <CardText
+              className="mt-2 text-center"
+              style={{ borderTop: 'solid black 1px' }}
+            >
+              {todo.createdAt === todo.updatedAt ?
+                `Added ${timeDifferenceForDate(todo.createdAt)}`
+                : `Updated ${timeDifferenceForDate(todo.updatedAt)}`}
+            </CardText>
+          </CardBody>
+        </Card>
+      </Col>
     )
   }
 }

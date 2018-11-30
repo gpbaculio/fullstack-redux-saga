@@ -31,7 +31,15 @@ class AddTodo extends Component {
     const { todoText } = this.state
     return (
       <form
-        className="form-inline justify-content-center mx-auto mt-4 mb-xs-1 mb-md-5 align-items-start"
+        className="
+          form-inline
+          justify-content-center
+          mx-auto
+          mt-4
+          mb-xs-1
+          mb-md-5
+          align-items-start
+        "
         onSubmit={this.onSubmit}
       >
         <input

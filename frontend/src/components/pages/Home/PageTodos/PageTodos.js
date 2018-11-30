@@ -15,14 +15,17 @@ class PageTodos extends Component {
   render() {
     const { ids, entities } = this.props
     return (
-      <div className="container">
-        <div className="row">
-          {ids.map(id => {
-            const todo = entities[id]
-            return <PageTodo key={todo._id} todo={todo} />
-          })}
-        </div>
-      </div>
+      <React.Fragment>
+        {ids.map(id => {
+          const todo = entities[id]
+          return (
+            <PageTodo
+              key={todo._id}
+              todo={todo}
+            />
+          )
+        })}
+      </React.Fragment>
     )
   }
 }
