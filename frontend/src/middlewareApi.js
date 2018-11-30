@@ -62,6 +62,7 @@ export default function (store) {
         type: TOGGLE_TODO_COMPLETE_BY_USER_SUCCESS,
         todo: {
           ...todo,
+          updatedAt: new Date().toISOString(),
           complete: !todo.complete,
         },
         optimist: { type: BEGIN, id: transactionId }

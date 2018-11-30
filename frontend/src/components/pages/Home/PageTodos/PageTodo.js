@@ -30,7 +30,7 @@ class PageTodo extends Component {
             <div className="card-text mt-2 text-center">
               <div style={{ fontSize: '15px' }}>
                 {todo.createdAt === todo.updatedAt ?
-                  `Added ${timeDifferenceForDate(todo.createdAt)}` : `Edited ${timeDifferenceForDate(todo.updatedAt)}`}
+                  `Added ${timeDifferenceForDate(todo.createdAt)}` : `Updated ${timeDifferenceForDate(todo.updatedAt)}`}
               </div>
             </div>
           </div>

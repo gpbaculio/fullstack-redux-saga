@@ -35,9 +35,6 @@ export default (state = initialState, action) => {
         count: state.count + 1
       }
     case TOGGLE_TODO_COMPLETE_BY_USER_SUCCESS:
-      console.log('ids ', state.ids)
-      console.log('entities!', state.entities)
-      console.log('action = ', action)
       return {
         ...state,
         entities: {
