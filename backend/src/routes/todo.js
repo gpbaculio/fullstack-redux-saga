@@ -17,7 +17,7 @@ router.post('/', async (req, res) => {
     .catch(error => res.status(400).json({ error }))
 })
 
-router.post('/update_todo', async (req, res) => {
+router.post('/toggle_complete', async (req, res) => {
   const { todoId, userId, complete } = req.body;
   try {
     const todo = await Todo.findOneAndUpdate(
