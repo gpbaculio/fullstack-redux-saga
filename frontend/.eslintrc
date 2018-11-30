@@ -40,7 +40,7 @@
         ]
       }
     ],
-    "no-case-declarations": "off",
+    "no-param-reassign": "off",
     "react/jsx-child-element-spacing": "off",
     "react/jsx-closing-bracket-location": "off",
     "react/jsx-closing-tag-location": "off",
