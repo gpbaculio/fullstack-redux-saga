@@ -10,7 +10,6 @@ const initialState = {
   ids: [],
   entities: {},
   count: 0,
-  completeIds: []
 }
 
 export default (state = initialState, action) => {
@@ -43,16 +42,12 @@ export default (state = initialState, action) => {
           ...state.entities,
           [action.todo._id]: action.todo
         },
-        completeIds: _.map(
-          _.values({ ...state.entities })
-            .filter(todo => todo.complete),
-          '_id')
       }
     case TOGGLE_ALL_SUCCESS:
+      console.log('action', action)
       return {
         ...state,
         entities: action.entities,
-        completeIds: action.completeIds
       }
     case FETCH_TODOS_BY_USER_SUCCESS:
       return {
@@ -64,10 +59,6 @@ export default (state = initialState, action) => {
         },
         ids: _.map(action.data.todos, '_id'),
         count: action.data.count,
-        completeIds: _.map(
-          _.values(action.data.todos)
-            .filter(todo => todo.complete),
-          '_id')
       }
     default:
       return state

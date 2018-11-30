@@ -9,7 +9,9 @@ import {
   TOGGLE_TODO_COMPLETE_BY_USER_REQUEST,
   TOGGLE_TODO_COMPLETE_BY_USER_SUCCESS,
   TOGGLE_TODO_COMPLETE_BY_USER_FAILURE,
-  TOGGLE_ALL_REQUEST
+  TOGGLE_ALL_REQUEST,
+  TOGGLE_ALL_SUCCESS,
+  TOGGLE_ALL_FAILURE
 } from './types'
 
 export default function (store) {
@@ -70,9 +72,9 @@ export default function (store) {
       });
       try {
         const { data } = await axios.post('/api/todo/toggle_complete', {
-          todoId: todo._id,
+          ids: [todo._id],
           userId,
-          complete: todo.complete
+          complete: !todo.complete
         })
         next({
           type: TOGGLE_TODO_COMPLETE_BY_USER_SUCCESS,
@@ -89,46 +91,43 @@ export default function (store) {
     }
     if (action.type === TOGGLE_ALL_REQUEST) {
       const transactionId = uuidV1()
-      // let { entities, completeIds } = store.getState().todos
-      // const { ids, userId, complete } = action.data
-      // entities = {
-      //   ..._.keyBy(
-      //     _.values({ ...entities })
-      //       .map(todo => {
-      //         todo.complete = action.complete
-      //         return todo
-      //       }), todo => todo._id)
-      // }
-      // completeIds = _.map(
-      //   _.values({ ...entities })
-      //     .map(todo => {
-      //       todo.complete = action.complete
-      //       return todo
-      //     }), '_id')
-      // next({ // data is mock todo
-      //   type: TOGGLE_TODO_COMPLETE_BY_USER_SUCCESS,
-      //   entities,
-      //   completeIds,
-      //   optimist: { type: BEGIN, id: transactionId }
-      // });
-      // try {
-      //   const { data } = await axios.post('/api/todo/toggle_complete', {
-      //     todoId: todo._id,
-      //     userId,
-      //     complete: todo.complete
-      //   })
-      //   next({
-      //     type: TOGGLE_TODO_COMPLETE_BY_USER_SUCCESS,
-      //     todo: data.todo,
-      //     optimist: { type: COMMIT, id: transactionId }
-      //   })
-      // } catch (error) {
-      //   next({
-      //     type: TOGGLE_TODO_COMPLETE_BY_USER_FAILURE,
-      //     error,
-      //     optimist: { type: REVERT, id: transactionId }
-      //   })
-      // }
+      const { entities, ids } = store.getState().todos
+      const { id: userId } = store.getState().user
+      const { complete } = action
+      next({ // data is mock todo
+        type: TOGGLE_ALL_SUCCESS,
+        entities: {
+          ..._.keyBy(
+            _.values({ ...entities })
+              .map(todo => ({
+                ...todo,
+                complete
+              })), todo => todo._id)
+        },
+        optimist: { type: BEGIN, id: transactionId }
+      });
+      try {
+        const { data } = await axios.post('/api/todo/toggle_complete', {
+          ids,
+          userId,
+          complete
+        })
+        next({
+          type: TOGGLE_ALL_SUCCESS,
+          entities: {
+            ..._.keyBy(
+              data.todos,
+              (todo) => todo._id)
+          },
+          optimist: { type: COMMIT, id: transactionId }
+        })
+      } catch (error) {
+        next({
+          type: TOGGLE_ALL_FAILURE,
+          error,
+          optimist: { type: REVERT, id: transactionId }
+        })
+      }
     }
     return next(action);
   }

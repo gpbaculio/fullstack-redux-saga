@@ -1,6 +1,5 @@
 import express from 'express'
 import { Todo } from '../models'
-import parseErrors from '../utils/parseErrors'
 import { authenticate } from '../middlewares'
 
 const router = express.Router()
@@ -12,34 +11,29 @@ router.post('/', async (req, res) => {
     .save()
     .then(async ({ _id: id }) => {
       const todoWithUserRecord = await Todo.findOne({ _id: id }).populate('userId', '_id')
-      return res.json({ todo: todoWithUserRecord })
+      res.json({ todo: todoWithUserRecord })
     })
     .catch(error => res.status(400).json({ error }))
 })
 
 router.post('/toggle_complete', async (req, res) => {
-  const { todoId, userId, complete } = req.body;
-  try {
-    const todo = await Todo.findOneAndUpdate(
-      { _id: todoId, userId },
-      { $set: { complete: !complete } },
-      { new: true }
-    ).populate('userId', '_id');
-    res.json({ todo })
-  } catch (error) {
-    res.status(400).json({ error })
-  }
-})
-
-router.post('/toggle_all', async (req, res) => {
   const { ids, userId, complete } = req.body;
   try {
-    const todos = await Todo.update(
+    await Todo.updateMany(
       { _id: { $in: ids }, userId },
       { $set: { complete } },
-      { new: true }
-    ).populate('userId', '_id');
-    res.json({ todos })
+      { new: true },
+      async () => {
+        const result = await Todo.find(
+          { _id: { $in: ids }, userId }
+        ).populate('userId', '_id');
+        if (result.length > 1) {
+          res.json({ todos: result })
+        } else {
+          res.json({ todo: result[0] })
+        }
+      }
+    );
   } catch (error) {
     res.status(400).json({ error })
   }

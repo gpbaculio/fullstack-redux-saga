@@ -7,7 +7,9 @@ import {
   FETCH_TODOS_BY_USER_FAILURE,
   TOGGLE_TODO_COMPLETE_BY_USER_SUCCESS,
   TOGGLE_TODO_COMPLETE_BY_USER_FAILURE,
-  TOGGLE_TODO_COMPLETE_BY_USER_REQUEST
+  TOGGLE_TODO_COMPLETE_BY_USER_REQUEST,
+  TOGGLE_ALL_FAILURE,
+  TOGGLE_ALL_REQUEST
 } from "../types";
 
 export const addTodoByUserRequest = todoTextWithUserId => ({
@@ -53,4 +55,9 @@ export const toggleTodoCompleteByUserSuccess = todo => ({
 export const toggleTodoCompleteByUserFailure = error => ({
   type: TOGGLE_TODO_COMPLETE_BY_USER_FAILURE,
   error
+})
+
+export const toggleAll = complete => ({
+  type: TOGGLE_ALL_REQUEST,
+  complete
 })
