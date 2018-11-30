@@ -22,7 +22,7 @@ const Home = ({ confirmed }) => (
             (
               <Alert className="text-center" color="primary">
                 Please confirm your account to Add Todo
-                  </Alert>
+              </Alert>
             )}
         </Col>
         <Col sm="12">

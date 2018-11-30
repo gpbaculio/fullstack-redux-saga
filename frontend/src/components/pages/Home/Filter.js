@@ -24,13 +24,13 @@ class Filter extends Component {
   render() {
     const { completeAll } = this.state
     return (
-      <React.Fragment>
+      <div className="py-2 d-flex justify-content-center">
         <Input
           onChange={this.handleInputCheck}
           checked={completeAll}
           type="checkbox"
         />
-      </React.Fragment>
+      </div>
     )
   }
 }
