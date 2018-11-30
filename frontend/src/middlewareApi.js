@@ -68,7 +68,7 @@ export default function (store) {
       });
       try {
         const { data } = await axios.post('/api/todo/update_todo', { todoId: todo._id, userId, complete: todo.complete })
-        console.log('data todo! = ', data.todo)
+        console.log('data todo! = ', data)
         next({
           type: TOGGLE_TODO_COMPLETE_BY_USER_SUCCESS,
           todo: data.todo,

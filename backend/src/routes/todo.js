@@ -19,20 +19,13 @@ router.post('/', async (req, res) => {
 
 router.post('/update_todo', async (req, res) => {
   const { todoId, userId, complete } = req.body;
-  console.log('req.method = ', req.method)
   try {
     const todo = await Todo.findOneAndUpdate(
       { _id: todoId, userId },
       { $set: { complete: !complete } },
-      { new: true }, // return latest,
-      (err, doc) => {
-        if (err) {
-          console.log("Something wrong when updating data!");
-        }
-        console.log('todo updated', doc)
-        res.json({ doc })
-      }
+      { new: true }
     ).populate('userId', '_id');
+    res.json({ todo })
   } catch (error) {
     res.status(400).json({ error })
   }
