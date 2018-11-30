@@ -68,8 +68,13 @@ export default function (store) {
         optimist: { type: BEGIN, id: transactionId }
       });
       try {
-        const { data } = await axios.post('/api/todo/toggle_complete', { todoId: todo._id, userId, complete: todo.complete })
-        console.log('data todo! = ', data)
+        const { data } = await axios.post(
+          '/api/todo/toggle_complete',
+          {
+            todoId: todo._id,
+            userId,
+            complete: todo.complete
+          })
         next({
           type: TOGGLE_TODO_COMPLETE_BY_USER_SUCCESS,
           todo: data.todo,
