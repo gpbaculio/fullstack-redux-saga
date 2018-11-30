@@ -40,9 +40,9 @@ export const fetchTodosByUserFailure = errors => ({
   errors
 })
 
-export const toggleTodoCompleteByUserRequest = todoData => ({
+export const toggleTodoCompleteByUserRequest = data => ({
   type: TOGGLE_TODO_COMPLETE_BY_USER_REQUEST,
-  todoData
+  data
 })
 
 export const toggleTodoCompleteByUserSuccess = todo => ({

@@ -7,9 +7,6 @@ const router = express.Router()
 
 router.post('/', async (req, res) => {
   const { todoText: text, userId } = req.body;
-  console.log('req = ', req)
-  console.log("text = ", text)
-  console.log("userId = ", userId)
   const newTodo = await new Todo({ text, userId });
   newTodo
     .save()
@@ -19,19 +16,28 @@ router.post('/', async (req, res) => {
     })
     .catch(error => res.status(400).json({ error }))
 })
+
 router.post('/update_todo', async (req, res) => {
   const { todoId, userId, complete } = req.body;
+  console.log('req.method = ', req.method)
   try {
-    const updatedTodo = await Todo.findOneAndUpdate(
+    const todo = await Todo.findOneAndUpdate(
       { _id: todoId, userId },
       { $set: { complete: !complete } },
-      { new: true } // return latest
-    ).populate('userId');
-    res.json({ updatedTodo })
+      { new: true }, // return latest,
+      (err, doc) => {
+        if (err) {
+          console.log("Something wrong when updating data!");
+        }
+        console.log('todo updated', doc)
+        res.json({ doc })
+      }
+    ).populate('userId', '_id');
   } catch (error) {
     res.status(400).json({ error })
   }
 })
+
 router.get("/todos_by_user", authenticate, async (req, res) => {
 
   const { _id: userId } = req.currentUser

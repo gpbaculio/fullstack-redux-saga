@@ -14,8 +14,7 @@ class PageTodo extends Component {
       userId,
       toggleTodoCompleteByUserRequest: toggleTodoCompleteByUserRequestAction
     } = this.props
-    const { _id: id, complete } = todo
-    toggleTodoCompleteByUserRequestAction({ todoId: id, userId, complete })
+    toggleTodoCompleteByUserRequestAction({ userId, todo })
   }
 
   render() {
@@ -24,8 +23,8 @@ class PageTodo extends Component {
       <div key={todo._id} className="col-lg-4 col-md-6 col-sm-12">
         <div className="card mx-auto mt-4 w-75">
           <div className="card-body">
-            <h5 className="card-title text-center">
-              <Input onChange={this.handleInputCheck} type="checkbox" />
+            <h5 style={{ textDecoration: todo.complete ? 'line-through' : 'none' }} className="card-title text-center">
+              <Input onChange={this.handleInputCheck} checked={todo.complete} type="checkbox" />
               {todo.text}
             </h5>
             <div className="card-text mt-2 text-center">

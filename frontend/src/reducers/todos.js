@@ -34,6 +34,15 @@ export default (state = initialState, action) => {
         ],
         count: state.count + 1
       }
+    case TOGGLE_TODO_COMPLETE_BY_USER_SUCCESS:
+      console.log('action toggle todo', action.todo._id)
+      console.log('entities!', state.entities)
+      return {
+        entities: {
+          ...state.entities,
+          [action.todo._id]: action.todo
+        }
+      }
     case FETCH_TODOS_BY_USER_SUCCESS:
       return {
         ...state,
@@ -41,8 +50,6 @@ export default (state = initialState, action) => {
         ids: _.map(action.data.todos, '_id'),
         count: action.data.count
       }
-    case TOGGLE_TODO_COMPLETE_BY_USER_SUCCESS:
-      return { ...state, [action.todo.id]: { ...action.todo } }
     default:
       return state
   }
