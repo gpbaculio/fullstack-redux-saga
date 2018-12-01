@@ -99,23 +99,32 @@ export default function (store) {
       const { entities, ids } = store.getState().todos
       const { id: userId } = store.getState().user
       const { complete } = action
+      const todos = ids.map(id => entities[id])
+      let idsToUpdate;
+      if (complete) {
+        idsToUpdate = _.map(todos.filter(todo => todo.complete !== complete), '_id')
+      } else {
+        idsToUpdate = _.map(todos.filter(todo => todo.complete === complete), '_id')
+      }
       next({ // data is mock todo
         type: TOGGLE_ALL_SUCCESS,
         entities: {
+          ...entities,
           ..._.keyBy(
-            _.values({ ...entities })
-              .map(todo => ({
-                ...todo,
+            idsToUpdate
+              .map(id => ({
+                ...entities[id],
                 complete
               })), todo => todo._id)
         },
         optimist: { type: BEGIN, id: transactionId }
       });
       try {
-        const { data } = await axios.post('/api/todo/toggle_complete', { ids, userId, complete })
+        const { data } = await axios.post('/api/todo/toggle_complete', { ids: idsToUpdate, userId, complete })
         next({
           type: TOGGLE_ALL_SUCCESS,
           entities: {
+            ...entities,
             ..._.keyBy(
               data.todos,
               (todo) => todo._id)
@@ -171,8 +180,6 @@ export default function (store) {
       const { entities, ids, count } = store.getState().todos
       const { id: userId } = store.getState().user
       delete entities[id]
-      console.log('entities - ', entities)
-      console.log('id - ', id)
       next({
         type: DELETE_TODO_SUCCESS,
         entities,

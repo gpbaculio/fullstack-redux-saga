@@ -57,10 +57,12 @@ class Filter extends Component {
     )
   }
 }
-
+Filter.defaultProps = {
+  completeAll: false
+}
 Filter.propTypes = {
   toggleAll: PropTypes.func.isRequired,
-  completeAll: PropTypes.bool.isRequired,
+  completeAll: PropTypes.bool,
 }
 const mapStateToProps = ({ todos }) => ({
   completeAll: todos.ids.map(id => todos.entities[id]).every(todo => todo.complete),
