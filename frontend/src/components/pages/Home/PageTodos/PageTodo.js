@@ -9,11 +9,17 @@ import {
   CardText
 } from 'reactstrap'
 import PropTypes from 'prop-types'
-import { timeDifferenceForDate } from '../../../../utils/timeDifference'
 
+import TodoInput from './TodoInput'
+
+import { timeDifferenceForDate } from '../../../../utils/timeDifference'
 import { toggleTodoCompleteByUserRequest } from '../../../../actions/todo'
 
 class PageTodo extends Component {
+
+  state = {
+    isEditing: false
+  }
 
   handleInputCheck = () => {
     const {
@@ -24,7 +30,14 @@ class PageTodo extends Component {
     toggleTodoCompleteByUserRequestAction({ userId, todo })
   }
 
+  handleIsEditing = () => {
+    this.setState(state => ({
+      isEditing: !state.isEditing
+    }))
+  }
+
   render() {
+    const { isEditing } = this.state
     const { todo } = this.props
     return (
       <Col lg="4" md="6" sm="12">
@@ -34,14 +47,17 @@ class PageTodo extends Component {
               style={{
                 textDecoration: todo.complete ? 'line-through' : 'none'
               }}
-              className="text-center"
+              className="d-flex"
             >
               <Input
                 onChange={this.handleInputCheck}
                 checked={todo.complete}
                 type="checkbox"
               />
-              {todo.text}
+              {isEditing ? <TodoInput /> : (
+                <div onDoubleClick={this.handleIsEditing} className="mx-auto">
+                  {todo.text}
+                </div>)}
             </CardTitle>
             <CardText
               className="mt-2 text-center"

@@ -22,7 +22,6 @@ router.post('/toggle_complete', async (req, res) => {
     await Todo.updateMany(
       { _id: { $in: ids }, userId },
       { $set: { complete } },
-      { new: true },
       async () => {
         const result = await Todo.find(
           { _id: { $in: ids }, userId }
@@ -31,6 +30,26 @@ router.post('/toggle_complete', async (req, res) => {
           res.json({ todos: result })
         } else {
           res.json({ todo: result[0] })
+        }
+      }
+    );
+  } catch (error) {
+    res.status(400).json({ error })
+  }
+})
+
+router.post('/update_text', async (req, res) => {
+  const { id, userId, text } = req.body;
+  try {
+    await Todo.findOneAndUpdate(
+      { _id: id, userId },
+      { $set: { text } },
+      { new: true },
+      (error, result) => {
+        if (error) {
+          res.json({ error })
+        } else {
+          res.json({ todo: result })
         }
       }
     );
