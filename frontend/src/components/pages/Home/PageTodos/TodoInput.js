@@ -22,12 +22,12 @@ class TodoInput extends Component {
     const {
       editTodo: editTodoRequest,
       handleIsEditing,
-      id
+      id,
+      text: textProp
     } = this.props
-    if (text) {
+    if (text && text !== textProp) {
       editTodoRequest({ id, text })
     } else {
-      const { text: textProp } = this.props
       this.setState({ text: textProp })
     }
     handleIsEditing()

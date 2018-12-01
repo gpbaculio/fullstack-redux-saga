@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Icon } from 'react-icons-kit'
+import { remove } from 'react-icons-kit/fa/remove'
 import {
   Input,
   Col,
@@ -43,12 +45,7 @@ class PageTodo extends Component {
       <Col lg="4" md="6" sm="12">
         <Card className="mx-auto mt-4 w-75 p-3">
           <CardBody>
-            <CardTitle
-              style={{
-                textDecoration: todo.complete ? 'line-through' : 'none'
-              }}
-              className="d-flex"
-            >
+            <CardTitle className="d-flex justify-content-between">
               <Input
                 onChange={this.handleInputCheck}
                 checked={todo.complete}
@@ -59,10 +56,20 @@ class PageTodo extends Component {
                   id={todo._id}
                   text={todo.text}
                   handleIsEditing={this.handleIsEditing}
-                />) : (
-                  <div onDoubleClick={this.handleIsEditing} className="mx-auto">
+                />
+              ) : (
+                  <div
+                    onDoubleClick={this.handleIsEditing}
+                    style={{
+                      textDecoration: todo.complete ? 'line-through' : 'none',
+                      cursor: 'pointer'
+                    }}
+                    className="mx-auto"
+                  >
                     {todo.text}
-                  </div>)}
+                  </div>
+                )}
+              <Icon style={{ color: 'red', cursor: 'pointer' }} icon={remove} />
             </CardTitle>
             <CardText
               className="mt-2 text-center"
