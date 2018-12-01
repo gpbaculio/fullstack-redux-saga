@@ -18,8 +18,9 @@ import { toggleTodoCompleteByUserRequest } from '../../../../actions/todo'
 class PageTodo extends Component {
 
   state = {
-    isEditing: false
+    isEditing: false,
   }
+
 
   handleInputCheck = () => {
     const {
@@ -54,10 +55,15 @@ class PageTodo extends Component {
                 checked={todo.complete}
                 type="checkbox"
               />
-              {isEditing ? <TodoInput /> : (
-                <div onDoubleClick={this.handleIsEditing} className="mx-auto">
-                  {todo.text}
-                </div>)}
+              {isEditing ? (
+                <TodoInput
+                  id={todo._id}
+                  text={todo.text}
+                  handleIsEditing={this.handleIsEditing}
+                />) : (
+                  <div onDoubleClick={this.handleIsEditing} className="mx-auto">
+                    {todo.text}
+                  </div>)}
             </CardTitle>
             <CardText
               className="mt-2 text-center"
@@ -76,6 +82,7 @@ class PageTodo extends Component {
 
 PageTodo.propTypes = {
   todo: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
     text: PropTypes.string.isRequired,
     createdAt: PropTypes.string.isRequired,
     updatedAt: PropTypes.string.isRequired,
@@ -90,7 +97,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-  toggleTodoCompleteByUserRequest
+  toggleTodoCompleteByUserRequest,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PageTodo)

@@ -11,7 +11,10 @@ import {
   TOGGLE_TODO_COMPLETE_BY_USER_FAILURE,
   TOGGLE_ALL_REQUEST,
   TOGGLE_ALL_SUCCESS,
-  TOGGLE_ALL_FAILURE
+  TOGGLE_ALL_FAILURE,
+  EDIT_TODO_TEXT_REQUEST,
+  EDIT_TODO_TEXT_SUCCESS,
+  EDIT_TODO_TEXT_FAILURE
 } from './types'
 
 export default function (store) {
@@ -37,10 +40,9 @@ export default function (store) {
       try {
         const { data } = await axios.post("/api/todo", { todoText, userId })
         let { entities, ids, count } = store.getState().todos
-        const entArr = _.values(entities)
-        const entIdx = _.values(entities).findIndex(todo => todo.transactionId === transactionId)
-        entArr[entIdx] = data.todo
-        entities = _.keyBy(entArr, (todo) => todo._id)
+        const index = _.values({ ...entities }).findIndex(todo => todo.transactionId === transactionId)
+        entities[index] = data.todo
+        entities = _.keyBy(_.values({ ...entities }), todo => todo._id)
         ids = [data.todo._id, ...ids].filter(id => id !== transactionId)
         count += 1
         next({
@@ -107,11 +109,7 @@ export default function (store) {
         optimist: { type: BEGIN, id: transactionId }
       });
       try {
-        const { data } = await axios.post('/api/todo/toggle_complete', {
-          ids,
-          userId,
-          complete
-        })
+        const { data } = await axios.post('/api/todo/toggle_complete', { ids, userId, complete })
         next({
           type: TOGGLE_ALL_SUCCESS,
           entities: {
@@ -124,6 +122,42 @@ export default function (store) {
       } catch (error) {
         next({
           type: TOGGLE_ALL_FAILURE,
+          error,
+          optimist: { type: REVERT, id: transactionId }
+        })
+      }
+    }
+    if (action.type === EDIT_TODO_TEXT_REQUEST) {
+      const transactionId = uuidV1()
+      const { id, text } = action.data
+      const { entities } = store.getState().todos
+      const { id: userId } = store.getState().user
+      next({
+        type: EDIT_TODO_TEXT_SUCCESS,
+        entities: {
+          ...entities,
+          [id]: {
+            ...entities[id],
+            text,
+            updatedAt: new Date().toISOString(),
+          }
+        },
+        optimist: { type: BEGIN, id: transactionId }
+      });
+      try {
+        const { data } = await axios.post('/api/todo/update_text', { id, userId, text })
+        console.log('data = ', data.todo)
+        next({
+          type: EDIT_TODO_TEXT_SUCCESS,
+          entities: {
+            ...entities,
+            [id]: data.todo
+          },
+          optimist: { type: COMMIT, id: transactionId }
+        })
+      } catch (error) {
+        next({
+          type: EDIT_TODO_TEXT_FAILURE,
           error,
           optimist: { type: REVERT, id: transactionId }
         })

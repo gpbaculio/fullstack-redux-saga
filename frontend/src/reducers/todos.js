@@ -3,7 +3,8 @@ import {
   ADD_TODO_BY_USER_SUCCESS,
   FETCH_TODOS_BY_USER_SUCCESS,
   TOGGLE_TODO_COMPLETE_BY_USER_SUCCESS,
-  TOGGLE_ALL_SUCCESS
+  TOGGLE_ALL_SUCCESS,
+  EDIT_TODO_TEXT_SUCCESS
 } from "../types";
 
 const initialState = {
@@ -44,7 +45,6 @@ export default (state = initialState, action) => {
         },
       }
     case TOGGLE_ALL_SUCCESS:
-      console.log('action', action)
       return {
         ...state,
         entities: action.entities,
@@ -59,6 +59,11 @@ export default (state = initialState, action) => {
         },
         ids: _.map(action.data.todos, '_id'),
         count: action.data.count,
+      }
+    case EDIT_TODO_TEXT_SUCCESS:
+      return {
+        ...state,
+        entities: action.entities
       }
     default:
       return state

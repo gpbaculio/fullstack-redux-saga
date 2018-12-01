@@ -40,22 +40,18 @@ router.post('/toggle_complete', async (req, res) => {
 
 router.post('/update_text', async (req, res) => {
   const { id, userId, text } = req.body;
-  try {
-    await Todo.findOneAndUpdate(
-      { _id: id, userId },
-      { $set: { text } },
-      { new: true },
-      (error, result) => {
-        if (error) {
-          res.json({ error })
-        } else {
-          res.json({ todo: result })
-        }
+  await Todo.findOneAndUpdate(
+    { _id: id, userId },
+    { $set: { text } },
+    { new: true },
+    (error, result) => {
+      if (error) {
+        res.json({ error })
+      } else {
+        res.json({ todo: result })
       }
-    );
-  } catch (error) {
-    res.status(400).json({ error })
-  }
+    }
+  );
 })
 
 router.get("/todos_by_user", authenticate, async (req, res) => {
