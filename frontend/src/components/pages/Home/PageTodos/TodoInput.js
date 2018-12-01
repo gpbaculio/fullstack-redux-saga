@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Input } from 'reactstrap'
+import { Input, Form } from 'reactstrap'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 
@@ -16,14 +16,20 @@ class TodoInput extends Component {
     this.setState({ text })
   }
 
-  onBlur = () => {
+  onSubmit = e => {
+    e.preventDefault()
     const { text } = this.state
     const {
       editTodo: editTodoRequest,
       handleIsEditing,
       id
     } = this.props
-    editTodoRequest({ id, text })
+    if (text) {
+      editTodoRequest({ id, text })
+    } else {
+      const { text: textProp } = this.props
+      this.setState({ text: textProp })
+    }
     handleIsEditing()
   }
 
@@ -37,12 +43,14 @@ class TodoInput extends Component {
   render() {
     const { text } = this.state
     return (
-      <Input
-        type="text"
-        value={text}
-        onChange={this.onChange}
-        onBlur={this.onBlur}
-      />
+      <Form onSubmit={this.onSubmit}>
+        <Input
+          type="text"
+          value={text}
+          onChange={this.onChange}
+          onBlur={this.onSubmit}
+        />
+      </Form>
     )
   }
 }

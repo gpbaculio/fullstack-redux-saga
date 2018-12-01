@@ -21,7 +21,6 @@ class PageTodo extends Component {
     isEditing: false,
   }
 
-
   handleInputCheck = () => {
     const {
       todo,
