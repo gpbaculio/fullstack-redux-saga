@@ -8,9 +8,9 @@ import {
   TOGGLE_TODO_COMPLETE_BY_USER_SUCCESS,
   TOGGLE_TODO_COMPLETE_BY_USER_FAILURE,
   TOGGLE_TODO_COMPLETE_BY_USER_REQUEST,
-  TOGGLE_ALL_FAILURE,
   TOGGLE_ALL_REQUEST,
-  EDIT_TODO_TEXT_REQUEST
+  EDIT_TODO_TEXT_REQUEST,
+  DELETE_TODO_REQUEST
 } from "../types";
 
 export const addTodoByUserRequest = todoTextWithUserId => ({
@@ -66,4 +66,9 @@ export const toggleAll = complete => ({
 export const editTodo = data => ({
   type: EDIT_TODO_TEXT_REQUEST,
   data
+})
+
+export const deleteTodo = id => ({
+  type: DELETE_TODO_REQUEST,
+  id
 })

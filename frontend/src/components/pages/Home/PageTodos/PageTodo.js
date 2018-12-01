@@ -15,7 +15,7 @@ import PropTypes from 'prop-types'
 import TodoInput from './TodoInput'
 
 import { timeDifferenceForDate } from '../../../../utils/timeDifference'
-import { toggleTodoCompleteByUserRequest } from '../../../../actions/todo'
+import { toggleTodoCompleteByUserRequest, deleteTodo } from '../../../../actions/todo'
 
 class PageTodo extends Component {
 
@@ -36,6 +36,11 @@ class PageTodo extends Component {
     this.setState(state => ({
       isEditing: !state.isEditing
     }))
+  }
+
+  onDelete = () => {
+    const { deleteTodo: deleteTodoRequest, todo } = this.props
+    deleteTodoRequest(todo._id)
   }
 
   render() {
@@ -69,7 +74,7 @@ class PageTodo extends Component {
                     {todo.text}
                   </div>
                 )}
-              <Icon style={{ color: 'red', cursor: 'pointer' }} icon={remove} />
+              <Icon onClick={this.onDelete} style={{ color: 'red', cursor: 'pointer' }} icon={remove} />
             </CardTitle>
             <CardText
               className="mt-2 text-center"
@@ -96,6 +101,7 @@ PageTodo.propTypes = {
   }).isRequired,
   toggleTodoCompleteByUserRequest: PropTypes.func.isRequired,
   userId: PropTypes.string.isRequired,
+  deleteTodo: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state) => ({
@@ -104,6 +110,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   toggleTodoCompleteByUserRequest,
+  deleteTodo
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PageTodo)

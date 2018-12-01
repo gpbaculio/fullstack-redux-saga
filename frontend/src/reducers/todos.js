@@ -4,7 +4,8 @@ import {
   FETCH_TODOS_BY_USER_SUCCESS,
   TOGGLE_TODO_COMPLETE_BY_USER_SUCCESS,
   TOGGLE_ALL_SUCCESS,
-  EDIT_TODO_TEXT_SUCCESS
+  EDIT_TODO_TEXT_SUCCESS,
+  DELETE_TODO_SUCCESS
 } from "../types";
 
 const initialState = {
@@ -64,6 +65,13 @@ export default (state = initialState, action) => {
       return {
         ...state,
         entities: action.entities
+      }
+    case DELETE_TODO_SUCCESS:
+      return {
+        ...state,
+        entities: action.entities,
+        count: action.count,
+        ids: action.ids
       }
     default:
       return state

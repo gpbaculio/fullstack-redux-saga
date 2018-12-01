@@ -14,7 +14,10 @@ import {
   TOGGLE_ALL_FAILURE,
   EDIT_TODO_TEXT_REQUEST,
   EDIT_TODO_TEXT_SUCCESS,
-  EDIT_TODO_TEXT_FAILURE
+  EDIT_TODO_TEXT_FAILURE,
+  DELETE_TODO_REQUEST,
+  DELETE_TODO_SUCCESS,
+  DELETE_TODO_FAILURE
 } from './types'
 
 export default function (store) {
@@ -146,7 +149,6 @@ export default function (store) {
       });
       try {
         const { data } = await axios.post('/api/todo/update_text', { id, userId, text })
-        console.log('data = ', data.todo)
         next({
           type: EDIT_TODO_TEXT_SUCCESS,
           entities: {
@@ -158,6 +160,42 @@ export default function (store) {
       } catch (error) {
         next({
           type: EDIT_TODO_TEXT_FAILURE,
+          error,
+          optimist: { type: REVERT, id: transactionId }
+        })
+      }
+    }
+    if (action.type === DELETE_TODO_REQUEST) {
+      const transactionId = uuidV1()
+      const { id } = action
+      const { entities, ids, count } = store.getState().todos
+      const { id: userId } = store.getState().user
+      delete entities[id]
+      console.log('entities - ', entities)
+      console.log('id - ', id)
+      next({
+        type: DELETE_TODO_SUCCESS,
+        entities,
+        ids: ids.filter(todoId => todoId !== id),
+        count: count - 1,
+        optimist: { type: BEGIN, id: transactionId }
+      });
+      try {
+        const { data } = await axios.post('/api/todo/delete', { id, userId })
+        next({
+          type: DELETE_TODO_SUCCESS,
+          entities: {
+            ..._.keyBy(
+              data.todos,
+              (todo) => todo._id)
+          },
+          ids: _.map(data.todos, '_id'),
+          count: data.count,
+          optimist: { type: COMMIT, id: transactionId }
+        })
+      } catch (error) {
+        next({
+          type: DELETE_TODO_FAILURE,
           error,
           optimist: { type: REVERT, id: transactionId }
         })
