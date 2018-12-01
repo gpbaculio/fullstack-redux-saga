@@ -34,17 +34,15 @@ const Home = ({ confirmed }) => (
         <PageTodos />
       </Row>
     </Container>
-    <div className="footer">
-      <Container>
-        <Row>
-          <Col>
-            <div className="footer d-flex justify-content-center mt-4">
-              <Paginator />
-            </div>
-          </Col>
-        </Row>
-      </Container>
-    </div>
+    <Container>
+      <Row>
+        <Col>
+          <div className="footer d-flex justify-content-center mt-4">
+            <Paginator />
+          </div>
+        </Col>
+      </Row>
+    </Container>
   </React.Fragment>
 );
 
@@ -52,14 +50,11 @@ Home.propTypes = {
   confirmed: PropTypes.bool.isRequired,
 }
 
-const mapStateToProps = (state) => ({
-  userId: state.user.id,
-  confirmed: state.user.confirmed,
-  serverErrors: state.formErrors.signUp,
-  loading: state.formErrors.loading
+const mapStateToProps = ({ user, formErrors }) => ({
+  userId: user.id,
+  confirmed: user.confirmed,
+  serverErrors: formErrors.signUp,
+  loading: formErrors.loading
 })
-// const mapDispatchToProps = dispatch => bindActionCreators({
-//   loadTodosPage,
-//   setCurrentPage
-// }, dispatch)
+
 export default connect(mapStateToProps, null)(Home);

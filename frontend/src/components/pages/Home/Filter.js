@@ -11,6 +11,18 @@ class Filter extends Component {
     completeAll: false
   }
 
+  componentDidUpdate = (prevProps) => {
+    const { completeAll } = this.props
+    if (completeAll !== prevProps.completeAll) {
+      this.setState({ completeAll })
+    }
+  }
+
+  componentDidMount = () => {
+    const { completeAll } = this.props
+    this.setState({ completeAll })
+  }
+
   handleInputCheck = () => {
     this.setState(state => ({
       completeAll: !state.completeAll
@@ -25,11 +37,22 @@ class Filter extends Component {
     const { completeAll } = this.state
     return (
       <div className="py-2 d-flex justify-content-center">
-        <Input
-          onChange={this.handleInputCheck}
-          checked={completeAll}
-          type="checkbox"
-        />
+        <div className="mx-3">
+          <Input
+            onChange={this.handleInputCheck}
+            checked={completeAll}
+            type="checkbox"
+          /> Select All
+        </div>
+        <div className="mx-3">
+          All
+        </div>
+        <div className="mx-3">
+          Active
+        </div>
+        <div className="mx-3">
+          Completed
+        </div>
       </div>
     )
   }
@@ -37,10 +60,13 @@ class Filter extends Component {
 
 Filter.propTypes = {
   toggleAll: PropTypes.func.isRequired,
+  completeAll: PropTypes.bool.isRequired,
 }
-
+const mapStateToProps = ({ todos }) => ({
+  completeAll: todos.ids.map(id => todos.entities[id]).every(todo => todo.complete),
+})
 const mapDispatchToProps = {
   toggleAll
 }
 
-export default connect(null, mapDispatchToProps)(Filter)
+export default connect(mapStateToProps, mapDispatchToProps)(Filter)

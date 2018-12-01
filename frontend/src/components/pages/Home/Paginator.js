@@ -11,9 +11,9 @@ class Paginator extends Component {
     activePage: 1
   }
 
-  onChosenPageChanged = async (page) => {
+  onPageChange = (page) => {
     const { fetchTodos } = this.props
-    await fetchTodos(page)
+    fetchTodos(page)
     this.setState({ activePage: page })
   }
 
@@ -26,7 +26,7 @@ class Paginator extends Component {
         itemsCountPerPage={9}
         totalItemsCount={count}
         pageRangeDisplayed={5}
-        onChange={this.onChosenPageChanged}
+        onChange={this.onPageChange}
       />
     );
   }
