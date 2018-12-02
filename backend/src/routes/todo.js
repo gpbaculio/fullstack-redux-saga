@@ -26,11 +26,7 @@ router.post('/toggle_complete', async (req, res) => {
         const result = await Todo.find(
           { _id: { $in: ids }, userId }
         ).populate('userId', '_id');
-        if (result.length > 1) {
-          res.json({ todos: result })
-        } else {
-          res.json({ todo: result[0] })
-        }
+        res.json({ response: result })
       }
     );
   } catch (error) {
@@ -44,7 +40,7 @@ router.post('/delete', async (req, res) => {
     if (error) {
       res.status(400).json({ error })
     } else {
-      res.json('delete success')
+      res.json('OK')
     }
   });
 })
