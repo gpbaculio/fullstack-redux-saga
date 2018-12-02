@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { Input } from 'reactstrap'
+import { Input, Button } from 'reactstrap'
 import { connect } from 'react-redux'
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
+import { NavLink, withRouter } from 'react-router-dom'
 
 import { toggleAll } from '../../../actions/todo'
 
@@ -35,45 +36,68 @@ class Filter extends Component {
 
   render() {
     const { completeAll } = this.state
-    const { count } = this.props
+    const { count, url } = this.props
     return (
-      <div className="py-2 d-flex justify-content-around">
+      <div className="py-2 align-items-center d-flex justify-content-around" style={{ fontSize: '1rem' }}>
         <div>
           Total: {count}
         </div>
-        <div className="d-flex">
-          <div>
+        <div className="d-flex align-items-center">
+          <div className="d-flex align-items-center">
             <Input
               onChange={this.handleInputCheck}
               checked={completeAll}
               type="checkbox"
+              className="mt-0"
             /> Select All
           </div>
-          <div className="ml-5">
+          <NavLink
+            className="ml-5"
+            to={{
+              pathname: `${url}`,
+              search: "?sort=all", // use querystring!
+            }}
+          >
             All
-          </div>
-          <div className="ml-5">
+          </NavLink>
+          <NavLink
+            className="ml-5"
+            to={{
+              pathname: `${url}`,
+              search: "?sort=active",
+            }}
+          >
             Active
-          </div>
-          <div className="ml-5">
+          </NavLink>
+          <NavLink
+            className="ml-5"
+            to={{
+              pathname: `${url}`,
+              search: "?sort=completed",
+            }}
+          >
             Completed
-          </div>
+          </NavLink>
         </div>
         <div>
-          Clear Completed
+          <Button disabled size="md" color="link">Clear Completed</Button>
         </div>
       </div>
     )
   }
 }
+
 Filter.defaultProps = {
   completeAll: false
 }
+
 Filter.propTypes = {
   toggleAll: PropTypes.func.isRequired,
   completeAll: PropTypes.bool,
   count: PropTypes.number.isRequired,
+  url: PropTypes.string.isRequired,
 }
+
 const mapStateToProps = ({ todos }) => ({
   completeAll: todos.ids.map(id => todos.entities[id]).every(todo => todo.complete),
   count: todos.count
@@ -82,4 +106,4 @@ const mapDispatchToProps = {
   toggleAll
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Filter)
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Filter))

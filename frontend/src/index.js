@@ -2,20 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { createStore, applyMiddleware } from 'redux';
 import reduxThunk from 'redux-thunk';
+import { BrowserRouter, Route } from 'react-router-dom'
 import { composeWithDevTools } from "redux-devtools-extension";
 import createSagaMiddleware from "redux-saga";
-import { Router, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import 'axios-progress-bar/dist/nprogress.css'
 import { loadProgressBar } from 'axios-progress-bar'
 
 import App from './App';
 import sagas from './sagas'
-import history from "./history";
 import reducers from './reducers'
 import middlewareApi from "./middlewareApi";
-import { fetchCurrentUserRequest, fetchCurrentUserSuccess } from './actions/user';
-import setAuthorizedHeader from './utils/setAuthorizedHeader'
 import * as serviceWorker from './serviceWorker';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -32,20 +29,12 @@ const store = createStore(
 
 sagaMiddleware.run(sagas)
 
-const token = localStorage.getItem('gpbTodosJWT')
-if (token && !`${window.location.href}`.includes('/confirmation')) {
-  setAuthorizedHeader(token)
-  const fetched = fetchCurrentUserRequest()
-  store.dispatch(fetched)
-} else {
-  store.dispatch(fetchCurrentUserSuccess({}))
-}
 ReactDOM.render(
-  <Router history={history}>
-    <Provider store={store}>
-      <Route component={App} />
-    </Provider>
-  </Router>,
+  <Provider store={store}>
+    <BrowserRouter>
+      <Route path="/" component={App} />
+    </BrowserRouter>
+  </Provider>,
   document.getElementById('root')
 );
 

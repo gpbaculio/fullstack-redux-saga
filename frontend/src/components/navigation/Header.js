@@ -3,7 +3,6 @@ import {
     Collapse,
     Navbar,
     NavbarToggler,
-    NavbarBrand,
     Nav,
     NavItem,
     Container
@@ -11,6 +10,8 @@ import {
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router'
+
 import { userLoggedOut } from '../../actions/auth'
 
 class Header extends React.Component {
@@ -44,9 +45,9 @@ class Header extends React.Component {
             <React.Fragment>
                 <Navbar color="light" light expand="md">
                     <Container>
-                        <NavbarBrand href="/">
+                        <Link to='/home' className="navbar-brand">
                             Fullstack Redux Saga
-                        </NavbarBrand>
+                        </Link>
                         <NavbarToggler onClick={this.toggle} />
                         <Collapse isOpen={isOpen} navbar>
                             <Nav className="ml-auto" navbar>
@@ -95,4 +96,4 @@ const mapStateToProps = state => ({
     authorized: !!state.user.email
 })
 
-export default connect(mapStateToProps, { userLoggedOut })(Header)
+export default connect(mapStateToProps, { userLoggedOut })(withRouter(Header))

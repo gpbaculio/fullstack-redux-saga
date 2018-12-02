@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { withRouter } from 'react-router'
 import isEmail from "validator/lib/isEmail";
 import { connect } from "react-redux";
 import { Button } from 'reactstrap'
@@ -120,4 +121,4 @@ SignUpForm.propTypes = {
 export default connect(mapStateToProps, {
   submit: createUserRequest,
   reset: resetFormState
-})(SignUpForm)
+})(withRouter(SignUpForm))

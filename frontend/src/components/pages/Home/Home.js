@@ -13,7 +13,7 @@ import AddTodo from "./AddTodo";
 import Paginator from './Paginator';
 import PageTodos from './PageTodos'
 
-const Home = ({ confirmed }) => (
+const Home = ({ confirmed, match }) => (
   <React.Fragment>
     <Container>
       <Row>
@@ -22,15 +22,15 @@ const Home = ({ confirmed }) => (
             (
               <Alert className="text-center" color="primary">
                 Please confirm your account to Add Todo
-              </Alert>
+            </Alert>
             )}
         </Col>
         <Col sm="12">
-          <Filter />
+          <Filter url={match.url} />
         </Col>
         {/* <Col xs="12" md="6">
-              <Search onSearchPhraseChanged={this.onSearchPhraseChanged} />
-                </Col> */}
+            <Search onSearchPhraseChanged={this.onSearchPhraseChanged} />
+              </Col> */}
         <PageTodos />
       </Row>
     </Container>
@@ -48,6 +48,9 @@ const Home = ({ confirmed }) => (
 
 Home.propTypes = {
   confirmed: PropTypes.bool.isRequired,
+  match: PropTypes.shape({
+    url: PropTypes.string.isRequired,
+  }).isRequired,
 }
 
 const mapStateToProps = ({ user, formErrors }) => ({

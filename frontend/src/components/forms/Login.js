@@ -4,6 +4,8 @@ import Validator from "validator";
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Button } from 'reactstrap'
+import { withRouter } from 'react-router'
+
 import { logInUserRequest, resetFormState } from '../../actions/user'
 
 class LoginForm extends React.Component {
@@ -128,4 +130,4 @@ LoginForm.propTypes = {
 export default connect(mapStateToProps, {
   submit: logInUserRequest,
   reset: resetFormState
-})(LoginForm)
+})(withRouter(LoginForm))
