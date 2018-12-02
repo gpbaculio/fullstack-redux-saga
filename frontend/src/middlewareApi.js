@@ -191,8 +191,7 @@ export default function (store) {
         optimist: { type: BEGIN, id: transactionId }
       });
       try {
-        const { data } = await axios.post('/api/todo/delete', { id, userId })
-        console.log('data = ', data)
+        await axios.post('/api/todo/delete', { id, userId })
         next({
           type: DELETE_TODO_SUCCESS,
           entities,

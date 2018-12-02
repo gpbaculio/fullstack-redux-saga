@@ -35,23 +35,32 @@ class Filter extends Component {
 
   render() {
     const { completeAll } = this.state
+    const { count } = this.props
     return (
-      <div className="py-2 d-flex justify-content-center">
-        <div className="mx-3">
-          <Input
-            onChange={this.handleInputCheck}
-            checked={completeAll}
-            type="checkbox"
-          /> Select All
+      <div className="py-2 d-flex justify-content-around">
+        <div>
+          Total: {count}
         </div>
-        <div className="mx-3">
-          All
+        <div className="d-flex">
+          <div>
+            <Input
+              onChange={this.handleInputCheck}
+              checked={completeAll}
+              type="checkbox"
+            /> Select All
+          </div>
+          <div className="ml-5">
+            All
+          </div>
+          <div className="ml-5">
+            Active
+          </div>
+          <div className="ml-5">
+            Completed
+          </div>
         </div>
-        <div className="mx-3">
-          Active
-        </div>
-        <div className="mx-3">
-          Completed
+        <div>
+          Clear Completed
         </div>
       </div>
     )
@@ -63,9 +72,11 @@ Filter.defaultProps = {
 Filter.propTypes = {
   toggleAll: PropTypes.func.isRequired,
   completeAll: PropTypes.bool,
+  count: PropTypes.number.isRequired,
 }
 const mapStateToProps = ({ todos }) => ({
   completeAll: todos.ids.map(id => todos.entities[id]).every(todo => todo.complete),
+  count: todos.count
 })
 const mapDispatchToProps = {
   toggleAll

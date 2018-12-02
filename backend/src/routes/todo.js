@@ -44,7 +44,7 @@ router.post('/delete', async (req, res) => {
     if (error) {
       res.status(400).json({ error })
     } else {
-      res.json({ success: true })
+      res.json('delete success')
     }
   });
 })
