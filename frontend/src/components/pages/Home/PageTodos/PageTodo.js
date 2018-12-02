@@ -15,7 +15,7 @@ import PropTypes from 'prop-types'
 import TodoInput from './TodoInput'
 
 import { timeDifferenceForDate } from '../../../../utils/timeDifference'
-import { toggleTodoCompleteByUserRequest, deleteTodo } from '../../../../actions/todo'
+import { toggleTodoCompleteByUserRequest, deleteTodo, fetchTodosByUserRequest } from '../../../../actions/todo'
 
 class PageTodo extends Component {
 
@@ -39,8 +39,9 @@ class PageTodo extends Component {
   }
 
   onDelete = () => {
-    const { deleteTodo: deleteTodoRequest, todo } = this.props
+    const { deleteTodo: deleteTodoRequest, todo, page, fetchTodos } = this.props
     deleteTodoRequest(todo._id)
+    fetchTodos(page)
   }
 
   render() {
@@ -102,15 +103,19 @@ PageTodo.propTypes = {
   toggleTodoCompleteByUserRequest: PropTypes.func.isRequired,
   userId: PropTypes.string.isRequired,
   deleteTodo: PropTypes.func.isRequired,
+  page: PropTypes.number.isRequired,
+  fetchTodos: PropTypes.func.isRequired,
 }
 
-const mapStateToProps = (state) => ({
-  userId: state.user.id,
+const mapStateToProps = ({ user, todos }) => ({
+  userId: user.id,
+  page: todos.page
 })
 
 const mapDispatchToProps = {
   toggleTodoCompleteByUserRequest,
-  deleteTodo
+  deleteTodo,
+  fetchTodos: fetchTodosByUserRequest
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PageTodo)

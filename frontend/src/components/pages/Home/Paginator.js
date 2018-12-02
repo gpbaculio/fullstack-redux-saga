@@ -3,7 +3,7 @@ import Pagination from 'react-js-pagination';
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 
-import { fetchTodosByUserRequest } from '../../../actions/todo'
+import { fetchTodosByUserRequest, setPage } from '../../../actions/todo'
 
 class Paginator extends Component {
 
@@ -12,9 +12,10 @@ class Paginator extends Component {
   }
 
   onPageChange = (page) => {
-    const { fetchTodos } = this.props
+    const { fetchTodos, setPage: setStatePage } = this.props
     fetchTodos(page)
     this.setState({ activePage: page })
+    setStatePage(page)
   }
 
   render() {
@@ -35,6 +36,7 @@ class Paginator extends Component {
 Paginator.propTypes = {
   fetchTodos: PropTypes.func.isRequired,
   count: PropTypes.number.isRequired,
+  setPage: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = ({ todos }) => ({
@@ -42,7 +44,8 @@ const mapStateToProps = ({ todos }) => ({
 })
 
 const mapDispatchToProps = {
-  fetchTodos: fetchTodosByUserRequest
+  fetchTodos: fetchTodosByUserRequest,
+  setPage
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Paginator)

@@ -5,17 +5,24 @@ import {
   TOGGLE_TODO_COMPLETE_BY_USER_SUCCESS,
   TOGGLE_ALL_SUCCESS,
   EDIT_TODO_TEXT_SUCCESS,
-  DELETE_TODO_SUCCESS
+  DELETE_TODO_SUCCESS,
+  SET_PAGE
 } from "../types";
 
 const initialState = {
   ids: [],
   entities: {},
   count: 0,
+  page: 1
 }
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case SET_PAGE:
+      return {
+        ...state,
+        page: action.page
+      }
     case ADD_TODO_BY_USER_SUCCESS:
       if (action.optimist.type === 'COMMIT') {
         return {

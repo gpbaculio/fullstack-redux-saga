@@ -177,27 +177,27 @@ export default function (store) {
     if (action.type === DELETE_TODO_REQUEST) {
       const transactionId = uuidV1()
       const { id } = action
-      const { entities, ids, count } = store.getState().todos
+      const { entities } = store.getState().todos
+      let { ids, count } = store.getState().todos
       const { id: userId } = store.getState().user
+      ids = ids.filter(todoId => todoId !== id)
+      count -= 1
       delete entities[id]
       next({
         type: DELETE_TODO_SUCCESS,
         entities,
-        ids: ids.filter(todoId => todoId !== id),
-        count: count - 1,
+        ids,
+        count,
         optimist: { type: BEGIN, id: transactionId }
       });
       try {
         const { data } = await axios.post('/api/todo/delete', { id, userId })
+        console.log('data = ', data)
         next({
           type: DELETE_TODO_SUCCESS,
-          entities: {
-            ..._.keyBy(
-              data.todos,
-              (todo) => todo._id)
-          },
-          ids: _.map(data.todos, '_id'),
-          count: data.count,
+          entities,
+          ids,
+          count,
           optimist: { type: COMMIT, id: transactionId }
         })
       } catch (error) {

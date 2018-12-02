@@ -40,25 +40,12 @@ router.post('/toggle_complete', async (req, res) => {
 
 router.post('/delete', async (req, res) => {
   const { id, userId } = req.body;
-  await Todo.findOneAndRemove({ _id: id, userId }, async (error) => {
+  await Todo.findOneAndRemove({ _id: id, userId }, error => {
     if (error) {
       res.status(400).json({ error })
+    } else {
+      res.json({ success: true })
     }
-    await Todo.paginate(
-      { userId },
-      {
-        offset: 0, // first page
-        limit: 9,
-        sort: { createdAt: -1 } // Sort by Date Added DESC
-      },
-      (err, { docs, total }) => {
-        if (err) {
-          res.status(400).json({ error: err })
-        } else {
-          res.json({ count: total, todos: docs })
-        }
-      }
-    );
   });
 })
 

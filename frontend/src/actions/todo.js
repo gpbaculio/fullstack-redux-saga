@@ -10,7 +10,8 @@ import {
   TOGGLE_TODO_COMPLETE_BY_USER_REQUEST,
   TOGGLE_ALL_REQUEST,
   EDIT_TODO_TEXT_REQUEST,
-  DELETE_TODO_REQUEST
+  DELETE_TODO_REQUEST,
+  SET_PAGE
 } from "../types";
 
 export const addTodoByUserRequest = todoTextWithUserId => ({
@@ -71,4 +72,9 @@ export const editTodo = data => ({
 export const deleteTodo = id => ({
   type: DELETE_TODO_REQUEST,
   id
+})
+
+export const setPage = page => ({
+  type: SET_PAGE,
+  page
 })
