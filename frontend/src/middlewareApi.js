@@ -121,14 +121,23 @@ export default function (store) {
       });
       try {
         const { data } = await axios.post('/api/todo/toggle_complete', { ids: idsToUpdate, userId, complete })
-        next({
-          type: TOGGLE_ALL_SUCCESS,
-          entities: {
+        let result;
+        if (data.todo) { // when u select all but only 1 todo is to complete
+          result = {
+            ...entities,
+            [data.todo._id]: data.todo
+          }
+        } else {
+          result = {
             ...entities,
             ..._.keyBy(
               data.todos,
-              (todo) => todo._id)
-          },
+              todo => todo._id)
+          }
+        }
+        next({
+          type: TOGGLE_ALL_SUCCESS,
+          entities: result,
           optimist: { type: COMMIT, id: transactionId }
         })
       } catch (error) {
