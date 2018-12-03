@@ -132,26 +132,13 @@ Filter.propTypes = {
   page: PropTypes.number.isRequired,
 }
 
-const mapStateToProps = ({ todos }) => {
-  console.log('todos.ids - ', todos.ids)
-  console.log('todos.entities - ', Object.keys(todos.entities))
-  console.log('todos.ids.map - ', todos.ids.map(id => {
-    const todo = todos.entities[id]
-    return todo
-  }))
-  return ({
-    completeAll: todos.ids.map(id => {
-      const todo = todos.entities[id]
-      return todo
-    }).every((todo, i) => {
-      console.log('todo i= ', i)
-      return Boolean(todo.complete)
-    }),
-    count: todos.count,
-    page: todos.page,
-    sort: todos.sort,
-  })
-}
+const mapStateToProps = ({ todos }) => ({
+  completeAll: todos.ids.map(id => todos.entities[id])
+    .every(todo => todo.complete),
+  count: todos.count,
+  page: todos.page,
+  sort: todos.sort,
+})
 
 const mapDispatchToProps = {
   toggleAll,

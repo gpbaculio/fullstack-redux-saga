@@ -5,7 +5,12 @@ import { connect } from 'react-redux'
 import { ClipLoader } from 'react-spinners';
 import { css } from 'react-emotion';
 
-import { SignUpPage, LoginPage, HomePage, ConfirmationPage } from './components/pages'
+import {
+  SignUpPage,
+  LoginPage,
+  HomePage,
+  ConfirmationPage
+} from './components/pages'
 import { GuestRoute, UserRoute } from './components/routes'
 import { Header } from './components/navigation'
 import { fetchCurrentUserRequest, fetchCurrentUserSuccess } from './actions/user';

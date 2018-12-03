@@ -19,11 +19,15 @@ class Paginator extends Component {
       activePage,
       count,
       sort,
+      loading
     } = this.props
     return (
       <React.Fragment>
-        {!count ?
-          <Alert color="primary"> You have no {sort === 'all' ? '' : sort} todos yet. </Alert> : (
+        {!count && !loading ? (
+          <Alert color="primary">
+            You have no {sort === 'all' ? '' : sort} todos yet.
+          </Alert>
+        ) : (
             <Pagination
               activePage={activePage}
               itemsCountPerPage={9}
@@ -41,12 +45,14 @@ Paginator.propTypes = {
   count: PropTypes.number.isRequired,
   setPage: PropTypes.func.isRequired,
   sort: PropTypes.string.isRequired,
+  loading: PropTypes.bool.isRequired,
   activePage: PropTypes.number.isRequired,
 }
 
 const mapStateToProps = ({ todos }) => ({
   count: todos.count,
   sort: todos.sort,
+  loading: todos.loading,
   activePage: todos.page
 })
 

@@ -39,7 +39,7 @@ const Home = ({ confirmed, match }) => (
     <Container>
       <Row>
         <Col>
-          <div className="footer d-flex justify-content-center mt-4">
+          <div className="footer d-flex justify-content-center mt-2">
             <Paginator />
           </div>
         </Col>
