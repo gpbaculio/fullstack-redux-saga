@@ -13,18 +13,24 @@ class PageTodos extends Component {
   }
 
   render() {
-    const { ids, entities } = this.props
+    const { ids, entities, sort } = this.props
     return (
       <React.Fragment>
-        {ids.map(id => {
-          const todo = entities[id]
-          return (
+        {sort === 'all' ?
+          ids.map(id => (
             <PageTodo
-              key={todo._id}
-              todo={todo}
+              key={entities[id]._id}
+              todo={entities[id]}
             />
-          )
-        })}
+          )) :
+          ids.map(id => entities[id])
+            .filter(todo => sort === 'active' ? !todo.complete : todo.complete)
+            .map(todo => (
+              <PageTodo
+                key={todo._id}
+                todo={todo}
+              />
+            ))}
       </React.Fragment>
     )
   }
@@ -38,11 +44,13 @@ PageTodos.propTypes = {
   entities: PropTypes.shape({}),
   ids: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   fetchTodos: PropTypes.func.isRequired,
+  sort: PropTypes.string.isRequired,
 }
 
 const mapStateToProps = ({ todos }) => ({
   entities: todos.entities,
-  ids: todos.ids
+  ids: todos.ids,
+  sort: todos.sort,
 })
 
 const mapDispatchToProps = {

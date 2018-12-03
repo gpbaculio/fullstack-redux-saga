@@ -6,14 +6,18 @@ import {
   TOGGLE_ALL_SUCCESS,
   EDIT_TODO_TEXT_SUCCESS,
   DELETE_TODO_SUCCESS,
-  SET_PAGE
+  SET_PAGE,
+  SET_SORT,
+  FETCH_TODOS_BY_USER_REQUEST
 } from "../types";
 
 const initialState = {
   ids: [],
   entities: {},
   count: 0,
-  page: 1
+  page: 1,
+  sort: 'all',
+  loading: false
 }
 
 export default (state = initialState, action) => {
@@ -57,9 +61,15 @@ export default (state = initialState, action) => {
         ...state,
         entities: action.entities,
       }
+    case FETCH_TODOS_BY_USER_REQUEST:
+      return {
+        ...state,
+        loading: true
+      }
     case FETCH_TODOS_BY_USER_SUCCESS:
       return {
         ...state,
+        loading: false,
         entities: {
           ..._.keyBy(
             action.data.todos,
@@ -79,6 +89,11 @@ export default (state = initialState, action) => {
         entities: action.entities,
         count: action.count,
         ids: action.ids
+      }
+    case SET_SORT:
+      return {
+        ...state,
+        sort: action.sort
       }
     default:
       return state

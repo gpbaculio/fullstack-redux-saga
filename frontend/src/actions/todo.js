@@ -11,7 +11,8 @@ import {
   TOGGLE_ALL_REQUEST,
   EDIT_TODO_TEXT_REQUEST,
   DELETE_TODO_REQUEST,
-  SET_PAGE
+  SET_PAGE,
+  SET_SORT
 } from "../types";
 
 export const addTodoByUserRequest = todoTextWithUserId => ({
@@ -77,4 +78,9 @@ export const deleteTodo = id => ({
 export const setPage = page => ({
   type: SET_PAGE,
   page
+})
+
+export const setSort = sort => ({
+  type: SET_SORT,
+  sort
 })

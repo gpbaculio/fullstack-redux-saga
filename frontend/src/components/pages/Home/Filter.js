@@ -5,13 +5,12 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom' // for history
 import queryString from 'query-string'
 
-import { toggleAll, fetchTodosByUserRequest } from '../../../actions/todo'
+import { toggleAll, fetchTodosByUserRequest, setSort, setPage } from '../../../actions/todo'
 
 class Filter extends Component {
 
   state = {
     completeAll: false,
-    sort: ''
   }
 
   componentDidUpdate = (prevProps) => {
@@ -31,12 +30,24 @@ class Filter extends Component {
       completeAll: !state.completeAll
     }), () => {
       const { completeAll: complete } = this.state
-      const { toggleAll: toggleAllTodo } = this.props
+      const {
+        toggleAll: toggleAllTodo,
+        page,
+        sort,
+        fetchTodosByUserRequest: fetchTodos,
+      } = this.props
+      const query = { page }
+      if (sort === 'all') {
+        query.complete = null
+      } else if (sort === 'active') {
+        query.complete = false
+      } else {
+        query.complete = true
+      }
       toggleAllTodo(complete)
+      fetchTodos(query)
     })
   }
-
-
 
   handleFilterLinkClick = e => {
     const { name } = e.target
@@ -44,13 +55,14 @@ class Filter extends Component {
       url,
       history,
       fetchTodosByUserRequest: fetchTodos,
-      page
+      setSort: setSorting,
+      setPage: setStatePage
     } = this.props
     history.push(`${url}?sort=${name}`) // from withRouter
     const { search } = history.location
     const { sort } = queryString.parse(search);
-    this.setState({ sort })
-    const query = { page }
+    setStatePage(1)
+    const query = { page: 1 }
     if (sort === 'all') {
       query.complete = null
     } else if (sort === 'active') {
@@ -59,11 +71,12 @@ class Filter extends Component {
       query.complete = true
     }
     fetchTodos(query)
+    setSorting(sort)
   }
 
   render() {
-    const { completeAll, sort } = this.state
-    const { count } = this.props
+    const { completeAll } = this.state
+    const { count, sort } = this.props
     return (
       <div className="py-2 align-items-center d-flex justify-content-around" style={{ fontSize: '1rem' }}>
         <div>
@@ -128,18 +141,25 @@ Filter.propTypes = {
       search: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
-  page: PropTypes.number.isRequired,
   fetchTodosByUserRequest: PropTypes.func.isRequired,
+  setSort: PropTypes.func.isRequired,
+  sort: PropTypes.string.isRequired,
+  setPage: PropTypes.func.isRequired,
+  page: PropTypes.number.isRequired,
 }
 
 const mapStateToProps = ({ todos }) => ({
   completeAll: todos.ids.map(id => todos.entities[id]).every(todo => todo.complete),
-  count: todos.count,
-  page: todos.page
+  count: (todos.sort === 'all') ? todos.count : todos.ids.map(id => todos.entities[id]).filter(todo => todos.sort === 'complete' ? todo.complete : !todo.complete).length,
+  page: todos.page,
+  sort: todos.sort,
 })
+
 const mapDispatchToProps = {
   toggleAll,
-  fetchTodosByUserRequest
+  fetchTodosByUserRequest,
+  setSort,
+  setPage
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Filter))

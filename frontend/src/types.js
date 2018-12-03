@@ -13,6 +13,8 @@ export const RESET_FORM_STATE = 'RESET_FORM_STATE'
 
 // pagination
 export const SET_PAGE = 'SET_PAGE'
+// sort
+export const SET_SORT = 'SET_SORT'
 // TODOS
 
 export const FETCH_TODOS_BY_USER_REQUEST = 'FETCH_TODOS_BY_USER_REQUEST'
