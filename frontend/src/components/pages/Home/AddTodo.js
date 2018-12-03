@@ -30,8 +30,6 @@ class AddTodo extends Component {
 
   render() {
     const { todoText } = this.state
-    const { loading} = this.props
-    console.log('todos loading = ', loading)
     return (
       <form
         className="
@@ -62,7 +60,6 @@ class AddTodo extends Component {
 AddTodo.propTypes = {
   addTodoByUserRequest: PropTypes.func.isRequired,
   userId: PropTypes.string.isRequired,
-  loading: PropTypes.bool.isRequired,
 }
 
 const mapStateToProps = ({ user, todos}) => ({

@@ -9,7 +9,6 @@ import {
   SET_PAGE,
   SET_SORT,
   FETCH_TODOS_BY_USER_REQUEST,
-  ADD_TODO_BY_USER_REQUEST
 } from "../types";
 
 const initialState = {

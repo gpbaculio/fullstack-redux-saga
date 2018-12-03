@@ -23,8 +23,6 @@ export const resetFormState = form => ({
   form
 })
 
-// login
-
 export const logInUserRequest = credentials => ({
   type: LOGIN_USER_REQUEST,
   credentials

@@ -181,15 +181,14 @@ export default function (store) {
       const transactionId = uuidV1()
       const { id } = action
       const { entities } = store.getState().todos
-      let { ids, count } = store.getState().todos
+      _.unset(entities, id); // remove property id
+      let { count } = store.getState().todos
       const { id: userId } = store.getState().user
-      ids = ids.filter(todoId => todoId !== id)
       count -= 1
-      delete entities[id]
       next({
         type: DELETE_TODO_SUCCESS,
         entities,
-        ids,
+        ids: Object.keys(entities),
         count,
         optimist: { type: BEGIN, id: transactionId }
       });
@@ -198,7 +197,7 @@ export default function (store) {
         next({
           type: DELETE_TODO_SUCCESS,
           entities,
-          ids,
+          ids: Object.keys(entities),
           count,
           optimist: { type: COMMIT, id: transactionId }
         })
