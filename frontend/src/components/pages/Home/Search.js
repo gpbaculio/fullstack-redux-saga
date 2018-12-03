@@ -1,59 +1,39 @@
-import React, { Component } from 'react';
-import 'bootstrap/dist/css/bootstrap.css';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { Input } from 'reactstrap'
-import PropTypes from 'prop-types'
-
-import { getSearchParams, updateSearchParams } from '../../../todosPaginationConfig';
-
-const mapDispatchToProps = dispatch => bindActionCreators(
-  {
-    updateSearchParams
-  },
-  dispatch
-);
-
-const mapStateToProps = (state) => ({
-  searchPhrase: getSearchParams(state).searchPhrase
-});
+import React, { Component } from 'react'
+import { Input, Form } from 'reactstrap'
 
 class Search extends Component {
-  inputChanged = (event) => {
-    const {
-      onSearchPhraseChanged: onSearchPhraseChangedAction,
-      updateSearchParams: updateSearchParamsAction
-    } = this.props
-    onSearchPhraseChangedAction(event.target.value);
-    updateSearchParamsAction({ searchPhrase: event.target.value });
+  
+  state = {
+    text: ''
+  }
+
+  onChange = e => {
+    this.setState({ text: e.target.value })
   }
 
   render() {
-    const { searchPhrase } = this.props
+    const { text} = this.state
     return (
-      <div
+      <Form
         className="
-          justify-content-center
-          mt-4
-          mb-5
-          mx-auto
-          w-75
-        "
+        form-inline
+        justify-content-center
+        mx-auto
+        mt-4
+        mb-xs-1
+        mb-md-5
+        align-items-start
+      "
       >
-        <Input
-          placeholder="Search your todos"
-          value={searchPhrase}
-          onChange={this.inputChanged}
-        />
-      </div>
-    );
+      <Input
+        placeholder="Search your todos"
+        value={text}
+        className="form-control w-75"
+        onChange={this.onChange}
+      />
+    </Form>
+    )
   }
 }
 
-Search.propTypes = {
-  searchPhrase: PropTypes.string.isRequired,
-  updateSearchParams: PropTypes.func.isRequired,
-  onSearchPhraseChanged: PropTypes.func.isRequired,
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Search);
+export default Search

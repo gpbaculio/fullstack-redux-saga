@@ -8,9 +8,11 @@ import {
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 
+import { withRouter } from 'react-router-dom'
 import Filter from './Filter'
 import AddTodo from "./AddTodo";
 import Paginator from './Paginator';
+import Search from './Search'
 import PageTodos from './PageTodos'
 
 const Home = ({ confirmed, match }) => (
@@ -25,12 +27,12 @@ const Home = ({ confirmed, match }) => (
             </Alert>
             )}
         </Col>
+        <Col xs="12" md="6">
+          <Search />
+        </Col>
         <Col sm="12">
           <Filter url={match.url} />
         </Col>
-        {/* <Col xs="12" md="6">
-            <Search onSearchPhraseChanged={this.onSearchPhraseChanged} />
-              </Col> */}
         <PageTodos />
       </Row>
     </Container>
@@ -60,4 +62,4 @@ const mapStateToProps = ({ user, formErrors }) => ({
   loading: formErrors.loading
 })
 
-export default connect(mapStateToProps, null)(Home);
+export default connect(mapStateToProps, null)(withRouter(Home));

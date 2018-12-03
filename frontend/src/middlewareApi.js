@@ -102,9 +102,9 @@ export default function (store) {
       const todos = ids.map(id => entities[id])
       let idsToUpdate;
       if (complete) {
-        idsToUpdate = _.map(todos.filter(todo => todo.complete !== complete), '_id')
+        idsToUpdate = _.map(todos.filter(todo => !todo.complete), '_id')
       } else {
-        idsToUpdate = _.map(todos.filter(todo => todo.complete === complete), '_id')
+        idsToUpdate = _.map(todos.filter(todo => todo.complete), '_id')
       }
       next({ // data is mock todo
         type: TOGGLE_ALL_SUCCESS,

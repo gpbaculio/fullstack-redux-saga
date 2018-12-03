@@ -66,11 +66,20 @@ export function* userConfirmTokenSaga(action) {
 //   }
 // }
 
-export function* fetchTodosByUserSaga({ page }) {
+export function* fetchTodosByUserSaga({ data }) {
   try {
+    const { page, searchText, complete } = data
+
     const limit = 9
     const offset = (page - 1) * limit
-    const { count, todos } = yield call(api.todo.fetchTodosByUser, { limit, offset })
+    const { count, todos } = yield call(
+      api.todo.fetchTodosByUser,
+      {
+        limit,
+        offset,
+        searchText,
+        complete: complete === 'all' ? null : complete // no need to provide all as arg
+      })
     yield put(fetchTodosByUserSuccess({ count, todos }))
   } catch (e) {
     yield put(fetchTodosByUserFailure(e.response.data.errors))

@@ -29,9 +29,9 @@ export const addTodoByUserFailure = error => ({
   error
 })
 
-export const fetchTodosByUserRequest = page => ({
+export const fetchTodosByUserRequest = data => ({
   type: FETCH_TODOS_BY_USER_REQUEST,
-  page
+  data
 })
 
 export const fetchTodosByUserSuccess = data => ({

@@ -13,7 +13,7 @@ class Paginator extends Component {
 
   onPageChange = (page) => {
     const { fetchTodos, setPage: setStatePage } = this.props
-    fetchTodos(page)
+    fetchTodos({ page })
     this.setState({ activePage: page })
     setStatePage(page)
   }

@@ -2,14 +2,15 @@ import React, { Component } from 'react'
 import { Input, Button } from 'reactstrap'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types';
-import { NavLink, withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom' // for history
+import queryString from 'query-string'
 
-import { toggleAll } from '../../../actions/todo'
+import { toggleAll, fetchTodosByUserRequest } from '../../../actions/todo'
 
 class Filter extends Component {
 
   state = {
-    completeAll: false
+    completeAll: false,
   }
 
   componentDidUpdate = (prevProps) => {
@@ -34,9 +35,33 @@ class Filter extends Component {
     })
   }
 
+
+
+  handleFilterLinkClick = e => {
+    const { name } = e.target
+    const {
+      url,
+      history,
+      fetchTodosByUserRequest: fetchTodos,
+      page
+    } = this.props
+    history.push(`${url}?sort=${name}`) // from withRouter
+    const { search } = history.location
+    const { sort } = queryString.parse(search);
+    const query = { page }
+    if (sort === 'all') {
+      query.complete = null
+    } else if (sort === 'active') {
+      query.complete = false
+    } else {
+      query.complete = true
+    }
+    fetchTodos(query)
+  }
+
   render() {
     const { completeAll } = this.state
-    const { count, url } = this.props
+    const { count } = this.props
     return (
       <div className="py-2 align-items-center d-flex justify-content-around" style={{ fontSize: '1rem' }}>
         <div>
@@ -51,33 +76,30 @@ class Filter extends Component {
               className="mt-0"
             /> Select All
           </div>
-          <NavLink
-            className="ml-5"
-            to={{
-              pathname: `${url}`,
-              search: "?sort=all", // use querystring!
-            }}
+          <Button
+            onClick={this.handleFilterLinkClick}
+            size="md"
+            color="link"
+            name="all"
           >
             All
-          </NavLink>
-          <NavLink
-            className="ml-5"
-            to={{
-              pathname: `${url}`,
-              search: "?sort=active",
-            }}
+          </Button>
+          <Button
+            onClick={this.handleFilterLinkClick}
+            size="md"
+            color="link"
+            name="active" // complete = false
           >
             Active
-          </NavLink>
-          <NavLink
-            className="ml-5"
-            to={{
-              pathname: `${url}`,
-              search: "?sort=completed",
-            }}
+          </Button>
+          <Button
+            onClick={this.handleFilterLinkClick}
+            size="md"
+            color="link"
+            name="complete"
           >
             Completed
-          </NavLink>
+          </Button>
         </div>
         <div>
           <Button disabled size="md" color="link">Clear Completed</Button>
@@ -96,14 +118,23 @@ Filter.propTypes = {
   completeAll: PropTypes.bool,
   count: PropTypes.number.isRequired,
   url: PropTypes.string.isRequired,
+  history: PropTypes.shape({
+    location: PropTypes.shape({
+      search: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
+  page: PropTypes.number.isRequired,
+  fetchTodosByUserRequest: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = ({ todos }) => ({
   completeAll: todos.ids.map(id => todos.entities[id]).every(todo => todo.complete),
-  count: todos.count
+  count: todos.count,
+  page: todos.page
 })
 const mapDispatchToProps = {
-  toggleAll
+  toggleAll,
+  fetchTodosByUserRequest
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Filter))

@@ -41,7 +41,7 @@ class PageTodo extends Component {
   onDelete = () => {
     const { deleteTodo: deleteTodoRequest, todo, page, fetchTodos } = this.props
     deleteTodoRequest(todo._id)
-    fetchTodos(page)
+    fetchTodos({ page })
   }
 
   render() {

@@ -64,20 +64,16 @@ router.post('/update_text', async (req, res) => {
 router.get("/todos_by_user", authenticate, async (req, res) => {
 
   const { _id: userId } = req.currentUser
-  const { offset, limit, searchText } = req.query
-  let findQuery;
+  const { offset, limit, searchText, complete } = req.query
+  const query = { userId };
 
   if (searchText) {
-    findQuery = {
-      userId,
-      text: { '$regex': `${searchText}`, '$options': 'i' },
-    }
-  } else {
-    findQuery = { userId }
+    query.text = { '$regex': `${searchText}`, '$options': 'i' }
+  } else if (complete) {
+    query.complete = complete
   }
-
   Todo.paginate(
-    findQuery,
+    query,
     {
       offset: parseFloat(offset),
       limit: parseFloat(limit),

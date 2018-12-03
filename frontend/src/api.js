@@ -9,9 +9,9 @@ export default {
   },
   todo: {
     // addTodoByUser: ({ todoText, userId }) => axios.post("/api/todo", { todoText, userId }).then(res => res.data.todo),
-    fetchTodosByUser: async ({ offset, limit, searchText }) => {
+    fetchTodosByUser: async ({ offset, limit, searchText, complete }) => {
       try {
-        const { data } = await axios.get("/api/todo/todos_by_user", { params: { offset, limit, searchText } })
+        const { data } = await axios.get("/api/todo/todos_by_user", { params: { offset, limit, searchText, complete } })
         return { count: data.count, todos: data.todos };
       } catch (e) {
         return null
