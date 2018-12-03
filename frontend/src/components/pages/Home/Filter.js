@@ -11,6 +11,7 @@ class Filter extends Component {
 
   state = {
     completeAll: false,
+    sort: ''
   }
 
   componentDidUpdate = (prevProps) => {
@@ -48,6 +49,7 @@ class Filter extends Component {
     history.push(`${url}?sort=${name}`) // from withRouter
     const { search } = history.location
     const { sort } = queryString.parse(search);
+    this.setState({ sort })
     const query = { page }
     if (sort === 'all') {
       query.complete = null
@@ -60,7 +62,7 @@ class Filter extends Component {
   }
 
   render() {
-    const { completeAll } = this.state
+    const { completeAll, sort } = this.state
     const { count } = this.props
     return (
       <div className="py-2 align-items-center d-flex justify-content-around" style={{ fontSize: '1rem' }}>
@@ -81,6 +83,7 @@ class Filter extends Component {
             size="md"
             color="link"
             name="all"
+            disabled={sort === '' || null}
           >
             All
           </Button>
@@ -89,6 +92,7 @@ class Filter extends Component {
             size="md"
             color="link"
             name="active" // complete = false
+            disabled={sort === 'active'}
           >
             Active
           </Button>
@@ -97,6 +101,7 @@ class Filter extends Component {
             size="md"
             color="link"
             name="complete"
+            disabled={sort === 'complete'}
           >
             Completed
           </Button>
