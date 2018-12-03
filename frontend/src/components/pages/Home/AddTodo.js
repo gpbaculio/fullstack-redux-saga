@@ -18,10 +18,11 @@ class AddTodo extends Component {
   }
 
   onSubmit = async (e) => {
-    e.preventDefault();
-    const { addTodo, userId } = this.props
+    e.preventDefault()
+    const { addTodoByUserRequest: addTodo, userId } = this.props
     const { todoText } = this.state
-    if (todoText) {
+    if(todoText){
+      console.log('add todo!', todoText)
       await addTodo({ todoText, userId })
       this.setState({ todoText: '' });
     }
@@ -29,6 +30,8 @@ class AddTodo extends Component {
 
   render() {
     const { todoText } = this.state
+    const { loading} = this.props
+    console.log('todos loading = ', loading)
     return (
       <form
         className="
@@ -57,16 +60,18 @@ class AddTodo extends Component {
 }
 
 AddTodo.propTypes = {
-  addTodo: PropTypes.func.isRequired,
+  addTodoByUserRequest: PropTypes.func.isRequired,
   userId: PropTypes.string.isRequired,
+  loading: PropTypes.bool.isRequired,
 }
 
-const mapStateToProps = (state) => ({
-  userId: state.user.id,
+const mapStateToProps = ({ user, todos}) => ({
+  userId: user.id,
+  loading: todos.loading
 })
 
 const mapDispatchToProps = {
-  addTodo: addTodoByUserRequest
+ addTodoByUserRequest
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddTodo)

@@ -8,7 +8,8 @@ import {
   DELETE_TODO_SUCCESS,
   SET_PAGE,
   SET_SORT,
-  FETCH_TODOS_BY_USER_REQUEST
+  FETCH_TODOS_BY_USER_REQUEST,
+  ADD_TODO_BY_USER_REQUEST
 } from "../types";
 
 const initialState = {
@@ -28,25 +29,12 @@ export default (state = initialState, action) => {
         page: action.page
       }
     case ADD_TODO_BY_USER_SUCCESS:
-      if (action.optimist.type === 'COMMIT') {
-        return {
-          ...state,
-          entities: action.entities,
-          ids: action.ids,
-          count: action.count
-        }
-      }
       return {
         ...state,
-        entities: {
-          [action.optimist.id]: { ...action.data },
-          ...state.entities
-        },
-        ids: [
-          action.optimist.id,
-          ...state.ids
-        ],
-        count: state.count + 1
+        loading: false,
+        entities: action.entities,
+        ids: action.ids,
+        count: action.count
       }
     case TOGGLE_TODO_COMPLETE_BY_USER_SUCCESS:
       return {

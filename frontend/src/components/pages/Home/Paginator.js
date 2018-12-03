@@ -10,15 +10,7 @@ class Paginator extends Component {
 
   onPageChange = page => {
     const { fetchTodos, setPage: setStatePage, sort } = this.props
-    const query = { page }
-    if (sort === 'all') {
-      query.complete = null
-    } else if (sort === 'active') {
-      query.complete = false
-    } else {
-      query.complete = true
-    }
-    fetchTodos(query)
+    fetchTodos({ page, sort })
     setStatePage(page)
   }
 
@@ -27,19 +19,7 @@ class Paginator extends Component {
       activePage,
       count,
       sort,
-      completeCount,
-      activeCount,
-      loading
     } = this.props
-    if (loading) {
-      return null
-    }
-    if (count && !completeCount && sort === 'complete') {
-      return <Alert color="primary"> You have no {sort === 'all' ? '' : sort} todos yet. </Alert>
-    }
-    if (count && !activeCount && sort === 'active') {
-      return <Alert color="primary"> You have no {sort === 'all' ? '' : sort} todos yet. </Alert>
-    }
     return (
       <React.Fragment>
         {!count ?
@@ -61,20 +41,12 @@ Paginator.propTypes = {
   count: PropTypes.number.isRequired,
   setPage: PropTypes.func.isRequired,
   sort: PropTypes.string.isRequired,
-  completeCount: PropTypes.number.isRequired,
-  activeCount: PropTypes.number.isRequired,
-  loading: PropTypes.bool.isRequired,
   activePage: PropTypes.number.isRequired,
 }
 
 const mapStateToProps = ({ todos }) => ({
   count: todos.count,
   sort: todos.sort,
-  completeCount: todos.ids.map(id => todos.entities[id])
-    .filter(({ complete }) => complete).length,
-  activeCount: todos.ids.map(id => todos.entities[id])
-    .filter(({ complete }) => !complete).length,
-  loading: todos.loading,
   activePage: todos.page
 })
 

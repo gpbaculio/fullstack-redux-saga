@@ -8,31 +8,17 @@ import { fetchTodosByUserRequest } from '../../../../actions/todo'
 class PageTodos extends Component {
 
   componentDidMount = () => {
-    const { fetchTodos } = this.props
-    fetchTodos(({ page: 1 }))
+    const { fetchTodos, sort } = this.props
+    fetchTodos({ sort, page: 1 })
   }
 
   render() {
-    const { ids, entities, sort } = this.props
-    return (
-      <React.Fragment>
-        {sort === 'all' ?
-          ids.map(id => (
-            <PageTodo
-              key={entities[id]._id}
-              todo={entities[id]}
-            />
-          )) :
-          ids.map(id => entities[id])
-            .filter(todo => sort === 'active' ? !todo.complete : todo.complete)
-            .map(todo => (
-              <PageTodo
-                key={todo._id}
-                todo={todo}
-              />
-            ))}
-      </React.Fragment>
-    )
+    const { ids, entities } = this.props
+    return ids.map(id =>
+      <PageTodo
+        key={entities[id]._id}
+        todo={entities[id]}
+      />)
   }
 }
 

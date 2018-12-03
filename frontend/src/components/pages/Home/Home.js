@@ -55,11 +55,9 @@ Home.propTypes = {
   }).isRequired,
 }
 
-const mapStateToProps = ({ user, formErrors }) => ({
+const mapStateToProps = ({ user }) => ({
   userId: user.id,
   confirmed: user.confirmed,
-  serverErrors: formErrors.signUp,
-  loading: formErrors.loading
 })
 
 export default connect(mapStateToProps, null)(withRouter(Home));

@@ -27,9 +27,13 @@ class PageTodo extends Component {
     const {
       todo,
       userId,
-      toggleTodoCompleteByUserRequest: toggleTodoCompleteByUserRequestAction
+      toggleTodoCompleteByUserRequest: toggleTodoCompleteByUserRequestAction,
+      fetchTodos,
+      page,
+      sort
     } = this.props
     toggleTodoCompleteByUserRequestAction({ userId, todo })
+    fetchTodos({ page, sort })
   }
 
   handleIsEditing = () => {
@@ -39,9 +43,9 @@ class PageTodo extends Component {
   }
 
   onDelete = () => {
-    const { deleteTodo: deleteTodoRequest, todo, page, fetchTodos } = this.props
+    const { deleteTodo: deleteTodoRequest, todo, page, fetchTodos, sort } = this.props
     deleteTodoRequest(todo._id)
-    fetchTodos({ page })
+    fetchTodos({ page, sort })
   }
 
   render() {
@@ -105,11 +109,13 @@ PageTodo.propTypes = {
   deleteTodo: PropTypes.func.isRequired,
   page: PropTypes.number.isRequired,
   fetchTodos: PropTypes.func.isRequired,
+  sort: PropTypes.string.isRequired,
 }
 
 const mapStateToProps = ({ user, todos }) => ({
   userId: user.id,
-  page: todos.page
+  page: todos.page,
+  sort: todos.sort
 })
 
 const mapDispatchToProps = {

@@ -21,8 +21,11 @@ class App extends React.Component {
 
   componentDidMount = async () => {
     const token = localStorage.getItem('gpbTodosJWT')
-    const { fetchCurrentUserRequest: fetchUser, fetchCurrentUserSuccess: fetchUserSuccess } = this.props
     await setAuthorizedHeader(token)
+    const {
+      fetchCurrentUserRequest: fetchUser,
+      fetchCurrentUserSuccess: fetchUserSuccess
+    } = this.props
     if (token && !`${window.location.href}`.includes('/confirmation')) {
       await fetchUser()
     } else {

@@ -25,24 +25,27 @@ export default function (store) {
     if (action.type === ADD_TODO_BY_USER_REQUEST) {
       const transactionId = uuidV1();
       const { todoText, userId } = action.todoTextWithUserId
+      let { entities, ids, count } = store.getState().todos
+      const mockTodo = {
+        transactionId, // so we can trace
+        complete: false,
+        createdAt: new Date().toISOString(),
+        _id: uuidV1(),
+        text: todoText,
+        updatedAt: new Date().toISOString(),
+        userId: {
+          _id: userId
+        },
+      }
       next({ // data is mock todo
         type: ADD_TODO_BY_USER_SUCCESS,
-        data: {
-          transactionId, // so we can trace
-          complete: false,
-          createdAt: new Date().toISOString(),
-          _id: uuidV1(),
-          text: todoText,
-          updatedAt: new Date().toISOString(),
-          userId: {
-            _id: userId
-          },
-        },
+        entities: { ...entities, [mockTodo._id]: mockTodo },
+        ids: [mockTodo._id, ...ids],
+        count: count += 1,
         optimist: { type: BEGIN, id: transactionId }
       });
       try {
         const { data } = await axios.post("/api/todo", { todoText, userId })
-        let { entities, ids, count } = store.getState().todos
         const index = _.values({ ...entities }).findIndex(todo => todo.transactionId === transactionId)
         entities[index] = data.todo
         entities = _.keyBy(_.values({ ...entities }), todo => todo._id)

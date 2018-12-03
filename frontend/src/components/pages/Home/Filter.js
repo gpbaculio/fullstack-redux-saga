@@ -36,16 +36,8 @@ class Filter extends Component {
         sort,
         fetchTodosByUserRequest: fetchTodos,
       } = this.props
-      const query = { page }
-      if (sort === 'all') {
-        query.complete = null
-      } else if (sort === 'active') {
-        query.complete = false
-      } else {
-        query.complete = true
-      }
       toggleAllTodo(complete)
-      fetchTodos(query)
+      fetchTodos({ sort, page })
     })
   }
 
@@ -62,15 +54,7 @@ class Filter extends Component {
     const { search } = history.location
     const { sort } = queryString.parse(search);
     setStatePage(1)
-    const query = { page: 1 }
-    if (sort === 'all') {
-      query.complete = null
-    } else if (sort === 'active') {
-      query.complete = false
-    } else {
-      query.complete = true
-    }
-    fetchTodos(query)
+    fetchTodos({ page: 1, sort })
     setSorting(sort)
   }
 
@@ -150,7 +134,7 @@ Filter.propTypes = {
 
 const mapStateToProps = ({ todos }) => ({
   completeAll: todos.ids.map(id => todos.entities[id]).every(todo => todo.complete),
-  count: (todos.sort === 'all') ? todos.count : todos.ids.map(id => todos.entities[id]).filter(todo => todos.sort === 'complete' ? todo.complete : !todo.complete).length,
+  count: todos.count,
   page: todos.page,
   sort: todos.sort,
 })
