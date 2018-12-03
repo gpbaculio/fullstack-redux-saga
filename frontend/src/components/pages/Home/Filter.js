@@ -83,7 +83,7 @@ class Filter extends Component {
             size="md"
             color="link"
             name="all"
-            disabled={sort === '' || null}
+            disabled={sort === '' || sort === 'all'}
           >
             All
           </Button>
