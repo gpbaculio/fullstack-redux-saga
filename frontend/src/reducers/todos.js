@@ -10,7 +10,8 @@ import {
   SET_SORT,
   FETCH_TODOS_BY_USER_REQUEST,
   ADD_TODO_BY_USER_REQUEST,
-  USER_LOGGED_OUT
+  USER_LOGGED_OUT,
+  SHOW_REFRESH
 } from "../types";
 
 const initialState = {
@@ -21,7 +22,8 @@ const initialState = {
   sort: 'all',
   loading: false,
   refetching: false,
-  countPerPage: 9
+  countPerPage: 9,
+  showRefresh: false
 }
 
 export default (state = initialState, action) => {
@@ -61,11 +63,15 @@ export default (state = initialState, action) => {
         ...state,
         entities: action.entities,
       }
+    case SHOW_REFRESH:
+      return {
+        ...state,
+        showRefresh: true,
+      }
     case FETCH_TODOS_BY_USER_REQUEST:
       return {
         ...state,
         loading: true,
-        refetching: false,
         countPerPage: 9
       }
     case FETCH_TODOS_BY_USER_SUCCESS:
@@ -73,6 +79,7 @@ export default (state = initialState, action) => {
         ...state,
         loading: false,
         entities: action.entities,
+        showRefresh: false,
         ids: action.ids,
         count: action.count,
       }

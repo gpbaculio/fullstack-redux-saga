@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Pagination from 'react-js-pagination';
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { Alert } from 'reactstrap'
+import { Alert, Button } from 'reactstrap'
 
 import { fetchTodosByUserRequest, setPage } from '../../../actions/todo'
 
@@ -10,8 +10,13 @@ class Paginator extends Component {
 
   onPageChange = page => {
     const { fetchTodos, setPage: setStatePage, sort } = this.props
-    fetchTodos({ page, sort, sortFirst: -1 })
+    fetchTodos({ page, sort })
     setStatePage(page)
+  }
+
+  onRefresh = () => {
+    const { fetchTodos, sort, page } = this.props
+    fetchTodos({ page, sort })
   }
 
   render() {
@@ -20,7 +25,8 @@ class Paginator extends Component {
       count,
       sort,
       loading,
-      countPerPage
+      countPerPage,
+      showRefresh
     } = this.props
     return (
       <React.Fragment>
@@ -29,13 +35,23 @@ class Paginator extends Component {
             You have no {sort === 'all' ? '' : sort} todos yet.
           </Alert>
         ) : (
-            <Pagination
-              activePage={activePage}
-              itemsCountPerPage={countPerPage}
-              totalItemsCount={count}
-              pageRangeDisplayed={5}
-              onChange={this.onPageChange}
-            />)}
+            <div className="d-flex flex-column mt-3">
+              {showRefresh && (
+                <Button
+                  color="primary"
+                  className="btn-block"
+                  onClick={this.onRefresh}
+                >
+                  Refresh Page
+                </Button>)}
+              <Pagination
+                activePage={activePage}
+                itemsCountPerPage={countPerPage}
+                totalItemsCount={count}
+                pageRangeDisplayed={5}
+                onChange={this.onPageChange}
+              />
+            </div>)}
       </React.Fragment>
     );
   }
@@ -49,6 +65,7 @@ Paginator.propTypes = {
   loading: PropTypes.bool.isRequired,
   activePage: PropTypes.number.isRequired,
   countPerPage: PropTypes.number.isRequired,
+  showRefresh: PropTypes.bool.isRequired,
 }
 
 const mapStateToProps = ({ todos }) => ({
@@ -56,7 +73,8 @@ const mapStateToProps = ({ todos }) => ({
   sort: todos.sort,
   loading: todos.loading,
   activePage: todos.page,
-  countPerPage: todos.countPerPage
+  countPerPage: todos.countPerPage,
+  showRefresh: todos.showRefresh
 })
 
 const mapDispatchToProps = {

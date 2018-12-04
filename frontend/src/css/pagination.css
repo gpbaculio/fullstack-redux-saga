@@ -7,6 +7,9 @@
 .pagination > li {
   display: inline;
 }
+.pagination > li.active {
+  pointer-events: none;
+}
 .pagination > li > a,
 .pagination > li > span {
   position: relative;
@@ -46,6 +49,7 @@
 .pagination > .active > span:hover,
 .pagination > .active > a:focus,
 .pagination > .active > span:focus {
+  pointer-events: none;
   z-index: 3;
   color: #fff;
   cursor: default;

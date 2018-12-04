@@ -13,7 +13,8 @@ import {
   DELETE_TODO_REQUEST,
   SET_PAGE,
   SET_SORT,
-  DELETE_COMPLETED_REQUEST
+  DELETE_COMPLETED_REQUEST,
+  SHOW_REFRESH
 } from "../types";
 
 export const addTodoByUserRequest = todoTextWithUserId => ({
@@ -77,6 +78,10 @@ export const editTodo = data => ({
 export const deleteTodo = id => ({
   type: DELETE_TODO_REQUEST,
   id
+})
+
+export const showRefresh = () => ({
+  type: SHOW_REFRESH,
 })
 
 export const setPage = page => ({
