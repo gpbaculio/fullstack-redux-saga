@@ -60,11 +60,13 @@ class Filter extends Component {
 
   render() {
     const { completeAll } = this.state
-    const { count, sort } = this.props
+    const { count, sort, todos } = this.props
     return (
       <div className="py-2 align-items-center d-flex justify-content-around" style={{ fontSize: '1rem' }}>
         <div>
-          Total: {count}
+          Total: {sort !== 'all' ?
+            todos.filter(t => sort === 'active' ? !t.complete : t.complete)
+              .length : count}
         </div>
         <div className="d-flex align-items-center">
           <div className="d-flex align-items-center">
@@ -112,7 +114,8 @@ class Filter extends Component {
 }
 
 Filter.defaultProps = {
-  completeAll: false
+  completeAll: false,
+  todos: []
 }
 
 Filter.propTypes = {
@@ -130,6 +133,7 @@ Filter.propTypes = {
   sort: PropTypes.string.isRequired,
   setPage: PropTypes.func.isRequired,
   page: PropTypes.number.isRequired,
+  todos: PropTypes.array,
 }
 
 const mapStateToProps = ({ todos }) => ({
@@ -138,6 +142,7 @@ const mapStateToProps = ({ todos }) => ({
   count: todos.count,
   page: todos.page,
   sort: todos.sort,
+  todos: todos.ids.map(id => todos.entities[id])
 })
 
 const mapDispatchToProps = {

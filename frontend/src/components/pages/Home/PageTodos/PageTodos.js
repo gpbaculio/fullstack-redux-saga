@@ -9,7 +9,7 @@ import { fetchTodosByUserRequest } from '../../../../actions/todo'
 
 const override = css`
     display: block;
-    margin: 3rem auto;
+    margin: 0 auto;
     border-color: red;
 `;
 
@@ -17,28 +17,25 @@ class PageTodos extends Component {
 
   componentDidMount = () => {
     const { fetchTodos, sort } = this.props
-    fetchTodos({ sort, page: 1 })
+    fetchTodos({ sort, page: 1, refetching: false })
   }
 
   render() {
-    const { ids, entities, loading } = this.props
-    return (
-      <React.Fragment>
-        {loading ? (
-          <ClipLoader
-            className={override}
-            sizeUnit="px"
-            size={100}
-            color='#123abc'
-            loading={loading}
-          />
-        ) : ids.map(id =>
-          <PageTodo
-            key={entities[id]._id}
-            todo={entities[id]}
-          />)}
-      </React.Fragment>
-    )
+    const { ids, entities, sort } = this.props
+    if (sort !== 'all') {
+      return ids
+        .map(id => entities[id])
+        .filter(t => sort === 'active' ? !t.complete : t.complete)
+        .map(t => <PageTodo
+          key={t._id}
+          todo={t}
+        />)
+    }
+    return ids.map(id =>
+      <PageTodo
+        key={entities[id]._id}
+        todo={entities[id]}
+      />)
   }
 }
 
@@ -51,14 +48,14 @@ PageTodos.propTypes = {
   ids: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   fetchTodos: PropTypes.func.isRequired,
   sort: PropTypes.string.isRequired,
-  loading: PropTypes.bool.isRequired,
+  refetching: PropTypes.bool.isRequired,
 }
 
 const mapStateToProps = ({ todos }) => ({
   entities: todos.entities,
   ids: todos.ids,
   sort: todos.sort,
-  loading: todos.loading
+  refetching: todos.refetching
 })
 
 const mapDispatchToProps = {

@@ -3,8 +3,16 @@ import Pagination from 'react-js-pagination';
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { Alert } from 'reactstrap'
+import { ClipLoader } from 'react-spinners';
+import { css } from 'react-emotion';
 
 import { fetchTodosByUserRequest, setPage } from '../../../actions/todo'
+
+const override = css`
+    display: block;
+    margin: 0 auto;
+    border-color: red;
+`;
 
 class Paginator extends Component {
 

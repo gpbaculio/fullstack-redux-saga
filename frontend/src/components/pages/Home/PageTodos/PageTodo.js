@@ -28,12 +28,8 @@ class PageTodo extends Component {
       todo,
       userId,
       toggleTodoCompleteByUserRequest: toggleTodoCompleteByUserRequestAction,
-      fetchTodos,
-      page,
-      sort
     } = this.props
     toggleTodoCompleteByUserRequestAction({ userId, todo })
-    fetchTodos({ page, sort })
   }
 
   handleIsEditing = () => {

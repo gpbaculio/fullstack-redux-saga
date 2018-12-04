@@ -17,7 +17,8 @@ const initialState = {
   count: 0,
   page: 1,
   sort: 'all',
-  loading: false
+  loading: false,
+  refetching: false
 }
 
 export default (state = initialState, action) => {
@@ -51,7 +52,8 @@ export default (state = initialState, action) => {
     case FETCH_TODOS_BY_USER_REQUEST:
       return {
         ...state,
-        loading: true
+        loading: true,
+        refetching: false
       }
     case FETCH_TODOS_BY_USER_SUCCESS:
       return {
