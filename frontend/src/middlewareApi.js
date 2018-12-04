@@ -18,7 +18,8 @@ import {
   DELETE_TODO_REQUEST,
   DELETE_TODO_SUCCESS,
   DELETE_TODO_FAILURE,
-  DELETE_COMPLETED_REQUEST
+  DELETE_COMPLETED_REQUEST,
+  DELETE_COMPLETED_SUCCESS
 } from './types'
 
 export default function (store) {
@@ -144,39 +145,36 @@ export default function (store) {
     }
     if (action.type === DELETE_COMPLETED_REQUEST) {
       const transactionId = uuidV1()
-      const { entities, ids } = store.getState().todos
+      let { entities, ids } = store.getState().todos
       const { id: userId } = store.getState().user
-      const { complete } = action
-      const todos = ids.map(id => entities[id])
-      let idsToUpdate;
-      if (complete) {
-        idsToUpdate = _.map(todos.filter(todo => !todo.complete), '_id')
-      } else {
-        idsToUpdate = _.map(todos.filter(todo => todo.complete), '_id')
+      const idsToDelete = _.map(
+        _.filter(_.map(ids, id => entities[id]),
+          o => o.active), '_id')
+      entities = {
+        ..._.keyBy(
+          _.map(
+            _.filter(
+              idsToDelete, i => !idsToDelete.includes(i)
+            ), id => entities[id]),
+          todo => todo._id
+        ),
       }
-      next({ // data is mock todo
-        type: TOGGLE_ALL_SUCCESS,
-        entities: {
-          ...entities,
-          ..._.keyBy(
-            idsToUpdate
-              .map(id => ({
-                ...entities[id],
-                complete
-              })), todo => todo._id),
-        },
+      ids = _.filter(idsToDelete, i => !idsToDelete.includes(i))
+      next({
+        type: DELETE_COMPLETED_SUCCESS,
+        entities,
+        ids,
         optimist: { type: BEGIN, id: transactionId }
       });
       try {
-        const { data } = await axios.post('/api/todo/toggle_complete', { ids: idsToUpdate, userId, complete })
+        await axios.post('/api/todo/delete_completed', {
+          ids: idsToDelete,
+          userId
+        })
         next({
-          type: TOGGLE_ALL_SUCCESS,
-          entities: {
-            ...entities,
-            ..._.keyBy(
-              data.todos,
-              todo => todo._id),
-          },
+          type: DELETE_COMPLETED_SUCCESS,
+          entities,
+          ids,
           optimist: { type: COMMIT, id: transactionId }
         })
       } catch (error) {

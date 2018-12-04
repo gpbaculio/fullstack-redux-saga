@@ -42,12 +42,12 @@ class PageTodo extends Component {
     const {
       deleteTodo: deleteTodoRequest,
       todo,
-      page,
-      fetchTodos,
-      sort
+      // page,
+      // fetchTodos,
+      // sort
     } = this.props
     deleteTodoRequest(todo._id)
-    fetchTodos({ page, sort })
+    // fetchTodos({ page, sort })
   }
 
   render() {
@@ -116,9 +116,9 @@ PageTodo.propTypes = {
   toggleTodoCompleteByUserRequest: PropTypes.func.isRequired,
   userId: PropTypes.string.isRequired,
   deleteTodo: PropTypes.func.isRequired,
-  page: PropTypes.number.isRequired,
-  fetchTodos: PropTypes.func.isRequired,
-  sort: PropTypes.string.isRequired,
+  // page: PropTypes.number.isRequired,
+  // fetchTodos: PropTypes.func.isRequired,
+  // sort: PropTypes.string.isRequired,
 }
 
 const mapStateToProps = ({ user, todos }) => ({

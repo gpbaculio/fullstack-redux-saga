@@ -4,8 +4,15 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom' // for history
 import queryString from 'query-string'
+import _ from 'lodash'
 
-import { toggleAll, fetchTodosByUserRequest, setSort, setPage } from '../../../actions/todo'
+import {
+  toggleAll,
+  fetchTodosByUserRequest,
+  setSort,
+  setPage,
+  deleteCompleted
+} from '../../../actions/todo'
 
 class Filter extends Component {
 
@@ -37,7 +44,7 @@ class Filter extends Component {
         fetchTodosByUserRequest: fetchTodos,
       } = this.props
       toggleAllTodo(complete)
-      fetchTodos({ sort, page, sortFirst: -1 })
+      fetchTodos({ sort, page })
     })
   }
 
@@ -54,13 +61,18 @@ class Filter extends Component {
     const { search } = history.location
     const { sort } = queryString.parse(search);
     setStatePage(1)
-    fetchTodos({ page: 1, sort, sortFirst: -1 })
+    fetchTodos({ page: 1, sort })
     setSorting(sort)
+  }
+
+  onDeleteCompleted = () => {
+    const { deleteCompleted: onDeleteCompleted } = this.props
+    onDeleteCompleted()
   }
 
   render() {
     const { completeAll } = this.state
-    const { count, sort, todos } = this.props
+    const { count, sort, todos, enableClear } = this.props
     return (
       <div
         className="py-2 align-items-center d-flex justify-content-around"
@@ -77,7 +89,8 @@ class Filter extends Component {
               checked={completeAll}
               type="checkbox"
               className="mt-0"
-            /> Select All
+            />
+            {completeAll ? 'Deselect All' : 'Select All'}
           </div>
           <Button
             onClick={this.handleFilterLinkClick}
@@ -108,7 +121,14 @@ class Filter extends Component {
           </Button>
         </div>
         <div>
-          <Button disabled size="md" color="link">Clear Completed</Button>
+          <Button
+            disabled={!enableClear}
+            onClick={this.onDeleteCompleted}
+            size="md"
+            color="link"
+          >
+            Clear Completed
+          </Button>
         </div>
       </div>
     )
@@ -136,11 +156,14 @@ Filter.propTypes = {
   setPage: PropTypes.func.isRequired,
   page: PropTypes.number.isRequired,
   todos: PropTypes.arrayOf(PropTypes.shape({})),
+  deleteCompleted: PropTypes.func.isRequired,
+  enableClear: PropTypes.bool.isRequired,
 }
 
 const mapStateToProps = ({ todos }) => ({
   completeAll: todos.ids.map(id => todos.entities[id])
     .every(todo => todo.complete),
+  enableClear: _.some(_.map(todos.ids, id => todos.entities[id]), todo => todo.complete),
   count: todos.count,
   page: todos.page,
   sort: todos.sort,
@@ -151,7 +174,8 @@ const mapDispatchToProps = {
   toggleAll,
   fetchTodosByUserRequest,
   setSort,
-  setPage
+  setPage,
+  deleteCompleted
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Filter))
