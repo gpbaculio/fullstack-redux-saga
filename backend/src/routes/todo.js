@@ -23,10 +23,10 @@ router.post('/toggle_complete', async (req, res) => {
       { _id: { $in: ids }, userId },
       { $set: { complete } },
       async () => {
-        const result = await Todo.find(
+        const todos = await Todo.find(
           { _id: { $in: ids }, userId }
         ).populate('userId', '_id');
-        res.json({ response: result })
+        res.json({ todos })
       }
     );
   } catch (error) {
@@ -37,6 +37,17 @@ router.post('/toggle_complete', async (req, res) => {
 router.post('/delete', async (req, res) => {
   const { id, userId } = req.body;
   await Todo.findOneAndRemove({ _id: id, userId }, error => {
+    if (error) {
+      res.status(400).json({ error })
+    } else {
+      res.json('OK')
+    }
+  });
+})
+
+router.post('/delete_completed', async (req, res) => {
+  const { ids, userId } = req.body;
+  await Todo.deleteMany({ userId, id: { $in: ids } }, error => {
     if (error) {
       res.status(400).json({ error })
     } else {

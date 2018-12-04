@@ -17,7 +17,8 @@ import {
   EDIT_TODO_TEXT_FAILURE,
   DELETE_TODO_REQUEST,
   DELETE_TODO_SUCCESS,
-  DELETE_TODO_FAILURE
+  DELETE_TODO_FAILURE,
+  DELETE_COMPLETED_REQUEST
 } from './types'
 
 export default function (store) {
@@ -85,7 +86,7 @@ export default function (store) {
         })
         next({
           type: TOGGLE_TODO_COMPLETE_BY_USER_SUCCESS,
-          todo: data.response[0],
+          todo: data.todos[0],
           optimist: { type: COMMIT, id: transactionId }
         })
       } catch (error) {
@@ -117,7 +118,7 @@ export default function (store) {
               .map(id => ({
                 ...entities[id],
                 complete
-              })), todo => todo._id)
+              })), todo => todo._id),
         },
         optimist: { type: BEGIN, id: transactionId }
       });
@@ -128,8 +129,53 @@ export default function (store) {
           entities: {
             ...entities,
             ..._.keyBy(
-              data.response,
-              todo => todo._id)
+              data.todos,
+              todo => todo._id),
+          },
+          optimist: { type: COMMIT, id: transactionId }
+        })
+      } catch (error) {
+        next({
+          type: TOGGLE_ALL_FAILURE,
+          error,
+          optimist: { type: REVERT, id: transactionId }
+        })
+      }
+    }
+    if (action.type === DELETE_COMPLETED_REQUEST) {
+      const transactionId = uuidV1()
+      const { entities, ids } = store.getState().todos
+      const { id: userId } = store.getState().user
+      const { complete } = action
+      const todos = ids.map(id => entities[id])
+      let idsToUpdate;
+      if (complete) {
+        idsToUpdate = _.map(todos.filter(todo => !todo.complete), '_id')
+      } else {
+        idsToUpdate = _.map(todos.filter(todo => todo.complete), '_id')
+      }
+      next({ // data is mock todo
+        type: TOGGLE_ALL_SUCCESS,
+        entities: {
+          ...entities,
+          ..._.keyBy(
+            idsToUpdate
+              .map(id => ({
+                ...entities[id],
+                complete
+              })), todo => todo._id),
+        },
+        optimist: { type: BEGIN, id: transactionId }
+      });
+      try {
+        const { data } = await axios.post('/api/todo/toggle_complete', { ids: idsToUpdate, userId, complete })
+        next({
+          type: TOGGLE_ALL_SUCCESS,
+          entities: {
+            ...entities,
+            ..._.keyBy(
+              data.todos,
+              todo => todo._id),
           },
           optimist: { type: COMMIT, id: transactionId }
         })

@@ -12,7 +12,8 @@ import {
   EDIT_TODO_TEXT_REQUEST,
   DELETE_TODO_REQUEST,
   SET_PAGE,
-  SET_SORT
+  SET_SORT,
+  DELETE_COMPLETED
 } from "../types";
 
 export const addTodoByUserRequest = todoTextWithUserId => ({
@@ -83,4 +84,8 @@ export const setPage = page => ({
 export const setSort = sort => ({
   type: SET_SORT,
   sort
+})
+
+export const deleteCompleted = () => ({
+  type: DELETE_COMPLETED,
 })
