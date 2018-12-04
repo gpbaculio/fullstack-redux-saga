@@ -37,7 +37,7 @@ class Filter extends Component {
         fetchTodosByUserRequest: fetchTodos,
       } = this.props
       toggleAllTodo(complete)
-      fetchTodos({ sort, page })
+      fetchTodos({ sort, page, sortFirst: -1 })
     })
   }
 
@@ -54,7 +54,7 @@ class Filter extends Component {
     const { search } = history.location
     const { sort } = queryString.parse(search);
     setStatePage(1)
-    fetchTodos({ page: 1, sort })
+    fetchTodos({ page: 1, sort, sortFirst: -1 })
     setSorting(sort)
   }
 
@@ -62,11 +62,13 @@ class Filter extends Component {
     const { completeAll } = this.state
     const { count, sort, todos } = this.props
     return (
-      <div className="py-2 align-items-center d-flex justify-content-around" style={{ fontSize: '1rem' }}>
+      <div
+        className="py-2 align-items-center d-flex justify-content-around"
+        style={{ fontSize: '1rem' }}
+      >
         <div>
           Total: {sort !== 'all' ?
-            todos.filter(t => sort === 'active' ? !t.complete : t.complete)
-              .length : count}
+            todos.filter(t => sort === 'active' ? !t.complete : t.complete).length : count}
         </div>
         <div className="d-flex align-items-center">
           <div className="d-flex align-items-center">

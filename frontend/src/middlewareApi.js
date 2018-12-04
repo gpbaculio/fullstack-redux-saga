@@ -50,7 +50,6 @@ export default function (store) {
         entities[index] = data.todo
         entities = _.keyBy(_.values({ ...entities }), todo => todo._id)
         ids = [data.todo._id, ...ids].filter(id => id !== transactionId)
-        count += 1
         next({
           type: ADD_TODO_BY_USER_SUCCESS,
           entities,

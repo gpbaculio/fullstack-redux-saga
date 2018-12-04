@@ -12,26 +12,26 @@ import {
 
 const initialState = {
   loading: false,
-  signUp: {},
-  logIn: {},
-  confirmToken: {},
-  todo: {}
+  signUp: '',
+  logIn: '',
+  confirmToken: '',
+  todo: ''
 }
 
 export default (state = initialState, action) => {
   switch (action.type) {
 
     case CREATE_USER_REQUEST:
-      return { ...state, loading: true, signUp: {} } // clear errors
+      return { ...state, loading: true, signUp: '' } // clear errors
 
     case CREATE_USER_FAILURE:
-      return { ...state, loading: false, signUp: action.errors }
+      return { ...state, loading: false, signUp: action.error }
 
     case LOGIN_USER_REQUEST:
-      return { ...state, loading: true, logIn: {} }
+      return { ...state, loading: true, logIn: '' }
 
     case LOGIN_USER_FAILURE:
-      return { ...state, loading: false, logIn: action.errors }
+      return { ...state, loading: false, logIn: action.error }
 
     case USER_LOGGED_IN:
       return { ...initialState, loading: false }
@@ -40,13 +40,13 @@ export default (state = initialState, action) => {
       return { ...initialState, ...action.form }
 
     case USER_CONFIRM_TOKEN_REQUEST:
-      return { ...state, loading: true, confirmToken: {} }
+      return { ...state, loading: true, confirmToken: '' }
 
     case USER_CONFIRM_TOKEN_SUCCESS:
-      return { ...state, loading: false, confirmToken: {} }
+      return { ...state, loading: false, confirmToken: '' }
 
     case USER_CONFIRM_TOKEN_FAILURE:
-      return { ...state, loading: false, confirmToken: action.errors }
+      return { ...state, loading: false, confirmToken: action.error }
     default:
       return state
   }

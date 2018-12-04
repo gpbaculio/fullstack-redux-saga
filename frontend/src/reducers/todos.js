@@ -9,6 +9,7 @@ import {
   SET_PAGE,
   SET_SORT,
   FETCH_TODOS_BY_USER_REQUEST,
+  ADD_TODO_BY_USER_REQUEST
 } from "../types";
 
 const initialState = {
@@ -18,7 +19,8 @@ const initialState = {
   page: 1,
   sort: 'all',
   loading: false,
-  refetching: false
+  refetching: false,
+  countPerPage: 9
 }
 
 export default (state = initialState, action) => {
@@ -28,13 +30,18 @@ export default (state = initialState, action) => {
         ...state,
         page: action.page
       }
+    case ADD_TODO_BY_USER_REQUEST:
+      return {
+        ...state,
+        countPerPage: state.countPerPage + 1
+      }
     case ADD_TODO_BY_USER_SUCCESS:
       return {
         ...state,
         loading: false,
         entities: action.entities,
         ids: action.ids,
-        count: action.count
+        count: action.count,
       }
     case TOGGLE_TODO_COMPLETE_BY_USER_SUCCESS:
       return {
@@ -53,7 +60,8 @@ export default (state = initialState, action) => {
       return {
         ...state,
         loading: true,
-        refetching: false
+        refetching: false,
+        countPerPage: 9
       }
     case FETCH_TODOS_BY_USER_SUCCESS:
       return {

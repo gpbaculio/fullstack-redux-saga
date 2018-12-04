@@ -62,11 +62,9 @@ router.post('/update_text', async (req, res) => {
 })
 
 router.get("/todos_by_user", authenticate, async (req, res) => {
-
   const { _id: userId } = req.currentUser
   const { offset, limit, searchText, complete } = req.query
   const query = { userId };
-
   if (searchText) {
     query.text = { '$regex': `${searchText}`, '$options': 'i' }
   } else if (complete) {

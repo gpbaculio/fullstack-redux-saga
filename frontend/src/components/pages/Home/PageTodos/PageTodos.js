@@ -1,23 +1,15 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types'
-import { ClipLoader } from 'react-spinners';
-import { css } from 'react-emotion';
 
 import PageTodo from './PageTodo'
 import { fetchTodosByUserRequest } from '../../../../actions/todo'
-
-const override = css`
-    display: block;
-    margin: 0 auto;
-    border-color: red;
-`;
 
 class PageTodos extends Component {
 
   componentDidMount = () => {
     const { fetchTodos, sort } = this.props
-    fetchTodos({ sort, page: 1, refetching: false })
+    fetchTodos({ sort, page: 1, refetching: false, sortFirst: -1 })
   }
 
   render() {
@@ -26,10 +18,7 @@ class PageTodos extends Component {
       return ids
         .map(id => entities[id])
         .filter(t => sort === 'active' ? !t.complete : t.complete)
-        .map(t => <PageTodo
-          key={t._id}
-          todo={t}
-        />)
+        .map(t => <PageTodo key={t._id} todo={t} />)
     }
     return ids.map(id =>
       <PageTodo
@@ -48,7 +37,6 @@ PageTodos.propTypes = {
   ids: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
   fetchTodos: PropTypes.func.isRequired,
   sort: PropTypes.string.isRequired,
-  refetching: PropTypes.bool.isRequired,
 }
 
 const mapStateToProps = ({ todos }) => ({

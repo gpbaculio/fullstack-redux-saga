@@ -13,9 +13,9 @@ export const createUserRequest = user => ({
   user
 })
 
-export const createUserFailure = errors => ({
+export const createUserFailure = error => ({
   type: CREATE_USER_FAILURE,
-  errors
+  error
 })
 
 export const resetFormState = form => ({

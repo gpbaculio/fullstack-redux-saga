@@ -25,7 +25,7 @@ export function* createUserSaga(action) {
     localStorage.setItem('gpbTodosJWT', user.token)
     history.push('/')
   } catch (e) {
-    yield put(createUserFailure(e.response.data.errors))
+    yield put(createUserFailure(e.response.data.error))
   }
 }
 
@@ -57,22 +57,17 @@ export function* userConfirmTokenSaga(action) {
   }
 }
 
-// export function* addTodoByUserSaga({ todoTextWithUserId }) {
-//   try {
-//     const todoWithUserData = yield call(api.todo.addTodoByUser, todoTextWithUserId)
-//     yield put(addTodoByUserSuccess(todoWithUserData))
-//   } catch (e) {
-//     yield put(addTodoByUserFailure(e.response.data.errors))
-//   }
-// }
-
 export function* fetchTodosByUserSaga({ data }) {
   try {
-    const { page, searchText, sort } = data
-    const limit = 9
-    const offset = (page - 1) * limit
-    const query = { page, searchText, limit, offset }
-
+    const { page, searchText, sort, limit, onDelete } = data
+    const offset = (page - 1) * 9
+    const query = { page, searchText, limit: 9, offset }
+    if (limit) {
+      query.limit = limit
+    }
+    if (onDelete) {
+      query.offset -= 1
+    }
     if (sort === 'all') {
       query.complete = null
     } else if (sort === 'active') {
@@ -80,7 +75,6 @@ export function* fetchTodosByUserSaga({ data }) {
     } else {
       query.complete = true
     }
-
     const { count, todos } = yield call(api.todo.fetchTodosByUser, query)
     yield put(fetchTodosByUserSuccess({ count, todos }))
   } catch (e) {

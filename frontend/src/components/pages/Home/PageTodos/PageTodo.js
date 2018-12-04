@@ -39,7 +39,13 @@ class PageTodo extends Component {
   }
 
   onDelete = () => {
-    const { deleteTodo: deleteTodoRequest, todo, page, fetchTodos, sort } = this.props
+    const {
+      deleteTodo: deleteTodoRequest,
+      todo,
+      page,
+      fetchTodos,
+      sort
+    } = this.props
     deleteTodoRequest(todo._id)
     fetchTodos({ page, sort })
   }
@@ -75,7 +81,14 @@ class PageTodo extends Component {
                     {todo.text}
                   </div>
                 )}
-              <Icon onClick={this.onDelete} style={{ color: 'red', cursor: 'pointer' }} icon={remove} />
+              <Icon
+                onClick={this.onDelete}
+                style={{
+                  color: 'red',
+                  cursor: 'pointer'
+                }}
+                icon={remove}
+              />
             </CardTitle>
             <CardText
               className="mt-2 text-center"

@@ -5,7 +5,6 @@ import {
   fetchUserSaga,
   logInUserSaga,
   userConfirmTokenSaga,
-  // addTodoByUserSaga,
   fetchTodosByUserSaga
 } from './userSagas';
 
@@ -14,7 +13,6 @@ import {
   FETCH_CURRENT_USER_REQUEST,
   LOGIN_USER_REQUEST,
   USER_CONFIRM_TOKEN_REQUEST,
-  // ADD_TODO_BY_USER_REQUEST,
   FETCH_TODOS_BY_USER_REQUEST,
 } from "../types";
 
@@ -23,6 +21,5 @@ export default function* rootSaga() {
   yield takeLatest(LOGIN_USER_REQUEST, logInUserSaga)
   yield takeLatest(FETCH_CURRENT_USER_REQUEST, fetchUserSaga)
   yield takeLatest(USER_CONFIRM_TOKEN_REQUEST, userConfirmTokenSaga)
-  // yield takeLatest(ADD_TODO_BY_USER_REQUEST, addTodoByUserSaga)
   yield takeLatest(FETCH_TODOS_BY_USER_REQUEST, fetchTodosByUserSaga)
 }

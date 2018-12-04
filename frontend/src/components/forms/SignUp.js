@@ -8,6 +8,7 @@ import PropTypes from 'prop-types'
 import { createUserRequest, resetFormState } from '../../actions/user'
 
 class SignUpForm extends React.Component {
+
   state = {
     data: {
       email: "",
@@ -16,13 +17,11 @@ class SignUpForm extends React.Component {
     errors: {},
   };
 
-  static getDerivedStateFromProps(nextProps) {
-    if (nextProps.serverErrors) {
-      return {
-        errors: nextProps.serverErrors
-      }
+  componentDidUpdate(_, prevState, ) {
+    const { signUpError } = this.props
+    if (signUpError !== prevState.errors.email) {
+      this.setState({ errors: { email: signUpError } })
     }
-    return null;
   }
 
   componentWillUnmount() {
@@ -43,9 +42,9 @@ class SignUpForm extends React.Component {
     const { data } = this.state
     const { submit } = this.props
     const errors = this.validate(data);
-    this.setState({ errors });
+    this.setState({ errors })
     if (Object.keys(errors).length === 0) {
-      await submit(data);
+      submit(data);
     }
   };
 
@@ -60,7 +59,7 @@ class SignUpForm extends React.Component {
     const { data, errors } = this.state;
     const { loading } = this.props
     return (
-      <form onSubmit={this.onSubmit}>
+      <React.Fragment>
         <div className="form-group">
           <label className="form-label" htmlFor="email">
             Email
@@ -77,7 +76,6 @@ class SignUpForm extends React.Component {
             <div className="invalid-feedback">{errors.email}</div>
           </label>
         </div>
-
         <div className="form-group">
           <label className="form-label" htmlFor="password">
             Password
@@ -91,31 +89,37 @@ class SignUpForm extends React.Component {
                 errors.password ? "form-control is-invalid" : "form-control"
               }
             />
+            <div className="invalid-feedback">{errors.password}</div>
           </label>
-          <div className="invalid-feedback">{errors.password}</div>
         </div>
-
-        <Button disabled={loading} type="submit" color="primary" className="btn-block">
+        <Button
+          onClick={this.onSubmit}
+          disabled={loading}
+          type="submit"
+          color="primary"
+          className="btn-block"
+        >
           Sign Up
         </Button>
 
         <small className="form-text text-center">
           or <Link to="/login">LOGIN</Link> if you have an account
         </small>
-      </form>
+      </React.Fragment>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
   loading: state.formErrors.loading,
-  serverErrors: state.formErrors.signUp
+  signUpError: state.formErrors.signUp
 })
 
 SignUpForm.propTypes = {
   submit: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
+  signUpError: PropTypes.string.isRequired,
 }
 
 export default connect(mapStateToProps, {

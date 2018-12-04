@@ -3,22 +3,14 @@ import Pagination from 'react-js-pagination';
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { Alert } from 'reactstrap'
-import { ClipLoader } from 'react-spinners';
-import { css } from 'react-emotion';
 
 import { fetchTodosByUserRequest, setPage } from '../../../actions/todo'
-
-const override = css`
-    display: block;
-    margin: 0 auto;
-    border-color: red;
-`;
 
 class Paginator extends Component {
 
   onPageChange = page => {
     const { fetchTodos, setPage: setStatePage, sort } = this.props
-    fetchTodos({ page, sort })
+    fetchTodos({ page, sort, sortFirst: -1 })
     setStatePage(page)
   }
 
@@ -27,7 +19,8 @@ class Paginator extends Component {
       activePage,
       count,
       sort,
-      loading
+      loading,
+      countPerPage
     } = this.props
     return (
       <React.Fragment>
@@ -38,7 +31,7 @@ class Paginator extends Component {
         ) : (
             <Pagination
               activePage={activePage}
-              itemsCountPerPage={9}
+              itemsCountPerPage={countPerPage}
               totalItemsCount={count}
               pageRangeDisplayed={5}
               onChange={this.onPageChange}
@@ -55,13 +48,15 @@ Paginator.propTypes = {
   sort: PropTypes.string.isRequired,
   loading: PropTypes.bool.isRequired,
   activePage: PropTypes.number.isRequired,
+  countPerPage: PropTypes.number.isRequired,
 }
 
 const mapStateToProps = ({ todos }) => ({
   count: todos.count,
   sort: todos.sort,
   loading: todos.loading,
-  activePage: todos.page
+  activePage: todos.page,
+  countPerPage: todos.countPerPage
 })
 
 const mapDispatchToProps = {

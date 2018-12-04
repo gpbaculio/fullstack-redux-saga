@@ -2,27 +2,59 @@ import axios from "axios";
 
 export default {
   user: {
-    login: credentials => axios.post("/api/auth", { credentials }).then(res => res.data.user),
-    signup: user => axios.post("/api/user", { user }).then(res => res.data.user),
-    fetchCurrentUser: () => axios.get("/api/user/current_user").then(res => res.data.user, () => { }),
-    confirm: token => axios.post('/api/auth/confirmation', { token }).then(res => res.data.user)
+    login: async (credentials) => {
+      try {
+        return await axios.post("/api/auth", { credentials })
+      } catch (e) {
+        console.log('failed login', e)
+        return null
+      }
+    },
+    signup: async (user) => {
+      try {
+        return axios.post("/api/user", { user })
+      } catch (e) {
+        console.log('failed signup', e)
+        return null
+      }
+    },
+    fetchCurrentUser: async () => {
+      try {
+        return await axios.get("/api/user/current_user")
+      } catch (e) {
+        console.log('failed to fetch current user', e)
+        return null
+      }
+    },
+    confirm: async (token) => {
+      try {
+        return await axios.post('/api/auth/confirmation', { token })
+      } catch (e) {
+        console.log('failed to confirm', e)
+        return null
+      }
+    }
   },
   todo: {
-    // addTodoByUser: ({ todoText, userId }) => axios.post("/api/todo", { todoText, userId }).then(res => res.data.todo),
-    fetchTodosByUser: async ({ offset, limit, searchText, complete }) => {
+    fetchTodosByUser: async ({ sortFirst, offset, limit, searchText, complete }) => {
       try {
-        const { data } = await axios.get("/api/todo/todos_by_user", { params: { offset, limit, searchText, complete } })
+        const { data } = await axios.get("/api/todo/todos_by_user", {
+          params: { sortFirst, offset, limit, searchText, complete }
+        })
         return { count: data.count, todos: data.todos };
       } catch (e) {
+        console.log('failed to fetch todos by user', e)
         return null
       }
     },
     toggleTodoCompleteByUser: async ({ todoId, userId, complete }) => {
       try {
-        const updatedTodo = await axios.post('/api/todo/update_todo', { todoId, userId, complete })
+        const updatedTodo = await axios.post('/api/todo/update_todo', {
+          todoId, userId, complete
+        })
         return updatedTodo
       } catch (error) {
-        return { error }
+        return null
       }
     }
   }
