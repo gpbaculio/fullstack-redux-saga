@@ -28,9 +28,9 @@ export const logInUserRequest = credentials => ({
   credentials
 });
 
-export const logInUserFailure = errors => ({
+export const logInUserFailure = error => ({
   type: LOGIN_USER_FAILURE,
-  errors
+  error
 });
 
 export const fetchCurrentUserRequest = () => ({

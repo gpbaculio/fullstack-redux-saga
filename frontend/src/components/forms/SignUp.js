@@ -17,16 +17,16 @@ class SignUpForm extends React.Component {
     errors: {},
   };
 
-  componentDidUpdate(_, prevState, ) {
+  componentDidUpdate(_, { errors }, ) {
     const { signUpError } = this.props
-    if (signUpError !== prevState.errors.email) {
+    if (signUpError !== errors.email) {
       this.setState({ errors: { email: signUpError } })
     }
   }
 
   componentWillUnmount() {
     const { reset } = this.props
-    reset({ signUp: {} })
+    reset({ signUp: '' })
   }
 
   onChange = e => {

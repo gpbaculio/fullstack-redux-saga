@@ -9,7 +9,7 @@ class PageTodos extends Component {
 
   componentDidMount = () => {
     const { fetchTodos, sort } = this.props
-    fetchTodos({ sort, page: 1, refetching: false, sortFirst: -1 })
+    fetchTodos({ sort, page: 1, refetching: false })
   }
 
   render() {

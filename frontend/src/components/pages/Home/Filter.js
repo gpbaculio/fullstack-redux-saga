@@ -135,7 +135,7 @@ Filter.propTypes = {
   sort: PropTypes.string.isRequired,
   setPage: PropTypes.func.isRequired,
   page: PropTypes.number.isRequired,
-  todos: PropTypes.array,
+  todos: PropTypes.arrayOf(PropTypes.shape({})),
 }
 
 const mapStateToProps = ({ todos }) => ({

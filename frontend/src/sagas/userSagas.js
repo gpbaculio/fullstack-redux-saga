@@ -20,8 +20,9 @@ import setAuthorizationHeader from '../utils/setAuthorizedHeader'
 
 export function* createUserSaga(action) {
   try {
-    const user = yield call(api.user.signup, action.user)
-    yield put(userLoggedIn(user)) // put dispatches an action!
+    const response = yield call(api.user.signup, action.user)
+    const { user } = response.data
+    yield put(userLoggedIn(user))
     localStorage.setItem('gpbTodosJWT', user.token)
     history.push('/')
   } catch (e) {
@@ -31,18 +32,20 @@ export function* createUserSaga(action) {
 
 export function* logInUserSaga(action) {
   try {
-    const user = yield call(api.user.login, action.credentials)
+    const response = yield call(api.user.login, action.credentials)
+    const { user } = response.data
     yield put(userLoggedIn(user))
     localStorage.setItem('gpbTodosJWT', user.token)
     setAuthorizationHeader(user.token)
     history.push('/')
   } catch (e) {
-    yield put(logInUserFailure(e.response.data.errors))
+    yield put(logInUserFailure(e.response.data.error))
   }
 }
 
 export function* fetchUserSaga() {
-  const user = yield call(api.user.fetchCurrentUser);
+  const response = yield call(api.user.fetchCurrentUser);
+  const { user } = response.data
   yield put(userLoggedIn(user))
 }
 

@@ -20,12 +20,11 @@ const Home = ({ confirmed, match }) => (
     <Container>
       <Row>
         <Col xs="12" md="6">
-          {confirmed ? <AddTodo /> :
-            (
-              <Alert className="text-center" color="primary">
-                Please confirm your account to Add Todo
-            </Alert>
-            )}
+          {confirmed ? <AddTodo /> : (
+            <Alert className="text-center mx-auto mt-4 mb-xs-1 mb-md-5" color="primary">
+              Please confirm your account to Add Todo
+              </Alert>
+          )}
         </Col>
         <Col xs="12" md="6">
           <Search />

@@ -10,9 +10,7 @@ router.post('/', (req, res) => {
             if (user && user.isValidPassword(credentials.password)) {
                 res.status(200).json({ user: user.toAuthJSON() })
             } else {
-                res.status(400).json({
-                    errors: { global: 'Invalid Credentials' }
-                })
+                res.status(400).json({ error: 'Invalid Credentials' })
             }
         })
 })
@@ -25,11 +23,7 @@ router.post('/confirmation', (req, res) => {
         { new: true }
     ).then(user =>
         user ? res.json({ user: { email: user.email } }) :
-            res.status(400).json({
-                errors: {
-                    global: 'Invalid Token'
-                }
-            }) // error response as for token must be invalid
+            res.status(400).json({ error: 'Invalid Token' }) // error response as for token must be invalid
     )
 })
 

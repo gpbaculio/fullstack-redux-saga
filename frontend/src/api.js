@@ -2,38 +2,10 @@ import axios from "axios";
 
 export default {
   user: {
-    login: async (credentials) => {
-      try {
-        return await axios.post("/api/auth", { credentials })
-      } catch (e) {
-        console.log('failed login', e)
-        return null
-      }
-    },
-    signup: async (user) => {
-      try {
-        return axios.post("/api/user", { user })
-      } catch (e) {
-        console.log('failed signup', e)
-        return null
-      }
-    },
-    fetchCurrentUser: async () => {
-      try {
-        return await axios.get("/api/user/current_user")
-      } catch (e) {
-        console.log('failed to fetch current user', e)
-        return null
-      }
-    },
-    confirm: async (token) => {
-      try {
-        return await axios.post('/api/auth/confirmation', { token })
-      } catch (e) {
-        console.log('failed to confirm', e)
-        return null
-      }
-    }
+    login: (credentials) => axios.post("/api/auth", { credentials }),
+    signup: (user) => axios.post("/api/user", { user }),
+    fetchCurrentUser: () => axios.get("/api/user/current_user"),
+    confirm: (token) => axios.post('/api/auth/confirmation', { token })
   },
   todo: {
     fetchTodosByUser: async ({ sortFirst, offset, limit, searchText, complete }) => {

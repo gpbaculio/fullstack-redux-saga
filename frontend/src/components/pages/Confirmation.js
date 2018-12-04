@@ -36,7 +36,7 @@ class Confirmation extends Component {
 
   componentWillUnmount = () => {
     const { reset } = this.props
-    reset({ confirmToken: {} })
+    reset({ confirmToken: '' })
   }
 
   render() {

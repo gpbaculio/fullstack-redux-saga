@@ -16,14 +16,14 @@ class Search extends Component {
     return (
       <Form
         className="
-        form-inline
-        justify-content-center
-        mx-auto
-        mt-4
-        mb-xs-1
-        mb-md-5
-        align-items-start
-      "
+          form-inline
+          justify-content-center
+          mx-auto
+          mt-4
+          mb-xs-1
+          mb-md-5
+          align-items-start
+        "
       >
       <Input
         placeholder="Search your todos"

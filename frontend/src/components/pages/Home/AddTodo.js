@@ -22,7 +22,6 @@ class AddTodo extends Component {
     const { addTodoByUserRequest: addTodo, userId } = this.props
     const { todoText } = this.state
     if(todoText){
-      console.log('add todo!', todoText)
       await addTodo({ todoText, userId })
       this.setState({ todoText: '' });
     }

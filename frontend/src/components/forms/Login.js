@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Validator from "validator";
+import isEmail from "validator/lib/isEmail";
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Button } from 'reactstrap'
@@ -15,21 +15,21 @@ class LoginForm extends React.Component {
       email: "",
       password: ""
     },
-    errors: {}
+    errors: {
+      serverError: ''
+    }
   };
 
-  static getDerivedStateFromProps(nextProps) {
-    if (nextProps.serverErrors) {
-      return {
-        errors: nextProps.serverErrors
-      }
+  componentDidUpdate(_, { errors }, ) {
+    const { loginError } = this.props
+    if (loginError !== errors.serverError) {
+      this.setState({ errors: { serverError: loginError } })
     }
-    return null;
   }
 
   componentWillUnmount() {
     const { reset } = this.props
-    reset({ logIn: {} })
+    reset({ logIn: '' })
   }
 
   onChange = e => {
@@ -53,7 +53,7 @@ class LoginForm extends React.Component {
 
   validate = data => {
     const errors = {};
-    if (!Validator.isEmail(data.email)) {
+    if (!isEmail(data.email)) {
       errors.email = "Invalid email";
     }
     if (!data.password) {
@@ -67,8 +67,8 @@ class LoginForm extends React.Component {
     const { loading } = this.props
     return (
       <form onSubmit={this.onSubmit}>
-        {errors.global && (
-          <div className="alert alert-danger">{errors.global}</div>
+        {errors.serverError && (
+          <div className="alert alert-danger">{errors.serverError}</div>
         )}
 
         <div className="form-group">
@@ -118,13 +118,14 @@ class LoginForm extends React.Component {
 
 const mapStateToProps = (state) => ({
   loading: state.formErrors.loading,
-  serverErrors: state.formErrors.signUp
+  loginError: state.formErrors.logIn
 })
 
 LoginForm.propTypes = {
   submit: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
+  loginError: PropTypes.string.isRequired,
 }
 
 export default connect(mapStateToProps, {
