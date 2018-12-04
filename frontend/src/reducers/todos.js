@@ -9,7 +9,8 @@ import {
   SET_PAGE,
   SET_SORT,
   FETCH_TODOS_BY_USER_REQUEST,
-  ADD_TODO_BY_USER_REQUEST
+  ADD_TODO_BY_USER_REQUEST,
+  USER_LOGGED_OUT
 } from "../types";
 
 const initialState = {
@@ -25,6 +26,10 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case USER_LOGGED_OUT:
+      return {
+        ...initialState
+      }
     case SET_PAGE:
       return {
         ...state,

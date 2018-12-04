@@ -59,7 +59,7 @@ class SignUpForm extends React.Component {
     const { data, errors } = this.state;
     const { loading } = this.props
     return (
-      <React.Fragment>
+      <form onSubmit={this.onSubmit}>
         <div className="form-group">
           <label className="form-label" htmlFor="email">
             Email
@@ -93,7 +93,6 @@ class SignUpForm extends React.Component {
           </label>
         </div>
         <Button
-          onClick={this.onSubmit}
           disabled={loading}
           type="submit"
           color="primary"
@@ -105,7 +104,7 @@ class SignUpForm extends React.Component {
         <small className="form-text text-center">
           or <Link to="/login">LOGIN</Link> if you have an account
         </small>
-      </React.Fragment>
+      </form>
     );
   }
 }

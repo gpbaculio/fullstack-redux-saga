@@ -17,16 +17,14 @@ const override = css`
 class Confirmation extends Component {
 
   state = {
-    errors: {}
+    error: ''
   }
 
-  static getDerivedStateFromProps(nextProps) {
-    if (nextProps.serverErrors) {
-      return {
-        errors: nextProps.serverErrors
-      }
+  componentDidUpdate(_, { error }, ) {
+    const { confirmTokenError } = this.props
+    if (confirmTokenError !== error) {
+      this.setState({ error: confirmTokenError })
     }
-    return null;
   }
 
   componentDidMount = () => {
@@ -41,7 +39,7 @@ class Confirmation extends Component {
 
   render() {
     const { loading, confirmed, email } = this.props
-    const { errors } = this.state
+    const { error } = this.state
     return (
       <Container>
         <ClipLoader
@@ -51,9 +49,9 @@ class Confirmation extends Component {
           color='#123abc'
           loading={loading}
         />
-        {errors.global && (
+        {error && (
           <Alert color="danger">
-            <h4 className="alert-heading">{errors.global}</h4>
+            <h3 className="alert-heading text-center">{error}</h3>
           </Alert>
         )}
         {confirmed && (
@@ -68,10 +66,14 @@ class Confirmation extends Component {
 
 const mapStateToProps = (state) => ({
   loading: state.formErrors.loading,
-  serverErrors: state.formErrors.confirmToken,
+  confirmTokenError: state.formErrors.confirmToken,
   confirmed: !!state.user.confirmed,
-  email: state.user.email ? state.user.email : false
+  email: state.user.email
 })
+
+Confirmation.defaultProps = {
+  confirmTokenError: ''
+}
 
 Confirmation.propTypes = {
   submit: PropTypes.func.isRequired,
@@ -81,12 +83,10 @@ Confirmation.propTypes = {
     }).isRequired,
   }).isRequired,
   confirmed: PropTypes.bool.isRequired,
-  email: PropTypes.oneOfType([
-    PropTypes.string.isRequired,
-    PropTypes.bool.isRequired
-  ]).isRequired,
+  email: PropTypes.string.isRequired,
   loading: PropTypes.bool.isRequired,
   reset: PropTypes.func.isRequired,
+  confirmTokenError: PropTypes.string,
 }
 
 export default connect(mapStateToProps, {

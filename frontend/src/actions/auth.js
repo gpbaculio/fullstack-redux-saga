@@ -25,7 +25,7 @@ export const userConfirmTokenSuccess = email => ({
   email
 })
 
-export const userConfirmTokenFailure = errors => ({
+export const userConfirmTokenFailure = error => ({
   type: USER_CONFIRM_TOKEN_FAILURE,
-  errors
+  error
 })

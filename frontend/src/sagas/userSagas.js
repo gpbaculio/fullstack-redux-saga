@@ -53,10 +53,11 @@ export function* userConfirmTokenSaga(action) {
   try {
     localStorage.removeItem('gpbTodosJWT')
     yield put(userLoggedOut())
-    const { email } = yield call(api.user.confirm, action.token)
-    yield put(userConfirmTokenSuccess(email))
+    const response = yield call(api.user.confirm, action.token)
+    const { user } = response.data
+    yield put(userConfirmTokenSuccess(user.email))
   } catch (e) {
-    yield put(userConfirmTokenFailure(e.response.data.errors))
+    yield put(userConfirmTokenFailure(e.response.data.error))
   }
 }
 
