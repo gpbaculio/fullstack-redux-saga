@@ -15,7 +15,12 @@ import PropTypes from 'prop-types'
 import TodoInput from './TodoInput'
 
 import { timeDifferenceForDate } from '../../../../utils/timeDifference'
-import { toggleTodoCompleteByUserRequest, deleteTodo, fetchTodosByUserRequest } from '../../../../actions/todo'
+import {
+  toggleTodoCompleteByUserRequest,
+  deleteTodo,
+  fetchTodosByUserRequest,
+  showRefresh
+} from '../../../../actions/todo'
 
 class PageTodo extends Component {
 
@@ -42,12 +47,10 @@ class PageTodo extends Component {
     const {
       deleteTodo: deleteTodoRequest,
       todo,
-      // page,
-      // fetchTodos,
-      // sort
+      showRefreshButton
     } = this.props
     deleteTodoRequest(todo._id)
-    // fetchTodos({ page, sort })
+    showRefreshButton()
   }
 
   render() {
@@ -116,9 +119,7 @@ PageTodo.propTypes = {
   toggleTodoCompleteByUserRequest: PropTypes.func.isRequired,
   userId: PropTypes.string.isRequired,
   deleteTodo: PropTypes.func.isRequired,
-  // page: PropTypes.number.isRequired,
-  // fetchTodos: PropTypes.func.isRequired,
-  // sort: PropTypes.string.isRequired,
+  showRefreshButton: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = ({ user, todos }) => ({
@@ -130,6 +131,7 @@ const mapStateToProps = ({ user, todos }) => ({
 const mapDispatchToProps = {
   toggleTodoCompleteByUserRequest,
   deleteTodo,
+  showRefreshButton: showRefresh,
   fetchTodos: fetchTodosByUserRequest
 }
 

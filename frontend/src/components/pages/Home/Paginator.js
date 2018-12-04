@@ -9,13 +9,21 @@ import { fetchTodosByUserRequest, setPage } from '../../../actions/todo'
 class Paginator extends Component {
 
   onPageChange = page => {
-    const { fetchTodos, setPage: setStatePage, sort } = this.props
+    const {
+      fetchTodos,
+      setPage: setStatePage,
+      sort
+    } = this.props
     fetchTodos({ page, sort })
     setStatePage(page)
   }
 
   onRefresh = () => {
-    const { fetchTodos, sort, page } = this.props
+    const {
+      fetchTodos,
+      sort,
+      activePage: page
+    } = this.props
     fetchTodos({ page, sort })
   }
 
