@@ -72,13 +72,9 @@ export default (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        entities: {
-          ..._.keyBy(
-            action.data.todos,
-            (todo) => todo._id)
-        },
-        ids: _.map(action.data.todos, '_id'),
-        count: action.data.count,
+        entities: action.entities,
+        ids: action.ids,
+        count: action.count,
       }
     case EDIT_TODO_TEXT_SUCCESS:
       return {

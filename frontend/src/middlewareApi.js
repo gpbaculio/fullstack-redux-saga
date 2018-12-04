@@ -124,7 +124,11 @@ export default function (store) {
         optimist: { type: BEGIN, id: transactionId }
       });
       try {
-        const { data } = await axios.post('/api/todo/toggle_complete', { ids: idsToUpdate, userId, complete })
+        const { data } = await axios.post('/api/todo/toggle_complete', {
+          ids: idsToUpdate,
+          userId,
+          complete
+        })
         next({
           type: TOGGLE_ALL_SUCCESS,
           entities: {
@@ -149,17 +153,20 @@ export default function (store) {
       const { id: userId } = store.getState().user
       const idsToDelete = _.map(
         _.filter(_.map(ids, id => entities[id]),
-          o => o.active), '_id')
+          todo => todo.complete), '_id')
+      console.log('idsToDelete = ', idsToDelete)
       entities = {
         ..._.keyBy(
           _.map(
             _.filter(
-              idsToDelete, i => !idsToDelete.includes(i)
+              ids, i => !idsToDelete.includes(i)
             ), id => entities[id]),
           todo => todo._id
         ),
       }
-      ids = _.filter(idsToDelete, i => !idsToDelete.includes(i))
+      ids = _.filter(ids, i => !idsToDelete.includes(i))
+      console.log('entities = ', entities)
+      console.log('ids = ', ids)
       next({
         type: DELETE_COMPLETED_SUCCESS,
         entities,
@@ -203,7 +210,11 @@ export default function (store) {
         optimist: { type: BEGIN, id: transactionId }
       });
       try {
-        const { data } = await axios.post('/api/todo/update_text', { id, userId, text })
+        const { data } = await axios.post('/api/todo/update_text', {
+          id,
+          userId,
+          text
+        })
         next({
           type: EDIT_TODO_TEXT_SUCCESS,
           entities: {

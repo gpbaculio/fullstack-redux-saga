@@ -36,10 +36,13 @@ export const fetchTodosByUserRequest = data => ({
   data
 })
 
-export const fetchTodosByUserSuccess = data => ({
+export const fetchTodosByUserSuccess = ({ entities, count, ids }) => ({
   type: FETCH_TODOS_BY_USER_SUCCESS,
-  data
+  entities,
+  count,
+  ids
 })
+
 
 export const fetchTodosByUserFailure = errors => ({
   type: FETCH_TODOS_BY_USER_FAILURE,

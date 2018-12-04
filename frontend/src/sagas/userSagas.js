@@ -1,5 +1,5 @@
 import { call, put } from 'redux-saga/effects'
-
+import _ from 'lodash'
 import {
   userLoggedIn,
   userLoggedOut,
@@ -80,8 +80,15 @@ export function* fetchTodosByUserSaga({ data }) {
       query.complete = true
     }
     const response = yield call(api.todo.fetchTodosByUser, query)
-    const { count, todos } = response.data
-    yield put(fetchTodosByUserSuccess({ count, todos }))
+    let { todos: entities } = response.data
+    const { count } = response.data
+    entities = {
+      ..._.keyBy(
+        { ...entities },
+        todo => todo._id)
+    }
+    const ids = _.map({ ...entities }, '_id')
+    yield put(fetchTodosByUserSuccess({ count, entities, ids }))
   } catch (e) {
     yield put(fetchTodosByUserFailure(e.response.data.errors))
   }
