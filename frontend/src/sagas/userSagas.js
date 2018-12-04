@@ -79,7 +79,8 @@ export function* fetchTodosByUserSaga({ data }) {
     } else {
       query.complete = true
     }
-    const { count, todos } = yield call(api.todo.fetchTodosByUser, query)
+    const response = yield call(api.todo.fetchTodosByUser, query)
+    const { count, todos } = response.data
     yield put(fetchTodosByUserSuccess({ count, todos }))
   } catch (e) {
     yield put(fetchTodosByUserFailure(e.response.data.errors))
