@@ -11,7 +11,8 @@ import {
   FETCH_TODOS_BY_USER_REQUEST,
   ADD_TODO_BY_USER_REQUEST,
   USER_LOGGED_OUT,
-  SHOW_REFRESH
+  SHOW_REFRESH,
+  DELETE_COMPLETED_SUCCESS
 } from "../types";
 
 const initialState = {
@@ -89,6 +90,13 @@ export default (state = initialState, action) => {
         entities: action.entities
       }
     case DELETE_TODO_SUCCESS:
+      return {
+        ...state,
+        entities: action.entities,
+        count: action.count,
+        ids: action.ids
+      }
+    case DELETE_COMPLETED_SUCCESS:
       return {
         ...state,
         entities: action.entities,

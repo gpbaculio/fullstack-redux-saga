@@ -154,7 +154,6 @@ export default function (store) {
       const idsToDelete = _.map(
         _.filter(_.map(ids, id => entities[id]),
           todo => todo.complete), '_id')
-      console.log('idsToDelete = ', idsToDelete)
       entities = {
         ..._.keyBy(
           _.map(
@@ -165,12 +164,11 @@ export default function (store) {
         ),
       }
       ids = _.filter(ids, i => !idsToDelete.includes(i))
-      console.log('entities = ', entities)
-      console.log('ids = ', ids)
       next({
         type: DELETE_COMPLETED_SUCCESS,
         entities,
         ids,
+        count: ids.length,
         optimist: { type: BEGIN, id: transactionId }
       });
       try {
@@ -182,6 +180,7 @@ export default function (store) {
           type: DELETE_COMPLETED_SUCCESS,
           entities,
           ids,
+          count: ids.length,
           optimist: { type: COMMIT, id: transactionId }
         })
       } catch (error) {

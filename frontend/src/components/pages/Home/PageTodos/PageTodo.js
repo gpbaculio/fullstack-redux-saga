@@ -47,10 +47,13 @@ class PageTodo extends Component {
     const {
       deleteTodo: deleteTodoRequest,
       todo,
-      showRefreshButton
+      showRefreshButton,
+      sort
     } = this.props
     deleteTodoRequest(todo._id)
-    showRefreshButton()
+    if (sort === 'all') {
+      showRefreshButton()
+    }
   }
 
   render() {
@@ -120,6 +123,7 @@ PageTodo.propTypes = {
   userId: PropTypes.string.isRequired,
   deleteTodo: PropTypes.func.isRequired,
   showRefreshButton: PropTypes.func.isRequired,
+  sort: PropTypes.string.isRequired,
 }
 
 const mapStateToProps = ({ user, todos }) => ({
