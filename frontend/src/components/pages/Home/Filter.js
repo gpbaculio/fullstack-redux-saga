@@ -36,7 +36,7 @@ class Filter extends Component {
   handleInputCheck = () => {
     this.setState(state => ({
       completeAll: !state.completeAll
-    }), () => {
+    }), async () => {
       const { completeAll: complete } = this.state
       const {
         toggleAll: toggleAllTodo,
@@ -44,8 +44,12 @@ class Filter extends Component {
         sort,
         fetchTodosByUserRequest: fetchTodos,
       } = this.props
-      toggleAllTodo(complete)
-      fetchTodos({ sort, page })
+      await toggleAllTodo(complete)
+      console.log('sort = ', sort)
+      if (sort !== 'all') {
+        console.log('fire fetch!')
+        await fetchTodos({ sort, page })
+      }
     })
   }
 
@@ -80,15 +84,14 @@ class Filter extends Component {
 
   render() {
     const { completeAll } = this.state
-    const { count, sort, todos, enableClear } = this.props
+    const { count, sort, enableClear } = this.props
     return (
       <div
         className="py-2 align-items-center d-flex justify-content-around"
         style={{ fontSize: '1rem' }}
       >
         <div>
-          Total: {sort !== 'all' ?
-            todos.filter(t => sort === 'active' ? !t.complete : t.complete).length : count}
+          Total: {count}
         </div>
         <div className="d-flex align-items-center">
           <div className="d-flex align-items-center">
@@ -145,7 +148,6 @@ class Filter extends Component {
 
 Filter.defaultProps = {
   completeAll: false,
-  todos: []
 }
 
 Filter.propTypes = {
@@ -163,15 +165,13 @@ Filter.propTypes = {
   sort: PropTypes.string.isRequired,
   setPage: PropTypes.func.isRequired,
   page: PropTypes.number.isRequired,
-  todos: PropTypes.arrayOf(PropTypes.shape({})),
   deleteCompleted: PropTypes.func.isRequired,
   enableClear: PropTypes.bool.isRequired,
   showRefreshButton: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = ({ todos }) => ({
-  completeAll: todos.ids.map(id => todos.entities[id])
-    .every(todo => todo.complete),
+  completeAll: _.every(_.map(todos.ids, id => todos.entities[id]), todo => todo.complete),
   enableClear: _.some(_.map(todos.ids, id => todos.entities[id]), todo => todo.complete),
   count: todos.count,
   page: todos.page,

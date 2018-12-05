@@ -33,8 +33,13 @@ class PageTodo extends Component {
       todo,
       userId,
       toggleTodoCompleteByUserRequest: toggleTodoCompleteByUserRequestAction,
+      showRefreshButton,
+      sort
     } = this.props
     toggleTodoCompleteByUserRequestAction({ userId, todo })
+    if (sort !== 'all') {
+      showRefreshButton()
+    }
   }
 
   handleIsEditing = () => {
@@ -48,12 +53,9 @@ class PageTodo extends Component {
       deleteTodo: deleteTodoRequest,
       todo,
       showRefreshButton,
-      sort
     } = this.props
     deleteTodoRequest(todo._id)
-    if (sort === 'all') {
-      showRefreshButton()
-    }
+    showRefreshButton()
   }
 
   render() {

@@ -100,27 +100,31 @@ export default function (store) {
     }
     if (action.type === TOGGLE_ALL_REQUEST) {
       const transactionId = uuidV1()
-      const { entities, ids } = store.getState().todos
+      const { ids } = store.getState().todos
+      let { entities } = store.getState().todos
       const { id: userId } = store.getState().user
       const { complete } = action
-      const todos = ids.map(id => entities[id])
+      const todos = _.map(ids, id => entities[id])
       let idsToUpdate;
       if (complete) {
-        idsToUpdate = _.map(todos.filter(todo => !todo.complete), '_id')
+        idsToUpdate = _.map(_.filter(todos, todo => !todo.complete), '_id')
       } else {
-        idsToUpdate = _.map(todos.filter(todo => todo.complete), '_id')
+        idsToUpdate = _.map(_.filter(todos, todo => todo.complete), '_id')
+      }
+      entities = {
+        ...entities,
+        ..._.keyBy(
+          idsToUpdate
+            .map(id => ({
+              ...entities[id],
+              complete
+            })), todo => todo._id),
       }
       next({ // data is mock todo
         type: TOGGLE_ALL_SUCCESS,
-        entities: {
-          ...entities,
-          ..._.keyBy(
-            idsToUpdate
-              .map(id => ({
-                ...entities[id],
-                complete
-              })), todo => todo._id),
-        },
+        entities,
+        ids: _.map(entities, '_id'),
+        count: _.map(entities, '_id').length,
         optimist: { type: BEGIN, id: transactionId }
       });
       try {
@@ -137,6 +141,8 @@ export default function (store) {
               data.todos,
               todo => todo._id),
           },
+          ids: _.map(entities, '_id'),
+          count: _.map(entities, '_id').length,
           optimist: { type: COMMIT, id: transactionId }
         })
       } catch (error) {
@@ -165,8 +171,6 @@ export default function (store) {
         ),
       }
       ids = _.filter(ids, i => !idsToDelete.includes(i))
-      console.log('count = ', count)
-      console.log('idsToDelete = ', idsToDelete)
       next({
         type: DELETE_COMPLETED_SUCCESS,
         entities,

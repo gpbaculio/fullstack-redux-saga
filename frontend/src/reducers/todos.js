@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import {
   ADD_TODO_BY_USER_SUCCESS,
   FETCH_TODOS_BY_USER_SUCCESS,
