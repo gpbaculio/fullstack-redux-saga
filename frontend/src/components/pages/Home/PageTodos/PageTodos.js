@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
+import _ from 'lodash'
 import PropTypes from 'prop-types'
 import { ClipLoader } from 'react-spinners';
 import { css } from 'react-emotion';
-
 
 import PageTodo from './PageTodo'
 import { fetchTodosByUserRequest } from '../../../../actions/todo'
@@ -34,16 +34,14 @@ class PageTodos extends Component {
       )
     }
     if (sort !== 'all') {
-      return ids
-        .map(id => entities[id])
-        .filter(t => sort === 'active' ? !t.complete : t.complete)
-        .map(t => <PageTodo key={t._id} todo={t} />)
+      return _.map(
+        _.filter(
+          _.map(ids, id => entities[id]),
+          t => sort === 'active' ? !t.complete : t.complete
+        ),
+        t => <PageTodo key={t._id} todo={t} />)
     }
-    return ids.map(id =>
-      <PageTodo
-        key={entities[id]._id}
-        todo={entities[id]}
-      />)
+    return _.map(ids, id => <PageTodo key={entities[id]._id} todo={entities[id]} />)
   }
 }
 
