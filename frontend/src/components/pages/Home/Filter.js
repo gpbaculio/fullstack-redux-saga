@@ -11,7 +11,8 @@ import {
   fetchTodosByUserRequest,
   setSort,
   setPage,
-  deleteCompleted
+  deleteCompleted,
+  showRefresh
 } from '../../../actions/todo'
 
 class Filter extends Component {
@@ -66,8 +67,15 @@ class Filter extends Component {
   }
 
   onDeleteCompleted = () => {
-    const { deleteCompleted: onDeleteCompleted } = this.props
+    const {
+      deleteCompleted: onDeleteCompleted,
+      showRefreshButton,
+      sort
+    } = this.props
     onDeleteCompleted()
+    if (sort === 'all') {
+      showRefreshButton()
+    }
   }
 
   render() {
@@ -158,6 +166,7 @@ Filter.propTypes = {
   todos: PropTypes.arrayOf(PropTypes.shape({})),
   deleteCompleted: PropTypes.func.isRequired,
   enableClear: PropTypes.bool.isRequired,
+  showRefreshButton: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = ({ todos }) => ({
@@ -175,7 +184,8 @@ const mapDispatchToProps = {
   fetchTodosByUserRequest,
   setSort,
   setPage,
-  deleteCompleted
+  deleteCompleted,
+  showRefreshButton: showRefresh,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Filter))

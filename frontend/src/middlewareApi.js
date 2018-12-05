@@ -150,6 +150,7 @@ export default function (store) {
     if (action.type === DELETE_COMPLETED_REQUEST) {
       const transactionId = uuidV1()
       let { entities, ids } = store.getState().todos
+      const { count } = store.getState().todos
       const { id: userId } = store.getState().user
       const idsToDelete = _.map(
         _.filter(_.map(ids, id => entities[id]),
@@ -164,11 +165,13 @@ export default function (store) {
         ),
       }
       ids = _.filter(ids, i => !idsToDelete.includes(i))
+      console.log('count = ', count)
+      console.log('idsToDelete = ', idsToDelete)
       next({
         type: DELETE_COMPLETED_SUCCESS,
         entities,
         ids,
-        count: ids.length,
+        count: count - idsToDelete.length,
         optimist: { type: BEGIN, id: transactionId }
       });
       try {
@@ -180,7 +183,7 @@ export default function (store) {
           type: DELETE_COMPLETED_SUCCESS,
           entities,
           ids,
-          count: ids.length,
+          count: count - idsToDelete.length,
           optimist: { type: COMMIT, id: transactionId }
         })
       } catch (error) {
