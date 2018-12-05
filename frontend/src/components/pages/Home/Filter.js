@@ -45,9 +45,7 @@ class Filter extends Component {
         fetchTodosByUserRequest: fetchTodos,
       } = this.props
       await toggleAllTodo(complete)
-      console.log('sort = ', sort)
       if (sort !== 'all') {
-        console.log('fire fetch!')
         await fetchTodos({ sort, page })
       }
     })

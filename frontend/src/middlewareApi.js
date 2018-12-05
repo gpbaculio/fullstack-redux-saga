@@ -123,8 +123,6 @@ export default function (store) {
       next({ // data is mock todo
         type: TOGGLE_ALL_SUCCESS,
         entities,
-        ids: _.map(entities, '_id'),
-        count: _.map(entities, '_id').length,
         optimist: { type: BEGIN, id: transactionId }
       });
       try {

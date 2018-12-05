@@ -44,7 +44,6 @@ export const fetchTodosByUserSuccess = ({ entities, count, ids }) => ({
   ids
 })
 
-
 export const fetchTodosByUserFailure = errors => ({
   type: FETCH_TODOS_BY_USER_FAILURE,
   errors

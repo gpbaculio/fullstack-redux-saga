@@ -11,7 +11,8 @@ import {
   ADD_TODO_BY_USER_REQUEST,
   USER_LOGGED_OUT,
   SHOW_REFRESH,
-  DELETE_COMPLETED_SUCCESS
+  DELETE_COMPLETED_SUCCESS,
+  TOGGLE_ALL_REQUEST
 } from "../types";
 
 const initialState = {
@@ -58,9 +59,15 @@ export default (state = initialState, action) => {
           [action.todo._id]: action.todo
         },
       }
+    case TOGGLE_ALL_REQUEST:
+      return {
+        ...state,
+        loading: false,
+      }
     case TOGGLE_ALL_SUCCESS:
       return {
         ...state,
+        loading: true,
         entities: action.entities,
       }
     case SHOW_REFRESH:
@@ -105,6 +112,7 @@ export default (state = initialState, action) => {
     case SET_SORT:
       return {
         ...state,
+        showRefresh: false,
         sort: action.sort
       }
     default:
