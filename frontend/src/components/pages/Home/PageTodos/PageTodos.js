@@ -22,7 +22,7 @@ class PageTodos extends Component {
 
   render() {
     const { ids, entities, sort, loading, initializing } = this.props
-    if (initializing || loading && sort !== 'all') {
+    if (initializing || (loading && sort !== 'all')) {
       return (
         <ClipLoader
           className={override}
