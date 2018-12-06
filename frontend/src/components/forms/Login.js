@@ -70,7 +70,6 @@ class LoginForm extends React.Component {
         {errors.serverError && (
           <div className="alert alert-danger">{errors.serverError}</div>
         )}
-
         <div className="form-group">
           <label className="form-label" htmlFor="email">Email
             <input
@@ -109,7 +108,6 @@ class LoginForm extends React.Component {
 
         <small className="form-text text-center">
           <Link to="/signup">Sign up</Link> if you do not have an account<br />
-          <Link to="/forgot_password">Forgot Password?</Link>
         </small>
       </form>
     );
