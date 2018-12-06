@@ -34,8 +34,8 @@ class Filter extends Component {
   }
 
   handleInputCheck = () => {
-    this.setState(state => ({
-      completeAll: !state.completeAll
+    this.setState(({ completeAll }) => ({
+      completeAll: !completeAll
     }), async () => {
       const { completeAll: complete } = this.state
       const {
