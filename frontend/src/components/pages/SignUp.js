@@ -11,7 +11,7 @@ import { SignUpForm } from "../forms";
 
 const SignupPage = () => (
     <Container style={{ height: "100vh" }}>
-        <Row className="align-items-center" style={{ height: "100vh" }}>
+        <Row className="align-items-center justify-content-center" style={{ height: "100vh" }}>
             <Col xs="12" sm="8" lg="6">
                 <Card>
                     <CardHeader>Join the Club!</CardHeader>

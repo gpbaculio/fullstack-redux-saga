@@ -82,8 +82,8 @@ class LoginForm extends React.Component {
                 errors.email ? "form-control is-invalid" : "form-control"
               }
             />
+            <div className="invalid-feedback">{errors.email}</div>
           </label>
-          <div className="invalid-feedback">{errors.email}</div>
         </div>
 
         <div className="form-group">
@@ -98,8 +98,8 @@ class LoginForm extends React.Component {
                 errors.password ? "form-control is-invalid" : "form-control"
               }
             />
+            <div className="invalid-feedback">{errors.password}</div>
           </label>
-          <div className="invalid-feedback">{errors.password}</div>
         </div>
 
         <Button disabled={loading} type="submit" color="primary" className="btn-block">
