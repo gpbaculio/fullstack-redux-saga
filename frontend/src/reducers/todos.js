@@ -24,6 +24,7 @@ const initialState = {
   loading: false,
   refetching: false,
   countPerPage: 9,
+  initializing: false,
   showRefresh: false
 }
 
@@ -79,11 +80,13 @@ export default (state = initialState, action) => {
       return {
         ...state,
         loading: true,
-        countPerPage: 9
+        countPerPage: 9,
+        initializing: true, // show load upon render on all
       }
     case FETCH_TODOS_BY_USER_SUCCESS:
       return {
         ...state,
+        initializing: false,
         loading: false,
         entities: action.entities,
         showRefresh: false,

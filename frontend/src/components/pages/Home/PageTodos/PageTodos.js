@@ -21,8 +21,9 @@ class PageTodos extends Component {
   }
 
   render() {
-    const { ids, entities, sort, loading } = this.props
-    if (loading && sort !== 'all') {
+    const { ids, entities, sort, loading, initializing } = this.props
+    console.log('initializing = ', initializing)
+    if (initializing || loading && sort !== 'all') {
       return (
         <ClipLoader
           className={override}
@@ -55,6 +56,7 @@ PageTodos.propTypes = {
   fetchTodos: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
   sort: PropTypes.string.isRequired,
+  initializing: PropTypes.bool.isRequired,
 }
 
 const mapStateToProps = ({ todos }) => ({
@@ -62,7 +64,8 @@ const mapStateToProps = ({ todos }) => ({
   ids: todos.ids,
   sort: todos.sort,
   refetching: todos.refetching,
-  loading: todos.loading
+  loading: todos.loading,
+  initializing: todos.initializing
 })
 
 const mapDispatchToProps = {
