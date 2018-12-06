@@ -20,8 +20,6 @@ import {
   deleteTodo,
   fetchTodosByUserRequest,
   showRefresh,
-  decreaseCount,
-  increaseCount
 } from '../../../../actions/todo'
 
 class PageTodo extends Component {
@@ -141,8 +139,6 @@ const mapStateToProps = ({ user, todos }) => ({
 const mapDispatchToProps = {
   toggleTodoCompleteByUserRequest,
   deleteTodo,
-  decreaseCount,
-  increaseCount,
   showRefreshButton: showRefresh,
   fetchTodos: fetchTodosByUserRequest,
 }

@@ -13,8 +13,6 @@ import {
   SHOW_REFRESH,
   DELETE_COMPLETED_SUCCESS,
   TOGGLE_ALL_REQUEST,
-  INCREASE_COUNT,
-  DECREASE_COUNT
 } from "../types";
 
 const initialState = {
@@ -119,16 +117,6 @@ export default (state = initialState, action) => {
         ...state,
         showRefresh: false,
         sort: action.sort
-      }
-    case INCREASE_COUNT:
-      return {
-        ...state,
-        count: state.count + 1,
-      }
-    case DECREASE_COUNT:
-      return {
-        ...state,
-        count: state.count - 1,
       }
     default:
       return state
