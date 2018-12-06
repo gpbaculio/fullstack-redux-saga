@@ -1,7 +1,11 @@
 import { BEGIN, COMMIT, REVERT } from 'redux-optimist';
 import axios from 'axios'
 import uuidV1 from 'uuid'
-import _ from 'lodash'
+import map from 'lodash/map'
+import filter from 'lodash/filter'
+import values from 'lodash/values'
+import keyBy from 'lodash/keyBy'
+import unset from 'lodash/unset'
 import {
   ADD_TODO_BY_USER_REQUEST,
   ADD_TODO_BY_USER_SUCCESS,
@@ -48,9 +52,9 @@ export default function (store) {
       });
       try {
         const { data } = await axios.post("/api/todo", { todoText, userId })
-        const index = _.values({ ...entities }).findIndex(todo => todo.transactionId === transactionId)
+        const index = values({ ...entities }).findIndex(todo => todo.transactionId === transactionId)
         entities[index] = data.todo
-        entities = _.keyBy(_.values({ ...entities }), todo => todo._id)
+        entities = keyBy(values({ ...entities }), todo => todo._id)
         ids = [data.todo._id, ...ids].filter(id => id !== transactionId)
         next({
           type: ADD_TODO_BY_USER_SUCCESS,
@@ -104,16 +108,16 @@ export default function (store) {
       let { entities } = store.getState().todos
       const { id: userId } = store.getState().user
       const { complete } = action
-      const todos = _.map(ids, id => entities[id])
+      const todos = map(ids, id => entities[id])
       let idsToUpdate;
       if (complete) {
-        idsToUpdate = _.map(_.filter(todos, todo => !todo.complete), '_id')
+        idsToUpdate = map(filter(todos, todo => !todo.complete), '_id')
       } else {
-        idsToUpdate = _.map(_.filter(todos, todo => todo.complete), '_id')
+        idsToUpdate = map(filter(todos, todo => todo.complete), '_id')
       }
       entities = {
         ...entities,
-        ..._.keyBy(
+        ...keyBy(
           idsToUpdate
             .map(id => ({
               ...entities[id],
@@ -135,12 +139,12 @@ export default function (store) {
           type: TOGGLE_ALL_SUCCESS,
           entities: {
             ...entities,
-            ..._.keyBy(
+            ...keyBy(
               data.todos,
               todo => todo._id),
           },
-          ids: _.map(entities, '_id'),
-          count: _.map(entities, '_id').length,
+          ids: map(entities, '_id'),
+          count: map(entities, '_id').length,
           optimist: { type: COMMIT, id: transactionId }
         })
       } catch (error) {
@@ -156,19 +160,19 @@ export default function (store) {
       let { entities, ids } = store.getState().todos
       const { count } = store.getState().todos
       const { id: userId } = store.getState().user
-      const idsToDelete = _.map(
-        _.filter(_.map(ids, id => entities[id]),
+      const idsToDelete = map(
+        filter(map(ids, id => entities[id]),
           todo => todo.complete), '_id')
       entities = {
-        ..._.keyBy(
-          _.map(
-            _.filter(
+        ...keyBy(
+          map(
+            filter(
               ids, i => !idsToDelete.includes(i)
             ), id => entities[id]),
           todo => todo._id
         ),
       }
-      ids = _.filter(ids, i => !idsToDelete.includes(i))
+      ids = filter(ids, i => !idsToDelete.includes(i))
       next({
         type: DELETE_COMPLETED_SUCCESS,
         entities,
@@ -239,7 +243,7 @@ export default function (store) {
       const transactionId = uuidV1()
       const { id } = action
       const { entities } = store.getState().todos
-      _.unset(entities, id); // remove property id
+      unset(entities, id); // remove property id
       let { count } = store.getState().todos
       const { id: userId } = store.getState().user
       count -= 1

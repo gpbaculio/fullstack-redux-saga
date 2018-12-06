@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
-import _ from 'lodash'
+import map from 'lodash/map'
+import filter from 'lodash/filter'
 import PropTypes from 'prop-types'
 import { ClipLoader } from 'react-spinners';
 import { css } from 'react-emotion';
@@ -34,14 +35,14 @@ class PageTodos extends Component {
       )
     }
     if (sort !== 'all') {
-      return _.map(
-        _.filter(
-          _.map(ids, id => entities[id]),
+      return map(
+        filter(
+          map(ids, id => entities[id]),
           t => sort === 'active' ? !t.complete : t.complete
         ),
         t => <PageTodo key={t._id} todo={t} />)
     }
-    return _.map(ids, id => <PageTodo key={entities[id]._id} todo={entities[id]} />)
+    return map(ids, id => <PageTodo key={entities[id]._id} todo={entities[id]} />)
   }
 }
 
