@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Input, Button } from 'reactstrap'
+import { Input, Button, Col, Row } from 'reactstrap'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom' // for history
@@ -84,14 +84,11 @@ class Filter extends Component {
     const { completeAll } = this.state
     const { count, sort, enableClear } = this.props
     return (
-      <div
-        className="py-2 align-items-center d-flex justify-content-around"
-        style={{ fontSize: '1rem' }}
-      >
-        <div>
+      <Row className="my-3">
+        <Col lg="2" className="d-flex justify-content-center align-items-center">
           Total: {count}
-        </div>
-        <div className="d-flex align-items-center">
+        </Col>
+        <Col lg="8" className="filter d-flex justify-content-center align-items-center">
           <div className="d-flex align-items-center">
             <Input
               onChange={this.handleInputCheck}
@@ -101,35 +98,37 @@ class Filter extends Component {
             />
             {completeAll ? 'Deselect All' : 'Select All'}
           </div>
-          <Button
-            onClick={this.handleFilterLinkClick}
-            size="md"
-            color="link"
-            name="all"
-            disabled={sort === '' || sort === 'all'}
-          >
-            All
+          <div className="nav-container d-flex justify-content-around">
+            <Button
+              onClick={this.handleFilterLinkClick}
+              size="md"
+              color="link"
+              name="all"
+              disabled={sort === '' || sort === 'all'}
+            >
+              All
           </Button>
-          <Button
-            onClick={this.handleFilterLinkClick}
-            size="md"
-            color="link"
-            name="active" // complete = false
-            disabled={sort === 'active'}
-          >
-            Active
+            <Button
+              onClick={this.handleFilterLinkClick}
+              size="md"
+              color="link"
+              name="active" // complete = false
+              disabled={sort === 'active'}
+            >
+              Active
           </Button>
-          <Button
-            onClick={this.handleFilterLinkClick}
-            size="md"
-            color="link"
-            name="complete"
-            disabled={sort === 'complete'}
-          >
-            Completed
+            <Button
+              onClick={this.handleFilterLinkClick}
+              size="md"
+              color="link"
+              name="complete"
+              disabled={sort === 'complete'}
+            >
+              Completed
           </Button>
-        </div>
-        <div>
+          </div>
+        </Col>
+        <Col lg="2" className="d-flex align-items-center justify-content-center">
           <Button
             disabled={!enableClear}
             onClick={this.onDeleteCompleted}
@@ -138,8 +137,8 @@ class Filter extends Component {
           >
             Clear Completed
           </Button>
-        </div>
-      </div>
+        </Col>
+      </Row>
     )
   }
 }

@@ -71,6 +71,18 @@ strong {
     width: 100%;
   }
 }
+.filter {
+  @include mediaQuery(576px) {
+    flex-direction: column;
+    margin-top: 12px;
+  }
+  .nav-container {
+    @include mediaQuery(576px) {
+      margin-top: 12px;
+      margin-bottom: 12px;
+    }
+  }
+}
 // .feature-container {
 //   text-align: center;
 // 	height: auto;

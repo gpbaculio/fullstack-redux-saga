@@ -62,3 +62,13 @@ strong {
 
 .form-group .form-label {
   width: 100%; }
+
+@media screen and (max-width: 576px) {
+  .filter {
+    flex-direction: column;
+    margin-top: 12px; } }
+
+@media screen and (max-width: 576px) {
+  .filter .nav-container {
+    margin-top: 12px;
+    margin-bottom: 12px; } }
