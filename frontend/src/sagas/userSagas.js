@@ -24,6 +24,7 @@ export function* createUserSaga(action) {
     const { user } = response.data
     yield put(userLoggedIn(user))
     localStorage.setItem('gpbTodosJWT', user.token)
+    setAuthorizationHeader(user.token)
     history.push('/')
   } catch (e) {
     yield put(createUserFailure(e.response.data.error))
