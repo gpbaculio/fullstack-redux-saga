@@ -47,7 +47,7 @@ class Header extends React.Component {
                 <Navbar color="light" light expand="md">
                     <Container>
                         <Link to='/home' className="navbar-brand">
-                            Fullstack Redux Saga
+                            Glendon Philipp Baculio
                         </Link>
                         <NavbarToggler onClick={this.toggle} />
                         <Collapse isOpen={isOpen} navbar>

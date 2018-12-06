@@ -12,9 +12,14 @@ class Paginator extends Component {
     const {
       fetchTodos,
       setPage: setStatePage,
-      sort
+      sort,
+      searchText
     } = this.props
-    fetchTodos({ page, sort })
+    const query = { page, sort }
+    if (searchText) {
+      query.searchText = searchText
+    }
+    fetchTodos(query)
     setStatePage(page)
   }
 
@@ -34,7 +39,7 @@ class Paginator extends Component {
       sort,
       loading,
       countPerPage,
-      showRefresh
+      showRefresh,
     } = this.props
     return (
       <React.Fragment>
@@ -74,6 +79,7 @@ Paginator.propTypes = {
   activePage: PropTypes.number.isRequired,
   countPerPage: PropTypes.number.isRequired,
   showRefresh: PropTypes.bool.isRequired,
+  searchText: PropTypes.string.isRequired,
 }
 
 const mapStateToProps = ({ todos }) => ({
@@ -82,7 +88,8 @@ const mapStateToProps = ({ todos }) => ({
   loading: todos.loading,
   activePage: todos.page,
   countPerPage: todos.countPerPage,
-  showRefresh: todos.showRefresh
+  showRefresh: todos.showRefresh,
+  searchText: todos.searchText
 })
 
 const mapDispatchToProps = {

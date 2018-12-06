@@ -13,6 +13,7 @@ import {
   SHOW_REFRESH,
   DELETE_COMPLETED_SUCCESS,
   TOGGLE_ALL_REQUEST,
+  SET_SEARCH_TEXT
 } from "../types";
 
 const initialState = {
@@ -25,7 +26,8 @@ const initialState = {
   refetching: false,
   countPerPage: 9,
   initializing: false,
-  showRefresh: false
+  showRefresh: false,
+  searchText: ''
 }
 
 export default (state = initialState, action) => {
@@ -117,6 +119,11 @@ export default (state = initialState, action) => {
         ...state,
         showRefresh: false,
         sort: action.sort
+      }
+    case SET_SEARCH_TEXT:
+      return {
+        ...state,
+        searchText: action.text
       }
     default:
       return state

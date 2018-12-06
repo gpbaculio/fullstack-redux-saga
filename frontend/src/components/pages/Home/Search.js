@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Input, Form } from 'reactstrap'
 import PropTypes from 'prop-types'
 
-import { fetchTodosByUserRequest} from '../../../actions/todo'
+import { fetchTodosByUserRequest, setSearchText} from '../../../actions/todo'
 
 class Search extends Component {
   
@@ -12,15 +12,20 @@ class Search extends Component {
   }
 
   onChange = e => {
-    this.setState({ text: e.target.value })
+    this.setState({ text: e.target.value.trim() })
   }
 
   onSubmit = async (e) => {
     e.preventDefault()
     const { text } = this.state
-    const { fetcTodos, sort } = this.props
+    const {
+      fetcTodos,
+      sort,
+      setSearchText: setSearchTextAction
+    } = this.props
     if(text){
-      await fetcTodos({ page: 1, sort, searchText: text.trim()})
+      setSearchTextAction(text)
+      await fetcTodos({ page: 1, sort, searchText: text})
     }
   }
 
@@ -52,13 +57,15 @@ class Search extends Component {
 Search.propTypes = {
   fetcTodos: PropTypes.func.isRequired,
   sort: PropTypes.string.isRequired,
+  setSearchText:PropTypes.func.isRequired,
 }
 const mapStateToProps = ({todos}) => ({
   sort: todos.sort
 })
 
 const mapDispatchToProps = {
-  fetcTodos:fetchTodosByUserRequest
+  fetcTodos:fetchTodosByUserRequest,
+  setSearchText
 }
 
 

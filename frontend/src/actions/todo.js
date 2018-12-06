@@ -15,6 +15,7 @@ import {
   SET_SORT,
   DELETE_COMPLETED_REQUEST,
   SHOW_REFRESH,
+  SET_SEARCH_TEXT,
 } from "../types";
 
 export const addTodoByUserRequest = todoTextWithUserId => ({
@@ -95,4 +96,9 @@ export const setSort = sort => ({
 
 export const deleteCompleted = () => ({
   type: DELETE_COMPLETED_REQUEST,
+})
+
+export const setSearchText = text => ({
+  type: SET_SEARCH_TEXT,
+  text
 })
