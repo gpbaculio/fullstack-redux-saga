@@ -19,7 +19,9 @@ class Search extends Component {
     e.preventDefault()
     const { text } = this.state
     const { fetcTodos, sort } = this.props
-    await fetcTodos({ page: 1, sort, searchText: text})
+    if(text){
+      await fetcTodos({ page: 1, sort, searchText: text.trim()})
+    }
   }
 
   render() {

@@ -22,7 +22,7 @@ class AddTodo extends Component {
     const { addTodoByUserRequest: addTodo, userId } = this.props
     const { todoText } = this.state
     if(todoText){
-      await addTodo({ todoText, userId })
+      await addTodo({ todoText:todoText.trim(), userId })
       this.setState({ todoText: '' });
     }
   };
