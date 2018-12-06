@@ -29,6 +29,7 @@ class AddTodo extends Component {
 
   render() {
     const { todoText } = this.state
+    const { disableField } = this.props
     return (
       <form
         className="
@@ -48,6 +49,7 @@ class AddTodo extends Component {
           name="todoText"
           value={todoText}
           placeholder="Add Todo"
+          disabled={disableField}
           onChange={this.onChange}
           className="form-control w-75"
         />
@@ -59,11 +61,13 @@ class AddTodo extends Component {
 AddTodo.propTypes = {
   addTodoByUserRequest: PropTypes.func.isRequired,
   userId: PropTypes.string.isRequired,
+  disableField: PropTypes.bool.isRequired,
 }
 
 const mapStateToProps = ({ user, todos}) => ({
   userId: user.id,
-  loading: todos.loading
+  loading: todos.loading,
+  disableField: todos.disableField
 })
 
 const mapDispatchToProps = {

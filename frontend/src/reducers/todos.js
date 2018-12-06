@@ -27,7 +27,8 @@ const initialState = {
   countPerPage: 9,
   initializing: false,
   showRefresh: false,
-  searchText: ''
+  searchText: '',
+  disableField: false
 }
 
 export default (state = initialState, action) => {
@@ -44,12 +45,13 @@ export default (state = initialState, action) => {
     case ADD_TODO_BY_USER_REQUEST:
       return {
         ...state,
+        disableField: false,
         countPerPage: state.countPerPage + 1
       }
     case ADD_TODO_BY_USER_SUCCESS:
       return {
         ...state,
-        loading: false,
+        disableField: true,
         entities: action.entities,
         ids: action.ids,
         count: action.count,
