@@ -5,6 +5,7 @@ import {
     NavbarToggler,
     Nav,
     NavItem,
+    NavLink,
     Container
 } from 'reactstrap';
 import PropTypes from 'prop-types'
@@ -40,7 +41,7 @@ class Header extends React.Component {
 
     render() {
         const { isOpen } = this.state
-        const { authorized } = this.props
+        const { email } = this.props
         return (
             <React.Fragment>
                 <Navbar color="light" light expand="md">
@@ -51,21 +52,26 @@ class Header extends React.Component {
                         <NavbarToggler onClick={this.toggle} />
                         <Collapse isOpen={isOpen} navbar>
                             <Nav className="ml-auto" navbar>
-                                {authorized ? (
-                                    <NavItem>
-                                        <button
-                                            type="button"
-                                            style={{
-                                                backgroundColor: '#F8F9FA',
-                                                border: 'none',
-                                                cursor: 'pointer'
-                                            }}
-                                            className="nav-link"
-                                            onClick={this.logOut}
-                                        >
-                                            Logout
+                                {email ? (
+                                    <React.Fragment>
+                                        <NavItem>
+                                            <NavLink disabled href="#">{email}</NavLink>
+                                        </NavItem>
+                                        <NavItem>
+                                            <button
+                                                type="button"
+                                                style={{
+                                                    backgroundColor: '#F8F9FA',
+                                                    border: 'none',
+                                                    cursor: 'pointer'
+                                                }}
+                                                className="nav-link"
+                                                onClick={this.logOut}
+                                            >
+                                                Logout
                                         </button>
-                                    </NavItem>) : (
+                                        </NavItem>
+                                    </React.Fragment>) : (
                                         <React.Fragment>
                                             <NavItem>
                                                 <Link className="nav-link" to="/login">
@@ -89,11 +95,11 @@ class Header extends React.Component {
 }
 
 Header.propTypes = {
-    authorized: PropTypes.bool.isRequired,
+    email: PropTypes.string.isRequired,
 }
 
 const mapStateToProps = state => ({
-    authorized: !!state.user.email
+    email: state.user.email
 })
 
 export default connect(mapStateToProps, { userLoggedOut })(withRouter(Header))
