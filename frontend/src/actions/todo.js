@@ -14,7 +14,9 @@ import {
   SET_PAGE,
   SET_SORT,
   DELETE_COMPLETED_REQUEST,
-  SHOW_REFRESH
+  SHOW_REFRESH,
+  DECREASE_COUNT,
+  INCREASE_COUNT
 } from "../types";
 
 export const addTodoByUserRequest = todoTextWithUserId => ({
@@ -95,4 +97,12 @@ export const setSort = sort => ({
 
 export const deleteCompleted = () => ({
   type: DELETE_COMPLETED_REQUEST,
+})
+
+export const decreaseCount = () => ({
+  type: DECREASE_COUNT
+})
+
+export const increaseCount = () => ({
+  type: INCREASE_COUNT
 })

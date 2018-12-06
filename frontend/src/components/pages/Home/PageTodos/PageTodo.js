@@ -19,7 +19,9 @@ import {
   toggleTodoCompleteByUserRequest,
   deleteTodo,
   fetchTodosByUserRequest,
-  showRefresh
+  showRefresh,
+  decreaseCount,
+  increaseCount
 } from '../../../../actions/todo'
 
 class PageTodo extends Component {
@@ -34,11 +36,13 @@ class PageTodo extends Component {
       userId,
       toggleTodoCompleteByUserRequest: toggleTodoCompleteByUserRequestAction,
       showRefreshButton,
-      sort
+      sort,
+      decreaseCount: decreaseCountAction
     } = this.props
     toggleTodoCompleteByUserRequestAction({ userId, todo })
     if (sort !== 'all') {
       showRefreshButton()
+      decreaseCountAction()
     }
   }
 
@@ -126,6 +130,8 @@ PageTodo.propTypes = {
   deleteTodo: PropTypes.func.isRequired,
   showRefreshButton: PropTypes.func.isRequired,
   sort: PropTypes.string.isRequired,
+  decreaseCount: PropTypes.func.isRequired,
+  increaseCount: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = ({ user, todos }) => ({
@@ -137,6 +143,8 @@ const mapStateToProps = ({ user, todos }) => ({
 const mapDispatchToProps = {
   toggleTodoCompleteByUserRequest,
   deleteTodo,
+  decreaseCount,
+  increaseCount,
   showRefreshButton: showRefresh,
   fetchTodos: fetchTodosByUserRequest
 }

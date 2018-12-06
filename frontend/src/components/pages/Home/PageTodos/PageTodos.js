@@ -22,7 +22,6 @@ class PageTodos extends Component {
 
   render() {
     const { ids, entities, sort, loading, initializing } = this.props
-    console.log('initializing = ', initializing)
     if (initializing || loading && sort !== 'all') {
       return (
         <ClipLoader
