@@ -1,5 +1,9 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import { Input, Form } from 'reactstrap'
+import PropTypes from 'prop-types'
+
+import { fetchTodosByUserRequest} from '../../../actions/todo'
 
 class Search extends Component {
   
@@ -9,6 +13,13 @@ class Search extends Component {
 
   onChange = e => {
     this.setState({ text: e.target.value })
+  }
+
+  onSubmit = async (e) => {
+    e.preventDefault()
+    const { text } = this.state
+    const { fetcTodos, sort } = this.props
+    await fetcTodos({ page: 1, sort, searchText: text})
   }
 
   render() {
@@ -24,6 +35,7 @@ class Search extends Component {
           mb-md-5
           align-items-start
         "
+        onSubmit={this.onSubmit}
       >
       <Input
         placeholder="Search your todos"
@@ -35,5 +47,17 @@ class Search extends Component {
     )
   }
 }
+Search.propTypes = {
+  fetcTodos: PropTypes.func.isRequired,
+  sort: PropTypes.string.isRequired,
+}
+const mapStateToProps = ({todos}) => ({
+  sort: todos.sort
+})
 
-export default Search
+const mapDispatchToProps = {
+  fetcTodos:fetchTodosByUserRequest
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Search)
