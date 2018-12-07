@@ -22,9 +22,6 @@ app.use('/api/auth', auth)
 app.use('/api/user', user)
 app.use('/api/todo', todo)
 
-app.get('/*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'))
-})
 
 if (process.env.NODE_ENV === 'production') {
     // Serve any static files
