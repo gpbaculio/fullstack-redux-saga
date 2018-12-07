@@ -8,11 +8,11 @@
     "concurrently": "^4.0.1"
   },
   "scripts": {
-    "dev": "concurrently --kill-others \"yarn run backend\" \"yarn run frontend\"",
-    "start": "cd backend && yarn start",
-    "backend": "cd backend && yarn run dev",
-    "frontend": "cd frontend && yarn start",
-    "build": "cd frontend && yarn run build",
-    "heroku-postbuild": "cd frontend && yarn install && yarn run build"
+    "dev": "concurrently --kill-others \"npm run backend\" \"npm run frontend\"",
+    "start": "cd backend && npm start",
+    "backend": "cd backend && npm run dev",
+    "frontend": "cd frontend && npm start",
+    "build": "cd frontend && npm run build",
+    "heroku-postbuild": "cd frontend && npm install && npm run build"
   }
 }
