@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev": "concurrently --kill-others \"npm run backend\" \"npm run frontend\"",
-    "start": "cd backend && npm start",
+    "start": "cd backend && npm install && npm start",
     "backend": "cd backend && npm run dev",
     "frontend": "cd frontend && npm start",
     "build": "cd frontend && npm run build",
