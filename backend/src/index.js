@@ -12,7 +12,7 @@ dotenv.config()
 const app = express()
 app.use(bodyParser.json())
 
-app.use(favicon(path.join(__dirname, '../../frontend/public', 'favicon.ico')))
+app.use(favicon(path.join(__dirname, '../../frontend/build', 'favicon.ico')))
 const port = process.env.PORT || 8000;
 mongoose.Promise = Promise;
 mongoose.connect(process.env.MONGODB_URL, {
