@@ -10,6 +10,7 @@ import { auth, user, todo } from './routes'
 dotenv.config()
 const app = express()
 app.use(bodyParser.json())
+const port = process.env.PORT || 8000;
 mongoose.Promise = Promise;
 mongoose.connect(process.env.MONGODB_URL, {
     useNewUrlParser: true
@@ -31,4 +32,4 @@ if (process.env.NODE_ENV === 'production') {
     });
 }
 
-app.listen(8000, () => console.log('Running on localhost:8000'))
+app.listen(port, () => console.log(`Running on port ${port}`))
