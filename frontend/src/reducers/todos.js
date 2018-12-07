@@ -13,7 +13,11 @@ import {
   SHOW_REFRESH,
   DELETE_COMPLETED_SUCCESS,
   TOGGLE_ALL_REQUEST,
-  SET_SEARCH_TEXT
+  SET_SEARCH_TEXT,
+  ADD_TODO_BY_USER_FAILURE,
+  TOGGLE_TODO_COMPLETE_BY_USER_FAILURE,
+  TOGGLE_ALL_FAILURE,
+  DELETE_TODO_FAILURE
 } from "../types";
 
 const initialState = {
@@ -28,7 +32,8 @@ const initialState = {
   initializing: false,
   showRefresh: false,
   searchText: '',
-  disableField: false
+  disableField: false,
+  error: ''
 }
 
 export default (state = initialState, action) => {
@@ -126,6 +131,26 @@ export default (state = initialState, action) => {
       return {
         ...state,
         searchText: action.text
+      }
+    case ADD_TODO_BY_USER_FAILURE:
+      return {
+        ...state,
+        error: action.error
+      }
+    case TOGGLE_TODO_COMPLETE_BY_USER_FAILURE:
+      return {
+        ...state,
+        error: action.error
+      }
+    case TOGGLE_ALL_FAILURE:
+      return {
+        ...state,
+        error: action.error
+      }
+    case DELETE_TODO_FAILURE:
+      return {
+        ...state,
+        error: action.error
       }
     default:
       return state

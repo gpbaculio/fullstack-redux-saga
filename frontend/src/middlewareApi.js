@@ -23,7 +23,8 @@ import {
   DELETE_TODO_SUCCESS,
   DELETE_TODO_FAILURE,
   DELETE_COMPLETED_REQUEST,
-  DELETE_COMPLETED_SUCCESS
+  DELETE_COMPLETED_SUCCESS,
+  DELETE_COMPLETED_FAILURE
 } from './types'
 
 export default function (store) {
@@ -194,7 +195,7 @@ export default function (store) {
         })
       } catch (error) {
         next({
-          type: TOGGLE_ALL_FAILURE,
+          type: DELETE_COMPLETED_FAILURE,
           error,
           optimist: { type: REVERT, id: transactionId }
         })
