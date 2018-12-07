@@ -47,7 +47,6 @@ router.post('/delete', async (req, res) => {
 
 router.post('/delete_completed', async (req, res) => {
   const { ids, userId } = req.body;
-  console.log('backend ids = ', ids)
   await Todo.deleteMany({ userId, _id: { $in: ids } }, error => {
     if (error) {
       res.status(400).json({ error })

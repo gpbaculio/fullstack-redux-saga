@@ -16,6 +16,7 @@ import {
   DELETE_COMPLETED_REQUEST,
   SHOW_REFRESH,
   SET_SEARCH_TEXT,
+  CLEAR_ERROR
 } from "../types";
 
 export const addTodoByUserRequest = todoTextWithUserId => ({
@@ -101,4 +102,8 @@ export const deleteCompleted = () => ({
 export const setSearchText = text => ({
   type: SET_SEARCH_TEXT,
   text
+})
+
+export const clearError = () => ({
+  type: CLEAR_ERROR
 })

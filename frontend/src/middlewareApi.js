@@ -67,7 +67,7 @@ export default function (store) {
       } catch (error) {
         next({
           type: ADD_TODO_BY_USER_FAILURE,
-          error,
+          error: error.message,
           optimist: { type: REVERT, id: transactionId }
         })
       }

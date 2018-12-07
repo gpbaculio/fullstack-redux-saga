@@ -17,7 +17,8 @@ import {
   ADD_TODO_BY_USER_FAILURE,
   TOGGLE_TODO_COMPLETE_BY_USER_FAILURE,
   TOGGLE_ALL_FAILURE,
-  DELETE_TODO_FAILURE
+  DELETE_TODO_FAILURE,
+  CLEAR_ERROR
 } from "../types";
 
 const initialState = {
@@ -151,6 +152,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         error: action.error
+      }
+    case CLEAR_ERROR:
+      return {
+        ...state,
+        error: ''
       }
     default:
       return state
