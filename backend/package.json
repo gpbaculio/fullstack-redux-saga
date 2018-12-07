@@ -29,6 +29,6 @@
     "serve-favicon": "^2.5.0"
   },
   "scripts": {
-    "start": "nodemon --exec babel-node -- src/index.js"
+    "start": "babel-node src/index.js"
   }
 }
