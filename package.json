@@ -9,9 +9,9 @@
   },
   "scripts": {
     "dev": "concurrently --kill-others \"npm run backend\" \"npm run frontend\"",
-    "start": "cd backend && npm install && npm start",
+    "start": "cd backend && npm start",
     "backend": "cd backend && npm run dev",
     "frontend": "cd frontend && npm start",
-    "heroku-postbuild": "cd frontend && npm install && npm run build"
+    "heroku-postbuild": "cd backend && npm install && cd ../frontend && npm install && npm run build"
   }
 }
