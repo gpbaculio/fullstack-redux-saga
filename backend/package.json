@@ -22,7 +22,7 @@
     "jsonwebtoken": "^8.3.0",
     "lodash": "^4.17.11",
     "mongoose": "^5.3.10",
-    "mongoose-paginate": "^5.0.3",
+    "mongoose-paginate": "git://github.com/zerok78/mongoose-paginate.git#version-5.0.4",
     "nodemailer": "^4.6.8",
     "nodemon": "^1.18.6",
     "prettier": "^1.15.1"
