@@ -1,6 +1,7 @@
 # fullstack-redux-saga
  APP FEATURES
- - This app uses redux saga and redux optimistic, mongoose + express were used in the backend and reactjs + redux on frontend
+ - This app uses reactjs + redux on the frontend which is implemented with redux saga and redux optimistic.
+   mongoose + express were used in the backend and  on frontend
 1. SIGN UP with Confirmation 
   - a confirmation link will be sent to users' email upon successfully signing up.
   - a user cannot add a todo if not confirmed.
