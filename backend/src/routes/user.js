@@ -10,16 +10,17 @@ router.post('/', async (req, res) => {
     const user = await User.findOne({ email: email.toLowerCase() });
     if (user) {
         res.status(400).json({ error: 'Email already used' })
+    } else {
+        const newUser = new User({ email })
+        newUser.setPassword(password)
+        newUser.setConfirmationToken()
+        newUser
+            .save()
+            .then(userRecord => {
+                sendConfirmationEmail(userRecord)
+                res.json({ user: userRecord.toAuthJSON() })
+            })
     }
-    const newUser = new User({ email })
-    newUser.setPassword(password)
-    newUser.setConfirmationToken()
-    newUser
-        .save()
-        .then(userRecord => {
-            sendConfirmationEmail(userRecord)
-            res.json({ user: userRecord.toAuthJSON() })
-        })
 })
 
 router.get("/current_user", authenticate, (req, res) => {
