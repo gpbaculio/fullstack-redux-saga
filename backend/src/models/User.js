@@ -45,7 +45,7 @@ schema.methods.setConfirmationToken = function setConfirmationToken() {
 }
 
 schema.methods.generateConfirmationUrl = function generateConfirmationUrl() {
-    return `${process.env.HOST || 'http://localhost:3000'}/confirmation/${this.confirmationToken}`
+    return `${process.env.HOSTNAME || process.env.LOCALHOST}/confirmation/${this.confirmationToken}`
 }
 
 schema.methods.toAuthJSON = function toAuthJSON() {
