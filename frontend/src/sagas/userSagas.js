@@ -51,8 +51,9 @@ export function* fetchUserSaga() {
     const { user } = response.data
     yield put(userLoggedIn(user))
   } catch (e) {
-    console.log('fetchuser saga', e.response)
     yield put(fetchCurrentUserFailure(e.response.data.error))
+    localStorage.removeItem('gpbTodosJWT')
+    yield put(userLoggedOut())
   }
 }
 

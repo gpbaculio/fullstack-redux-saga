@@ -43,7 +43,7 @@ export default function user(state = initialState, action = {}) {
         loading: false
       }
     case USER_LOGGED_OUT:
-      return { ...initialState }
+      return { ...initialState, error: state.error }
     case USER_CONFIRM_TOKEN_SUCCESS:
       return {
         ...state,
