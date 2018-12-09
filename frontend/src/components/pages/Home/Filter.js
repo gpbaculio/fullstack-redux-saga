@@ -58,13 +58,18 @@ class Filter extends Component {
       history,
       fetchTodosByUserRequest: fetchTodos,
       setSort: setSorting,
-      setPage: setStatePage
+      setPage: setStatePage,
+      searchText
     } = this.props
     history.push(`${url}?sort=${name}`) // from withRouter
     const { search } = history.location
     const { sort } = queryString.parse(search);
+    const query = { page: 1, sort }
+    if (searchText) {
+      query.searchText = searchText
+    }
     setStatePage(1)
-    fetchTodos({ page: 1, sort })
+    fetchTodos(query)
     setSorting(sort)
   }
 
@@ -165,6 +170,7 @@ Filter.propTypes = {
   deleteCompleted: PropTypes.func.isRequired,
   enableClear: PropTypes.bool.isRequired,
   showRefreshButton: PropTypes.func.isRequired,
+  searchText: PropTypes.string.isRequired,
 }
 
 const mapStateToProps = ({ todos }) => ({
@@ -173,7 +179,8 @@ const mapStateToProps = ({ todos }) => ({
   count: todos.count,
   page: todos.page,
   sort: todos.sort,
-  todos: todos.ids.map(id => todos.entities[id])
+  todos: todos.ids.map(id => todos.entities[id]),
+  searchText: todos.searchText
 })
 
 const mapDispatchToProps = {

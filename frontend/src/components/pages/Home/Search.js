@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Input, Form } from 'reactstrap'
+import { Input, Form, InputGroup, InputGroupAddon } from 'reactstrap'
 import PropTypes from 'prop-types'
 
 import { fetchTodosByUserRequest, setSearchText} from '../../../actions/todo'
@@ -29,6 +29,10 @@ class Search extends Component {
     }
   }
 
+  onClearText = () => {
+    console.log('clear!')
+  }
+
   render() {
     const { text} = this.state
     return (
@@ -44,12 +48,17 @@ class Search extends Component {
         "
         onSubmit={this.onSubmit}
       >
+      <InputGroup>
       <Input
         placeholder="Search your todos"
         value={text}
         className="form-control w-75"
         onChange={this.onChange}
       />
+      <InputGroupAddon addonType="append">        
+        clear
+      </InputGroupAddon>
+    </InputGroup>
     </Form>
     )
   }
