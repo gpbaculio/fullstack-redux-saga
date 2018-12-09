@@ -1,11 +1,13 @@
 import {
   FETCH_CURRENT_USER_REQUEST,
   FETCH_CURRENT_USER_SUCCESS,
+  FETCH_CURRENT_USER_FAILURE,
   CREATE_USER_REQUEST,
   CREATE_USER_FAILURE,
   RESET_FORM_STATE,
   LOGIN_USER_REQUEST,
-  LOGIN_USER_FAILURE
+  LOGIN_USER_FAILURE,
+  CLEAR_USER_ERROR
 } from '../types'
 
 export const createUserRequest = user => ({
@@ -40,4 +42,13 @@ export const fetchCurrentUserRequest = () => ({
 export const fetchCurrentUserSuccess = user => ({
   type: FETCH_CURRENT_USER_SUCCESS,
   user
+})
+
+export const fetchCurrentUserFailure = error => ({
+  type: FETCH_CURRENT_USER_FAILURE,
+  error
+})
+
+export const clearUserError = () => ({
+  type: CLEAR_USER_ERROR
 })

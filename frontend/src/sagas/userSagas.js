@@ -12,7 +12,8 @@ import {
 } from '../actions/todo'
 import {
   createUserFailure,
-  logInUserFailure
+  logInUserFailure,
+  fetchCurrentUserFailure
 } from '../actions/user'
 import api from '../api'
 import history from '../history'
@@ -45,9 +46,14 @@ export function* logInUserSaga(action) {
 }
 
 export function* fetchUserSaga() {
-  const response = yield call(api.user.fetchCurrentUser);
-  const { user } = response.data
-  yield put(userLoggedIn(user))
+  try {
+    const response = yield call(api.user.fetchCurrentUser);
+    const { user } = response.data
+    yield put(userLoggedIn(user))
+  } catch (e) {
+    console.log('fetchuser saga', e.response)
+    yield put(fetchCurrentUserFailure(e.response.data.error))
+  }
 }
 
 export function* userConfirmTokenSaga(action) {

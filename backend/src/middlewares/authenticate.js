@@ -13,7 +13,7 @@ export default (req, res, next) => {
   if (token) {
     jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
       if (err) {
-        res.status(401).json({ errors: { global: "Something went wrong. Please log in again." } });
+        res.status(401).json({ error: 'Invalid token' });
       } else {
         User.findOne({ email: decoded.email }).then(user => {
           req.currentUser = user;

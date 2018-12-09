@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { ClipLoader } from 'react-spinners';
 import { css } from 'react-emotion';
+import { Alert } from 'reactstrap'
 
 import {
   SignUpPage,
@@ -13,7 +14,7 @@ import {
 } from './components/pages'
 import { GuestRoute, UserRoute } from './components/routes'
 import { Header } from './components/navigation'
-import { fetchCurrentUserRequest, fetchCurrentUserSuccess } from './actions/user';
+import { fetchCurrentUserRequest, fetchCurrentUserSuccess, clearUserError } from './actions/user';
 import setAuthorizedHeader from './utils/setAuthorizedHeader'
 
 const override = css`
@@ -38,8 +39,13 @@ class App extends React.Component {
     }
   }
 
+  clearError = () => {
+    const { clearUserErrorAction } = this.props
+    clearUserErrorAction()
+  }
+
   render() {
-    const { isAuthenticated, loading } = this.props
+    const { isAuthenticated, loading, error } = this.props
     return (<React.Fragment>
       {
         loading ? <ClipLoader
@@ -51,6 +57,11 @@ class App extends React.Component {
         /> :
           <React.Fragment>
             <Header />
+            {error && (
+              <Alert style={{ width: '33%' }} color="danger" className="mx-auto text-center" isOpen={Boolean(error)} toggle={this.clearError}>
+                {error}
+              </Alert>
+            )}
             <Switch>
               <Route
                 exact
@@ -76,7 +87,6 @@ class App extends React.Component {
             </Switch>
           </React.Fragment>
       }
-
     </React.Fragment>
     )
   }
@@ -87,14 +97,18 @@ App.propTypes = {
   fetchCurrentUserSuccess: PropTypes.func.isRequired,
   fetchCurrentUserRequest: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
+  error: PropTypes.string.isRequired,
+  clearUserErrorAction: PropTypes.func.isRequired,
 }
 const mapStateToProps = ({ user }) => ({
   isAuthenticated: !!user.id,
-  loading: user.loading
+  loading: user.loading,
+  error: user.error
 })
 const mapDispatchToProps = {
   fetchCurrentUserSuccess,
-  fetchCurrentUserRequest
+  fetchCurrentUserRequest,
+  clearUserErrorAction: clearUserError
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
