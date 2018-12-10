@@ -3,6 +3,8 @@ import Pagination from 'react-js-pagination';
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { Alert, Button } from 'reactstrap'
+import map from 'lodash/map'
+import filter from 'lodash/filter'
 
 import { fetchTodosByUserRequest, setPage } from '../../../actions/todo'
 
@@ -40,7 +42,17 @@ class Paginator extends Component {
       loading,
       countPerPage,
       showRefresh,
+      searchText,
+      ids,
+      entities
     } = this.props
+    let filterCount
+    if (searchText && sort !== 'all') {
+      filterCount = filter(
+        map(ids, id => entities[id]),
+        t => sort === 'active' ? !t.complete : t.complete
+      ).length
+    }
     return (
       <React.Fragment>
         {!count && !loading ? (
@@ -60,7 +72,7 @@ class Paginator extends Component {
               <Pagination
                 activePage={activePage}
                 itemsCountPerPage={countPerPage}
-                totalItemsCount={count}
+                totalItemsCount={sort !== 'all' ? filterCount : count}
                 pageRangeDisplayed={5}
                 onChange={this.onPageChange}
               />
@@ -68,6 +80,10 @@ class Paginator extends Component {
       </React.Fragment>
     );
   }
+}
+
+Paginator.defaultProps = {
+  entities: {}
 }
 
 Paginator.propTypes = {
@@ -80,6 +96,8 @@ Paginator.propTypes = {
   countPerPage: PropTypes.number.isRequired,
   showRefresh: PropTypes.bool.isRequired,
   searchText: PropTypes.string.isRequired,
+  entities: PropTypes.shape({}),
+  ids: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
 }
 
 const mapStateToProps = ({ todos }) => ({
@@ -89,7 +107,9 @@ const mapStateToProps = ({ todos }) => ({
   activePage: todos.page,
   countPerPage: todos.countPerPage,
   showRefresh: todos.showRefresh,
-  searchText: todos.searchText
+  searchText: todos.searchText,
+  entities: todos.entities,
+  ids: todos.ids,
 })
 
 const mapDispatchToProps = {
