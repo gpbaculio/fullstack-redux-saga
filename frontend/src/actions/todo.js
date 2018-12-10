@@ -16,7 +16,8 @@ import {
   DELETE_COMPLETED_REQUEST,
   SHOW_REFRESH,
   SET_SEARCH_TEXT,
-  CLEAR_ERROR
+  CLEAR_ERROR,
+  CLEAR_SEARCH_TEXT
 } from "../types";
 
 export const addTodoByUserRequest = todoTextWithUserId => ({
@@ -106,4 +107,8 @@ export const setSearchText = text => ({
 
 export const clearError = () => ({
   type: CLEAR_ERROR
+})
+
+export const clearSearchText = () => ({
+  type: CLEAR_SEARCH_TEXT
 })

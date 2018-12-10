@@ -1,9 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Input, Form, InputGroup, InputGroupAddon } from 'reactstrap'
+import { Input, Form, Button } from 'reactstrap'
 import PropTypes from 'prop-types'
 
-import { fetchTodosByUserRequest, setSearchText} from '../../../actions/todo'
+import {
+  fetchTodosByUserRequest,
+  setSearchText,
+  clearSearchText
+} from '../../../actions/todo'
 
 class Search extends Component {
   
@@ -30,7 +34,18 @@ class Search extends Component {
   }
 
   onClearText = () => {
-    console.log('clear!')
+    const {
+      clearSearchTextAction,
+      fetcTodos,
+      sort,
+      searchText
+    } = this.props
+    if(searchText){
+      this.setState({ text: ''}, () => {
+        clearSearchTextAction()
+        fetcTodos({ page: 1, sort })
+      })
+    }
   }
 
   render() {
@@ -48,34 +63,42 @@ class Search extends Component {
         "
         onSubmit={this.onSubmit}
       >
-      <InputGroup>
       <Input
         placeholder="Search your todos"
         value={text}
         className="form-control w-75"
         onChange={this.onChange}
       />
-      <InputGroupAddon addonType="append">        
+      <Button
+        onClick={this.onClearText}
+        style={{color: 'red', fontSize: '18px'}}
+        className="border-0"
+        color="link"
+      >
         clear
-      </InputGroupAddon>
-    </InputGroup>
+      </Button>
     </Form>
     )
   }
 }
+
 Search.propTypes = {
   fetcTodos: PropTypes.func.isRequired,
   sort: PropTypes.string.isRequired,
   setSearchText:PropTypes.func.isRequired,
+  clearSearchTextAction: PropTypes.func.isRequired,
+  searchText: PropTypes.string.isRequired,
 }
+
 const mapStateToProps = ({todos}) => ({
-  sort: todos.sort
+  sort: todos.sort,
+  searchText: todos.searchText
 })
 
 const mapDispatchToProps = {
   fetcTodos:fetchTodosByUserRequest,
-  setSearchText
+  setSearchText,
+  clearSearchTextAction: clearSearchText
 }
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(Search)

@@ -18,7 +18,8 @@ import {
   TOGGLE_TODO_COMPLETE_BY_USER_FAILURE,
   TOGGLE_ALL_FAILURE,
   DELETE_TODO_FAILURE,
-  CLEAR_ERROR
+  CLEAR_ERROR,
+  CLEAR_SEARCH_TEXT
 } from "../types";
 
 const initialState = {
@@ -157,6 +158,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         error: ''
+      }
+    case CLEAR_SEARCH_TEXT:
+      return {
+        ...state,
+        searchText: ''
       }
     default:
       return state
