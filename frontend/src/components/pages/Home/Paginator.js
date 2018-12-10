@@ -72,7 +72,7 @@ class Paginator extends Component {
               <Pagination
                 activePage={activePage}
                 itemsCountPerPage={countPerPage}
-                totalItemsCount={sort !== 'all' ? filterCount : count}
+                totalItemsCount={searchText && sort !== 'all' ? filterCount : count}
                 pageRangeDisplayed={5}
                 onChange={this.onPageChange}
               />
