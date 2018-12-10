@@ -2,7 +2,7 @@
  APP FEATURES
  - This app uses reactjs + redux on the frontend which is implemented with redux saga and redux optimistic.
    mongoose + express were used in the backend.
-![Alt text](https://imgur.com/aFvlWhw?raw=true "Optional Title")
+![Alt text](https://i.imgur.com/aFvlWhw.png?raw=true "Optional Title")
  - Use this confirmed account to test the app -> email: glenbaculio@gmail.com password: abcd123
 1. SIGN UP with Confirmation 
   - a confirmation link will be sent to users' email upon successfully signing up.
