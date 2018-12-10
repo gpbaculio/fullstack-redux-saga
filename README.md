@@ -6,6 +6,8 @@
  # - Use this confirmed account to test the app -> email: glenbaculio@gmail.com password: abcd123
  # Demo Link
  - https://www.youtube.com/watch?v=kS4g9_jqrF8
+ # Deployed App Link
+ - https://fullstack-redux.herokuapp.com/login
 # 1. SIGN UP with Confirmation 
   - a confirmation link will be sent to users' email upon successfully signing up.
   - a user cannot add a todo if not confirmed.
