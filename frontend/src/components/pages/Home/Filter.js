@@ -4,10 +4,7 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom' // for history
 import queryString from 'query-string'
-import every from 'lodash/every'
-import some from 'lodash/some'
-import map from 'lodash/map'
-import filter from 'lodash/filter'
+import _ from 'lodash'
 
 import {
   toggleAll,
@@ -90,15 +87,11 @@ class Filter extends Component {
 
   render() {
     const { completeAll } = this.state
-    const { count, sort, enableClear, ids, entities } = this.props
-    const filterCount = filter(
-      map(ids, id => entities[id]),
-      t => sort === 'active' ? !t.complete : t.complete
-    ).length
+    const { count, sort, enableClear } = this.props
     return (
       <Row className="my-3">
         <Col lg="2" className="d-flex justify-content-center align-items-center">
-          Total: {sort !== 'all' ? filterCount : count}
+          Total: {count}
         </Col>
         <Col lg="8" className="filter d-flex justify-content-center align-items-center">
           <div className="d-flex align-items-center">
@@ -157,7 +150,6 @@ class Filter extends Component {
 
 Filter.defaultProps = {
   completeAll: false,
-  entities: {}
 }
 
 Filter.propTypes = {
@@ -179,20 +171,16 @@ Filter.propTypes = {
   enableClear: PropTypes.bool.isRequired,
   showRefreshButton: PropTypes.func.isRequired,
   searchText: PropTypes.string.isRequired,
-  entities: PropTypes.shape({}),
-  ids: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
 }
 
 const mapStateToProps = ({ todos }) => ({
-  completeAll: every(map(todos.ids, id => todos.entities[id]), todo => todo.complete),
-  enableClear: some(map(todos.ids, id => todos.entities[id]), todo => todo.complete),
+  completeAll: _.every(_.map(todos.ids, id => todos.entities[id]), todo => todo.complete),
+  enableClear: _.some(_.map(todos.ids, id => todos.entities[id]), todo => todo.complete),
   count: todos.count,
   page: todos.page,
   sort: todos.sort,
   todos: todos.ids.map(id => todos.entities[id]),
-  searchText: todos.searchText,
-  ids: todos.ids,
-  entities: todos.entities
+  searchText: todos.searchText
 })
 
 const mapDispatchToProps = {

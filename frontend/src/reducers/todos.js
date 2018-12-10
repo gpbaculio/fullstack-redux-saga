@@ -19,7 +19,8 @@ import {
   TOGGLE_ALL_FAILURE,
   DELETE_TODO_FAILURE,
   CLEAR_ERROR,
-  CLEAR_SEARCH_TEXT
+  CLEAR_SEARCH_TEXT,
+  DECREASE_COUNT
 } from "../types";
 
 const initialState = {
@@ -54,6 +55,11 @@ export default (state = initialState, action) => {
         ...state,
         disableField: false,
         countPerPage: state.countPerPage + 1
+      }
+    case DECREASE_COUNT:
+      return {
+        ...state,
+        count: state.count - 1
       }
     case ADD_TODO_BY_USER_SUCCESS:
       return {

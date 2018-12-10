@@ -24,7 +24,8 @@ import {
   DELETE_TODO_FAILURE,
   DELETE_COMPLETED_REQUEST,
   DELETE_COMPLETED_SUCCESS,
-  DELETE_COMPLETED_FAILURE
+  DELETE_COMPLETED_FAILURE,
+  DECREASE_COUNT
 } from './types'
 
 export default function (store) {
@@ -79,6 +80,10 @@ export default function (store) {
     if (action.type === TOGGLE_TODO_COMPLETE_BY_USER_REQUEST) {
       const transactionId = uuidV1();
       const { userId, todo } = action.data
+      const { sort } = store.getState().todos
+      if (sort !== 'all') {
+        next({ type: DECREASE_COUNT })
+      }
       next({ // data is mock todo
         type: TOGGLE_TODO_COMPLETE_BY_USER_SUCCESS,
         todo: {
