@@ -43,10 +43,11 @@ class Filter extends Component {
         page,
         sort,
         fetchTodosByUserRequest: fetchTodos,
+        searchText
       } = this.props
       await toggleAllTodo(complete)
       if (sort !== 'all') {
-        await fetchTodos({ sort, page })
+        await fetchTodos({ sort, page, searchText })
       }
     })
   }
