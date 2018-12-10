@@ -78,7 +78,8 @@ router.get("/todos_by_user", authenticate, async (req, res) => {
   const query = { userId };
   if (searchText) {
     query.text = { '$regex': `${searchText}`, '$options': 'i' }
-  } else if (complete) {
+  }
+  if (complete) {
     query.complete = complete
   }
   Todo.paginate(
