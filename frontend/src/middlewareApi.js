@@ -32,6 +32,7 @@ export default function (store) {
     if (action.type === ADD_TODO_BY_USER_REQUEST) {
       const transactionId = uuidV1();
       const { todoText, userId } = action.todoTextWithUserId
+      const { sort } = store.getState().todos
       let { entities, ids, count } = store.getState().todos
       const mockTodo = {
         transactionId, // so we can trace
@@ -44,11 +45,14 @@ export default function (store) {
           _id: userId
         },
       }
+      if (sort === 'all') {
+        count += 1
+      }
       next({ // data is mock todo
         type: ADD_TODO_BY_USER_SUCCESS,
         entities: { ...entities, [mockTodo._id]: mockTodo },
         ids: [mockTodo._id, ...ids],
-        count: count += 1,
+        count,
         optimist: { type: BEGIN, id: transactionId }
       });
       try {
