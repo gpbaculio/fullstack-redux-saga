@@ -35,12 +35,10 @@ class PageTodo extends Component {
       toggleTodoCompleteByUserRequest: toggleTodoCompleteByUserRequestAction,
       showRefreshButton,
       sort,
-      deleteTodo: deleteTodoRequest,
     } = this.props
     toggleTodoCompleteByUserRequestAction({ userId, todo })
     if (sort !== 'all') {
       showRefreshButton()
-      deleteTodoRequest(todo._id)
     }
   }
 
