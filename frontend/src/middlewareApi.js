@@ -45,7 +45,7 @@ export default function (store) {
           _id: userId
         },
       }
-      if (sort === 'all') {
+      if (sort !== 'complete') {
         count += 1
       }
       next({ // data is mock todo
