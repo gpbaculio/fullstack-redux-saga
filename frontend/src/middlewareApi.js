@@ -96,7 +96,7 @@ export default function (store) {
         })
         next({
           type: TOGGLE_TODO_COMPLETE_BY_USER_SUCCESS,
-          todo: data.todos[0],
+          todo: { ...data.todos[0] },
           optimist: { type: COMMIT, id: transactionId }
         })
       } catch (error) {
