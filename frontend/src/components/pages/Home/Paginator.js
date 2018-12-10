@@ -29,9 +29,10 @@ class Paginator extends Component {
     const {
       fetchTodos,
       sort,
-      activePage: page
+      activePage: page,
+      searchText
     } = this.props
-    fetchTodos({ page, sort })
+    fetchTodos({ page, sort, searchText })
   }
 
   render() {
