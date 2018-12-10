@@ -1,4 +1,4 @@
-# fullstack-redux-saga
+# FULLSTACK REDUX with REDUX SAGA + REDUX OPTIMISTIC
  # APP FEATURES
  - This app uses reactjs + redux on the frontend which is implemented with redux saga and redux optimistic.
    mongoose + express were used in the backend.
